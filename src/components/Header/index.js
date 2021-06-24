@@ -98,12 +98,12 @@ function HeaderAdmin(props) {
                                                 <div className="mega-menu-panel collapse" style={mystyle}
                                                      id={`mega-level-${index}-collapse`}>
                                                     <div className="container-lg">
-                                                        <NavLink to={{
+                                                       {/*  <NavLink to={{
                                                             pathname: `${route.post.root}/${menu.rhContentCategoryId}`
                                                         }} className="nav-link all"
                                                                  exact>
                                                             {t("common.see_all_post")}
-                                                        </NavLink>
+                                                        </NavLink> */}
                                                         <a className="nav-link close ml-auto"
                                                            data-toggle="collapse"
                                                            href={`#mega-level-${index}-collapse`}

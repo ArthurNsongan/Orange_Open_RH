@@ -596,7 +596,8 @@ function Home(props) {
             <section className="home bg-dark">
             <Slider
                 className={"home-slider py-3"}
-                autoplay={{ delay: 1000, loop: true }}
+                loop={true}
+                autoplay={{ delay: 5000, loop: true }}
                 slides={[(
                     <div className="row justify-content-center align-items-center" style={{ minHeight: "90px" }}>
                         <h3 className="text-center m-auto">
@@ -608,8 +609,7 @@ function Home(props) {
                 ), (
                     <div className="row justify-content-center align-items-center" style={{ minHeight: "90px" }}>
                         <h3 className="text-center m-auto">
-                            <span style={{ color: "#ffffff" }}>Together. </span>
-                            <br />
+                            <span style={{ color: "#ffffff" }}>HR, </span>
                             <span style={{ color: "#ff7900" }}>Leading the change</span>
                         </h3>
                     </div>
@@ -634,7 +634,6 @@ function Home(props) {
                                         props.result !== null &&
                                         <Slider
                                             navigation={false}
-                                            slidesPerView={2}
                                             className={"home-slider"}
                                             slides={props.result}
                                             renderItem={(post) => (

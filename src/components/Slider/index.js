@@ -23,7 +23,6 @@ export default function Slider(props) {
         children,
         renderItem,
         slides,
-        slidesPerView,
         effect,
         ...rest
     } = props;
@@ -32,7 +31,7 @@ export default function Slider(props) {
 
     return (
         <>
-            <Swiper id="swiper" {...rest} effect={effect} slidesPerView={slidesPerView} autoplay={autoplay}>
+            <Swiper id="swiper" {...rest} effect={effect} autoplay={autoplay}>
                 {
                     slides.map((slide, index) => (
                         <SwiperSlide key={`slide-${index}`}>
@@ -52,7 +51,6 @@ Slider.propTypes = {
     effect: PropTypes.oneOf(['slide', 'fade', 'cube', 'coverflow', 'flip']),
     renderItem: PropTypes.func,
     autoplay: PropTypes.object,
-    slidesPerView: PropTypes.integer
 };
 
 Slider.defaultProps = {

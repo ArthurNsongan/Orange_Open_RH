@@ -184,9 +184,9 @@
     "success": "Glossaire posté avec succès"
   },
   "faq": {
-    "title": "Foire aux questions",
+    "title": "FAQ",
     "new_faq": "Nouvelle question",
-    "title": "Foire aux questions",
+    "description": "Foire aux questions",
     "question": "Question",
     "answer": "Réponse",
     "success": "Nouvelle question ajouté avec succès",

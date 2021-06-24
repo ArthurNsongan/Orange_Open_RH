@@ -166,34 +166,34 @@
     "preferences": "Préférences"
   },
   "comment": {
-    "add_comment": "Ajouter un commentaire",
-    "author": "De",
-    "commenter": "Commenter",
-    "commentaire": "Commentaire",
-    "commentaires": "Commentaires",
-    "no_comment": "Aucun commentaire à ce jour",
-    "add_new_success": "Votre commentaire a été bien pris en compte"
+    "add_comment": "Add a Comment",
+    "author": "From",
+    "commenter": "To Comment",
+    "commentaire": "Comment",
+    "commentaires": "Comments",
+    "no_comment": "No Comment",
+    "add_new_success": "Your comment has been processed !"
   },
   "glossary": {
-    "title": "Dictionnaire",
-    "add_new": "Nouveau glossaire",
-    "find_glossary": "Rechercher un glossaire",
-    "keyword": "Mot clé",
-    "keyword_description": "Définition du mot clé",
-    "no_glossary": "Aucun glossaire à ce jour",
-    "success": "Glossaire posté avec succès"
+    "title": "Dictionnary",
+    "add_new": "New Dictionnary",
+    "find_glossary": "Search a dictionnary",
+    "keyword": "Keyword",
+    "keyword_description": "Keyword description",
+    "no_glossary": "No Dictionnary to this day",
+    "success": "Dictionnary posted successfully !"
   },
   "faq": {
-    "title": "Foire aux questions",
-    "new_faq": "Nouvelle question",
-    "title": "Foire aux questions",
+    "title": "FAQ",
+    "new_faq": "New question",
     "question": "Question",
-    "answer": "Réponse",
-    "success": "Nouvelle question ajouté avec succès",
-    "no_faq": "Aucune FAQ à ce jour",
-    "answer_question": "Répondre à une question",
-    "modify_success": "Question répondu avec succès",
-    "publish_faq_state": "Publier la réponse ?"
+    "description": "Frequently Asked Questions",
+    "answer": "Answer",
+    "success": "New question added successfully !",
+    "no_faq": "No FAQ to this day",
+    "answer_question": "Answer to a question",
+    "modify_success": "Question answered successfully !",
+    "publish_faq_state": "Publish the answer ?"
   },
   "error": {
     "required_field": "Ce champ est requis",
