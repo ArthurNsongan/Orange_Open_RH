@@ -23,7 +23,7 @@ function SecondaryNavigation(props) {
     }, [props.location.pathname]);
 
     return (
-        <header id="secondary_nav" className="bg-dark mb-4">
+        <header id="secondary_nav" className="bg-dark mb-4 overflow-hidden">
             <div className="container-main">
                 <div className="main-container ellispsis-supported row">
                     <div className="col-2" style={{padding: 0}}>

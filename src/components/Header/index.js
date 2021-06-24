@@ -13,7 +13,7 @@ import * as Utils from '../../utils';
 import {getAllDomaineAction, getDomaineByPostAction} from "../../redux/api/DomaineApi";
 import {getAllCategoryAction, getAllCategoryReset} from "../../redux/api/CategoryApi";
 import {Constant} from "../../config/Constant";
-import {getAllPostsFrontEndAction} from "../../redux/api/PostsApi";
+import {getAllPostsFrontEndAction, getAllPostsByCategoryAction } from "../../redux/api/PostsApi";
 import './style.css'
 
 
@@ -46,7 +46,10 @@ function HeaderAdmin(props) {
     useEffect(() => {
         props.getAllDomaineAction();
         props.getAllCategoryAction();
-        if (props.resultGetAllPosts === null)
+        props.getAllPostsFrontEndAction();
+        props.getAllPostsByCategoryAction();
+        console.log("getAllPosts - Start", props.resultGetCategory);
+        // if (props.resultGetAllPosts === null)
             props.getAllPostsFrontEndAction();
     }, []);
 
@@ -75,11 +78,11 @@ function HeaderAdmin(props) {
                     {
                         (result !== null || Utils.isConnected()) &&
                         <>
-                            <ul className="navbar-nav">
+                            <ul className="navbar-nav mt-0">
                                 <li className="nav-item">
                                     <NavLink
                                         to={`${route.home.root}`}
-                                        className="nav-link"
+                                        className="nav-link align-self-start"
                                         activeClassName=""
                                         activeStyle={{
                                             color: 'var(--orange)'
@@ -117,31 +120,40 @@ function HeaderAdmin(props) {
                                                     <div className="container-lg">
                                                         <ul className="navbar-nav">
                                                             {
-                                                                props.resultGetDomaine !== null &&
-                                                                props.resultGetDomaine.filter(domaine => (domaine.rhContentCategoryId === menu.rhContentCategoryId) && (domaine.rhContentDomaineState))
-                                                                    .map((domaineByPost) => (
+                                                                // props.resultGetDomaine !== null &&
+                                                                // props.resultGetDomaine.filter(domaine => (domaine.rhContentCategoryId === menu.rhContentCategoryId) && (domaine.rhContentDomaineState))
+                                                                    props.resultGetAllPosts !== null &&
+                                                                    props.resultGetAllPosts
+                                                                    // .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId) && onePost.rhContentDomaine.rhContentDomaineState)
+                                                                    .map((post) => (
                                                                         <li className="nav-item col">
                                                                             {
-                                                                            console.log("Mes test menu",domaineByPost)
-                                                                   
+                                                                            console.log("Mes test menu",post)
                                                                             }
-                                                                            
-                                                                            {domaineByPost.domaineLink!==null ?
+                                                                            { post.rhContentDomaine.rhContentCategoryId !== null ?
                                                                         /*<NavLink
                                                                         to={`${domaineByPost.domaineLink}`}
                                                                         className="nav-link"
                                                                         style={mystyle2}
                                                                         exact>
                                                                         {domaineByPost.rhContentDomaineName} </NavLink>*/
-                                                                        <a className="Mylink" href={domaineByPost.domaineLink}>{domaineByPost.rhContentDomaineName}</a>
+                                                                        //<a className="Mylink" href={post.domaineLink}>{post.rhContentDomaineName}</a>
+                                                                        <NavLink
+                                                                            to={{
+                                                                                pathname: `${route.post.root}/${post.rhContentDomaine.rhContentCategoryId}/${post.rhContentDomaineId}/${post.rhContentId}`,
+                                                                                post
+                                                                            }}
+                                                                            className="Mylink">
+                                                                            { post.rhContentTitle }
+                                                                        </NavLink>
                                                                          :
                                                                            <NavLink
-                                                                            to={`${route.post.root}/${menu.rhContentCategoryId}/${domaineByPost.rhContentDomaineId}`}
+                                                                            to={`${route.post.root}/${menu.rhContentCategoryId}/${post.rhContentDomaineId}`}
                                                                             className="Mylink"
                                                                           //  style={mystyle2}
                                                                           //  onclick={openTab(domaineByPost.domaineLink)}
                                                                             exact>
-                                                                            {domaineByPost.rhContentDomaineName}
+                                                                            {post.rhContentDomaineName}
                                                                             </NavLink>
                                                                             
                                                                          //   openTab(domaineByPost.domaineLink)
@@ -159,7 +171,7 @@ function HeaderAdmin(props) {
                                                                                     href="#">{t('common.previous')}</a>
                                                                                 </li>
                                                                                 <li className="nav-item"><span
-                                                                                    className="nav-heading text-primary">{domaineByPost.rhContentDomaineName}</span>
+                                                                                    className="nav-heading text-primary">{post.rhContentDomaineName}</span>
                                                                                 </li>
                                                                                 {/*
                                                                                     props.resultGetAllPosts !== null &&
@@ -202,7 +214,7 @@ function HeaderAdmin(props) {
                                             </NavLink>
                                         </li>
                                     )) :
-                                    <li className="nav-item dropdown">
+                                    <li className="nav-item dropdown align-self-start">
                                         <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"
                                            role="button" id="dropdownMenu">{t("navigation.other")}</a>
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenu">
@@ -293,6 +305,10 @@ const mapstateToProps = state => ({
     resultGetAllPosts: state.getAllPostsReducer.result,
     errorGetAllPosts: state.getAllPostsReducer.error,
 
+    loadingGetAllCategoryPosts: state.getAllPostsByCategoryReducer.loading,
+    resultGetAllCategoryPosts: state.getAllPostsByCategoryReducer.result,
+    errorGetAllCategoryPosts: state.getAllPostsByCategoryReducer.error,
+
     loadingGetDomaine: state.getAllDomainesReducer.loading,
     resultGetDomaine: state.getAllDomainesReducer.result,
     errorGetDomaine: state.getAllDomainesReducer.error,
@@ -304,9 +320,8 @@ const mapstateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     getAllDomaineAction,
-
+    getAllPostsByCategoryAction,    
     getAllPostsFrontEndAction,
-
     getAllCategoryAction,
     getAllCategoryReset
 }, dispatch);

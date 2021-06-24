@@ -17,10 +17,10 @@ export default function RichTextEditor(props) {
             ref={ref}
             value={value}
             config={{
-            //     uploader: {
-            //        insertImageAsBase64URI: true
-            //    },
-               uploader: {
+                uploader: {
+                   insertImageAsBase64URI: true
+               },
+               /*uploader: {
                     // url: "https://localhost:5003/api/RhContent/PostImage",
                     url: Config.uploadImageUrl, 
                     insertImageAsBase64URI: false,

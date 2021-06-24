@@ -9,6 +9,9 @@
     */
 }
 
+.overflow-hidden {
+    overflow: hidden;
+}
 
 #secondary_nav .container-main .main-container .menu {
     height: 46px;
