@@ -1,0 +1,9 @@
+.swiper-pagination-bullet-active {
+    background: var(--orange);
+}
+
+.home-slider .swiper-pagination-fraction,
+.home-slider .swiper-pagination-custom,
+.home-slider.swiper-container-horizontal > .swiper-pagination-bullets {
+    /*width: 138%;*/
+}

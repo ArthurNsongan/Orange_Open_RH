@@ -1,0 +1,9 @@
+.light-nav {
+    margin-bottom: 0;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+.light-nav .nav-link.active::before{
+    background-color: transparent;
+}

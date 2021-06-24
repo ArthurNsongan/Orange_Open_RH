@@ -1,0 +1,58 @@
+.profile-dropdown .dropdown-toggle::after {
+    display: none;
+}
+
+.badge-counter {
+    -webkit-transform: scale(.5);
+    -moz-transform: scale(.5);
+    -ms-transform: scale(.5);
+    -o-transform: scale(.5);
+    transform: scale(.5);
+}
+
+#notification-link {
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
+#notification-dropdown .dropdown-menu {
+    width: 20rem !important;
+}
+
+#notification-container .o-layer-arrow {
+    position: absolute;
+    top: -7px;
+    right: 0;
+    left: 0;
+    height: 10px;
+}
+
+#notification-container .o-layer-arrow > div {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--orange);
+    position: absolute;
+}
+
+#notification-container .card-header {
+    padding: .3rem 1.25rem;
+    border: 0;
+    background-color: var(--orange);
+}
+
+#notification-container .card-body {
+    padding: .5rem;
+}
+
+#notification-container {
+    border-bottom: solid 0px var(--dark);
+    border-right: solid 0px var(--dark);
+    border-left: solid 0px var(--dark);
+    border-top: solid 1px var(--orange);
+}
+

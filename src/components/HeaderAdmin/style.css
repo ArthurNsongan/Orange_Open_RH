@@ -1,0 +1,13 @@
+#admin-navbar.e-close {
+    box-shadow: none;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform .5s ease, visibility 500ms;
+}
+
+#admin-navbar.e-open {
+    transform: translateX(0%);
+    transition: transform .5s ease;
+    visibility: visible;
+}
+

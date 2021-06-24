@@ -1,0 +1,32 @@
+.border-left-blue {
+    border-left: .25rem solid var(--blue) !important;
+}
+
+.border-left-green {
+    border-left: .25rem solid var(--green) !important;
+}
+
+.border-left-orange {
+    border-left: .25rem solid var(--orange) !important;
+}
+
+.border-left-yellow {
+    border-left: .25rem solid var(--yellow) !important;
+}
+
+
+.color-blue {
+    color: var(--blue);
+}
+
+.color-green {
+    color: var(--green);
+}
+
+.color-orange {
+    color: var(--orange);
+}
+
+.color-yellow {
+    color: var(--yellow);
+}

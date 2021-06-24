@@ -1,0 +1,133 @@
+#secondary_nav {
+    z-index: 99;
+    position: relative;
+}
+
+#secondary_nav .container-main .main-container {
+    /*
+    padding: 0 20px;
+    */
+}
+
+
+#secondary_nav .container-main .main-container .menu {
+    height: 46px;
+}
+
+#secondary_nav .menu {
+    z-index: 900;
+}
+
+#secondary_nav .container-main {
+    min-width: 990px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+#secondary_nav .main-container {
+    min-width: 990px;
+    max-width: 1280px;
+    margin: 0 auto;
+    /*
+    padding: 0 4%;
+    */
+    position: relative;
+}
+
+#secondary_nav .container-main .main-container .menu .breadcrumb {
+    background: var(--orange);
+    border-left: 3px solid var(--white);
+    margin-right: 24px;
+    padding: 14px 20px;
+    font-weight: 600;
+    height: 46px;
+}
+
+ul.menu {
+    margin: 0;
+    padding: 0 0 2px 0;
+    height: 47px;
+}
+
+#secondary_nav ul.menu li.breadcrumb {
+    background: transparent;
+    height: 47px;
+}
+
+#header_nav .menu > li:first-child, #secondary_nav .menu > li:first-child {
+    padding-left: 0;
+}
+
+ul.menu li.breadcrumb {
+    background-color: #F60;
+}
+
+ul.menu > li {
+    list-style: none !important;
+    float: left;
+    position: relative;
+    margin: 0;
+    padding: 0 15px;
+}
+
+#secondary_nav .container-main .main-container .menu .breadcrumb:before {
+    content: "";
+    position: absolute;
+    right: -14px;
+    top: 0;
+    width: 23px;
+    height: 23px;
+    background: var(--orange);
+    transform: skew(35deg);
+    border-right: 4px solid white;
+    background-color: var(--orange);
+}
+
+#secondary_nav .container-main .main-container .menu .breadcrumb:after {
+    content: "";
+    position: absolute;
+    right: -14px;
+    top: 23px;
+    width: 23px;
+    height: 23px;
+    background: var(--orange);
+    transform: skew(-35deg);
+    border-right: 4px solid white;
+    background-color: var(--orange);
+}
+
+#secondary_nav .container-main .main-container .menu li {
+    padding: 0;
+}
+
+#secondary_nav .container-main .main-container .menu li a {
+    font-weight: 600;
+    font-size: 15px;
+    color: white;
+    height: inherit;
+    padding: 13px 15px;
+}
+
+#secondary_nav ul.menu > li.active > a {
+    color: #FFF;
+    border-bottom: 0;
+}
+
+#secondary_nav ul.menu > li > a {
+    color: #b6b9c0;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+#secondary_nav .container-main .main-container .marquee-vertical li {
+    padding: 13px 0;
+}
+
+#secondary_nav .container-main .main-container .marquee-vertical li a {
+    text-decoration: none;
+}
+
+#secondary_nav .container-main .main-container .marquee-vertical {
+    list-style-type: none;
+    padding: 0;
+}

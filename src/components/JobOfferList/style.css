@@ -1,0 +1,19 @@
+.news-card {
+    border-radius: 8px
+}
+
+.date {
+    font-size: 12px
+}
+
+.tags span {
+    margin-right: 9px;
+    border: 1px solid var(--orange-2);
+    padding-right: 9px;
+    padding-left: 9px;
+    padding-top: 2px;
+    padding-bottom: 4px;
+    border-radius: 7px;
+    background-color: var(--orange-2);
+    color: #fff
+}

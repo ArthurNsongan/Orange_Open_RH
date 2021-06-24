@@ -1,0 +1,186 @@
+{
+  "menu_header_user": [
+    {
+      "title": "navigation.blog",
+      "link": "/blog"
+    },
+    {
+      "title": "navigation.temoignages",
+      "link": "/testimonial"
+    }
+  ],
+  "menu_header_user2": [
+    {
+      "title": "navigation.blog",
+      "link": "/blog"
+    },
+    {
+      "title": "navigation.temoignages",
+      "link": "/testimonial"
+    },
+    {
+      "title": "navigation.faq",
+      "link": "/faq"
+    },
+    {
+      "title": "navigation.glossaire",
+      "link": "/glossary"
+    }
+  ],
+  "menu_header_admin": [
+    {
+      "title": "navigation.administration",
+      "link": "/admin"
+    }
+  ],
+  "user_admin_url": [
+    {
+      "title": "app.name",
+      "link": "/"
+    },
+    {
+      "title": "navigation.myspace",
+      "link": "/my-space"
+    }
+  ],
+  "admin_url": [
+    {
+      "title": "app.name",
+      "link": "/"
+    },
+    {
+      "title": "navigation.administration",
+      "link": "/admin"
+    }
+  ],
+  "home": {
+    "root": "/",
+    "title": "navigation.home"
+  },
+  "user": {
+    "user_demands": "/my-space/demands",
+    "add_new_demand": "/my-space/demands/new",
+    "test":"/my-space/test"
+  },
+  "post": {
+    "root": "/posts",
+    "add_new": "/admin/posts/new",
+    "edit_post_domain": "/admin/posts/edit/:id",
+    "edit_post": "/admin/posts/edit",
+    "admin_post": "/admin/posts",
+    "admin_post_category": "/admin/posts/category",
+    "admin_post_thematique": "/admin/posts/thematique",
+    "post_category": "/posts/:category?",
+    "post_domain": "/posts/:category?/:domaine?",
+    "post_domaine_detail": "/posts/:category?/:domaine?/:id?"
+  },
+  "blog": {
+    "root": "/blog",
+    "add_new": "/admin/blog/new",
+    "admin_blog": "/admin/blog",
+    "blog_domain": "/blog/:domaine",
+    "blog_domaine_detail": "/blog/:domaine/:id",
+    "edit_blog": "/admin/blog/edit",
+    "edit_blog_domain": "/admin/blog/edit/:id",
+    "admin_blog_thematique": "/admin/blog/thematique"
+  },
+  "glossary": {
+    "root": "/glossary",
+    "add_new": "/glossary/new",
+    "admin_glossary": "/admin/glossary",
+    "glossary_domain": "/glossary/:domaine?"
+  },
+  "faq": {
+    "root": "/faq",
+    "admin_faq": "/admin/faq",
+    "faq_domain": "/faq/:domaine?"
+  },
+  "auth": {
+    "root": "/auth",
+    "sign_in": "/auth/sign-in"
+  },
+  "testimonial": {
+    "root": "/testimonial",
+    "admin_testimonial": "/admin/testimonial",
+    "testimonial_domain": "/testimonial/:domaine?"
+  },
+  "jobOffer": {
+    "root": "/job-offer",
+    "add_new": "/job-offer/new",
+    "job_domain": "/job-offer/:domaine",
+    "job_domaine_detail": "/job-offer/:domaine/:id"
+  },
+  "user_space": [
+    {
+      "title": "common.dashboard",
+      "link": "/my-space",
+      "icon": "tachometer-alt"
+    },
+    {
+      "title": "admin.demands",
+      "link": "/my-space/demands",
+      "icon": "comment"
+    },
+    {
+      "title": "user.test",
+      "link": "/my-space/test",
+      "icon": "comment"
+    }
+  ],
+  "admin_space": [
+    {
+      "title": "admin.dashboard",
+      "link": "/admin",
+      "icon": "tachometer-alt"
+    },
+    {
+      "title": "admin.publications",
+      "link": "/admin/post",
+      "icon": "file-alt",
+      "sub_menu": [
+        {
+          "title": "common.all_post",
+          "link": "/admin/posts"
+        },
+        {
+          "title": "common.categorie",
+          "link": "/admin/posts/category"
+        },
+        {
+          "title": "common.thematique",
+          "link": "/admin/posts/thematique"
+        }
+      ]
+    },
+    {
+      "title": "admin.blog",
+      "link": "/admin/blog",
+      "icon": "newspaper",
+      "sub_menu": [
+        {
+          "title": "common.all_blog",
+          "link": "/admin/blog"
+        },
+        {
+          "title": "common.thematique",
+          "link": "/admin/blog/thematique"
+        }
+      ]
+    },
+    {
+      "title": "admin.temoignage",
+      "link": "/admin/testimonial",
+      "icon": "comment"
+    },
+    {
+      "title": "admin.faq",
+      "link": "/admin/faq",
+      "icon": "question-circle"
+    },
+    {
+      "title": "admin.glossaire",
+      "link": "/admin/glossary",
+      "icon": "spell-check"
+    }
+  ]
+}

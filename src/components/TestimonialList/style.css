@@ -1,0 +1,67 @@
+.card {
+    border: solid 1px var(--dark);
+    cursor: pointer;
+}
+
+.about {
+    background-color: var(--dark);
+    border: 0
+}
+
+.col-md-4 {
+    /*
+    margin-bottom: 100px
+    */
+}
+
+.about img {
+    margin-top: -68px;
+    border: 5px solid white
+}
+
+#quotes {
+    opacity: 0.1;
+    filter: alpha(opacity=40)
+}
+
+.modal.modal-detail .card-header {
+    min-height: 11rem;
+    background: var(--dark);
+}
+
+.modal.modal-detail h6 {
+    color: var(--orange);
+}
+
+
+.modal.modal-detail .img-1 {
+    position: relative;
+    width: 200px;
+    height: auto;
+    border-radius: 50%;
+    top: -127px !important;
+    box-shadow: 3px 15px 20px rgba(0, 0, 0, 0.5)
+}
+
+.modal.modal-detail .quotes {
+    position: relative;
+    top: -90px
+}
+
+.modal.modal-detail .quotes-img {
+    widows: 50px;
+    height: auto
+}
+
+.modal.modal-detail-content {
+    padding: 0;
+}
+
+.swiper-slide {
+    width: 300px;
+    height: auto;
+}
+
+.modal-detail.modal .modal-content {
+    padding: 0;
+}

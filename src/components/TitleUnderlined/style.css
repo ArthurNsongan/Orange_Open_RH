@@ -1,0 +1,10 @@
+.title-underlined::after {
+    position: absolute;
+    content: '';
+    height: 10px;
+    left: 0;
+    /*left: 1.3em;*/
+    width: 1.8em;
+    background: #ff7900;
+    margin-top: 1.2em;
+}

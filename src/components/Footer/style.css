@@ -1,0 +1,20 @@
+footer {
+	padding-bottom: 100px;
+}
+
+.footer-no-bg {
+	background-color: transparent !important;
+}
+
+#footer {
+    position: fixed;
+    z-index: 10000;
+    background-color: black;
+    width: 100vw;
+    bottom: 0px;
+    left:0px;
+}
+.last
+{
+    margin-right: 0em;
+}

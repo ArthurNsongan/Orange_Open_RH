@@ -1,0 +1,22 @@
+.post-widget-list .o__fil-info .list-group-item {
+    height: 72px;
+}
+
+.post-widget-list a:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+}
+
+.post-widget-list a {
+    text-decoration: none
+}
+
+.post-widget-list .list-group-item {
+    background-color: transparent;
+    border-bottom: .001rem solid #444 !important;
+}

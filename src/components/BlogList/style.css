@@ -1,0 +1,9 @@
+.slider-blog {
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.text-white {
+    background-color: transparent;
+    text-decoration: none;
+}

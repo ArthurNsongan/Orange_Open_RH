@@ -1,0 +1,7 @@
+#post img {
+    max-width: 100%;
+}
+
+.elt-border-left {
+    border-left: .0625rem solid #eee;
+}
