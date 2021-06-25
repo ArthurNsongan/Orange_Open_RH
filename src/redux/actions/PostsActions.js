@@ -97,6 +97,21 @@ export const fetchGetAllPostFeaturedError = (error) => ({
     result: error
 });
 
+export const fetchGetAllPostsRHPending = () => ({
+    type: PostsType.GET_ALL_POST_RH_PENDING
+});
+export const fetchGetAllPostsRHReset = () => ({
+    type: PostsType.GET_ALL_POST_RH_RESET
+});
+export const fetchGetAllPostsRHSuccess = (res) => ({
+    type: PostsType.GET_ALL_POST_RH_SUCCESS,
+    result: res,
+});
+export const fetchGetAllPostsRHError = (error) => ({
+    type: PostsType.GET_ALL_POST_RH_ERROR,
+    result: error
+});
+
 
 export const fetchEditPostPending = () => ({
     type: PostsType.MODIFY_POST_PENDING

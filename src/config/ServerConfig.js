@@ -6,6 +6,7 @@ let serverUrl = "http://172.21.75.119";
 export const Config = {
     server:`${serverUrl}/Images/`,
     imageFolder: `${serverUrl}/Images/`,
+    getAllPostsUrl:`${serverUrl}/api/RhContent/GetAllRhContent`,
     loginUrl: `${serverUrl}/api/User/authentificate`,
     getPublicationUrl: `${serverUrl}/api/RhContent/GetPublicationDomaine`,
     getDomainesUrl: `${serverUrl}/api/RhContent/GetPublicationDomaines`,

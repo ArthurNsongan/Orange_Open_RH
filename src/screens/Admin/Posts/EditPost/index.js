@@ -68,6 +68,7 @@ function EditPost(props) {
             setFiles(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
             })));
+            console.log("After upload", props.resultUploadImage);
         }
     });
 
@@ -181,6 +182,7 @@ function EditPost(props) {
 
     const onEditPost = () => {
         setIsDataSubmit(true);
+        console.log("EDIT_OCCURED");
         props.editPostAction({
             rhContentTitle: title,
             rhContentDescription: contenu,
@@ -246,6 +248,7 @@ function EditPost(props) {
 
     useEffect(() => {
         window.$(".img-post").initImageNotLoadPlaceHolder();
+        console.log("files", files); 
     });
 
     return (
@@ -295,7 +298,7 @@ function EditPost(props) {
                                                     props.resultDomaine.map((domaine, index) => (
                                                         <option value={domaine.rhContentDomaineId}
                                                                 selected={props.resultGetPostById !== null ? props.resultGetPostById.rhContentDomaineId === domaine.rhContentDomaineId : false}
-                                                                key={`domaine${index}`}>{domaine.rhContentDomaineName}</option>
+                                                                key={`domaine${index}`}>{domaine.rhContentCategory.rhContentCategoryName + " - " + domaine.rhContentDomaineName}</option>
                                                     ))
                                                 }
                                             </select>

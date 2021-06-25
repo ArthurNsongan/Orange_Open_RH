@@ -110,7 +110,7 @@ function PostDetail(props) {
     useEffect(() => {
         props.getPostByIdAction(id);
         props.getAllPostsByDomaineAction(Constant.publicationID, domaine);
-    }, []);
+    }, [props.match.params.id]);
 
     useEffect(() => {
         if (props.result !== null) {

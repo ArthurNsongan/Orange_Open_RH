@@ -26,6 +26,10 @@ import {
     fetchGetAllPostFeaturedPending,
     fetchGetAllPostFeaturedReset,
     fetchGetAllPostFeaturedSuccess,
+    fetchGetAllPostsRHPending,
+    fetchGetAllPostsRHSuccess,
+    fetchGetAllPostsRHError,
+    fetchGetAllPostsRHReset,
     fetchGetAllPostPending,
     fetchGetAllPostReset,
     fetchGetAllPostSuccess,
@@ -328,6 +332,36 @@ export const deletePostByIdReset = () => {
     }
 };
 
+export const getAllPostsRHAction = () => {
+
+    return dispatch => {
+        dispatch(fetchGetAllPostsRHPending());
+
+        axios({
+            url: `${Config.getAllPostsUrl}`,
+            method: 'GET',
+        })
+            .then(response => {
+                console.log(response);
+                dispatch(fetchGetAllPostsRHSuccess(response));
+            })
+            .catch(error => {
+                console.warn(error);
+                if (error.response)
+                    dispatch(fetchGetAllPostsRHError(error.response));
+                else if (error.request)
+                    dispatch(fetchGetAllPostsRHError(error.request));
+                else
+                    dispatch(fetchGetAllPostsRHError(error.message));
+            });
+    }
+};
+
+export const getAllPostsRHReset = () => {
+    return dispatch => {
+        dispatch(fetchGetAllPostsRHReset());
+    }
+};
 
 export const getAllPostsFeaturedAction = () => {
 
@@ -353,6 +387,7 @@ export const getAllPostsFeaturedAction = () => {
             });
     }
 };
+
 export const getAllPostsFeaturedReset = () => {
     return dispatch => {
         dispatch(fetchGetAllPostFeaturedReset());

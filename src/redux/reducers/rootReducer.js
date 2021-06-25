@@ -2,6 +2,7 @@ import {combineReducers} from "redux";
 import SignInReducer from "./AuthReducer/SignInReducer";
 import GetAllDomainesReducer from "./DomaineReducer/GetAllDomainesReducer";
 import GetAllPostsReducer from "./PostsReducer/GetAllPostsReducer";
+import GetAllPostsRhReducer from "./PostsReducer/GetAllPostsRhReducer";
 import GetAllPostsByDomainReducer from "./PostsReducer/GetAllPostsByDomainReducer";
 import GetAllPostsByCategoryReducer from "./PostsReducer/GetAllPostsByCategoryReducer";
 import GetAllCategoryReducer from "./CategoryReducer/GetAllCategoryReducer";
@@ -37,6 +38,7 @@ export const rootReducer = combineReducers({
 
     getAllDomainesReducer: GetAllDomainesReducer,
     getAllPostsReducer: GetAllPostsReducer,
+    getAllPostsRhReducer: GetAllPostsRhReducer,
     getAllPostsByDomainReducer: GetAllPostsByDomainReducer,
     getAllPostsByCategoryReducer: GetAllPostsByCategoryReducer,
 

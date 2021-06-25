@@ -13,7 +13,7 @@ import * as Utils from '../../utils';
 import {getAllDomaineAction, getDomaineByPostAction} from "../../redux/api/DomaineApi";
 import {getAllCategoryAction, getAllCategoryReset} from "../../redux/api/CategoryApi";
 import {Constant} from "../../config/Constant";
-import {getAllPostsFrontEndAction, getAllPostsByCategoryAction } from "../../redux/api/PostsApi";
+import {getAllPostsFrontEndAction, getAllPostsByCategoryAction, getAllPostsRHAction } from "../../redux/api/PostsApi";
 import './style.css'
 
 
@@ -46,11 +46,12 @@ function HeaderAdmin(props) {
     useEffect(() => {
         props.getAllDomaineAction();
         props.getAllCategoryAction();
-        props.getAllPostsFrontEndAction();
+        // props.getAllPostsFrontEndAction();
+        // props.getAllPostsRHAction();
         props.getAllPostsByCategoryAction();
         console.log("getAllPosts - Start", props.resultGetCategory);
-        // if (props.resultGetAllPosts === null)
-            props.getAllPostsFrontEndAction();
+        // if (props.resultGetAllPostsRH === null)
+        props.getAllPostsRHAction();
     }, []);
 
     const NavUser = () => (
@@ -122,9 +123,9 @@ function HeaderAdmin(props) {
                                                             {
                                                                 // props.resultGetDomaine !== null &&
                                                                 // props.resultGetDomaine.filter(domaine => (domaine.rhContentCategoryId === menu.rhContentCategoryId) && (domaine.rhContentDomaineState))
-                                                                    props.resultGetAllPosts !== null &&
-                                                                    props.resultGetAllPosts
-                                                                    // .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId) && onePost.rhContentDomaine.rhContentDomaineState)
+                                                                    props.resultGetAllPostsRH !== null &&
+                                                                    props.resultGetAllPostsRH
+                                                                    .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId) && onePost.rhContentDomaine.rhContentDomaineState)
                                                                     .map((post) => (
                                                                         <li className="nav-item col">
                                                                             {
@@ -305,6 +306,10 @@ const mapstateToProps = state => ({
     resultGetAllPosts: state.getAllPostsReducer.result,
     errorGetAllPosts: state.getAllPostsReducer.error,
 
+    loadingGetAllPostsRH: state.getAllPostsRhReducer.loading,
+    resultGetAllPostsRH: state.getAllPostsRhReducer.result,
+    errorGetAllPostsRH: state.getAllPostsRhReducer.error,
+
     loadingGetAllCategoryPosts: state.getAllPostsByCategoryReducer.loading,
     resultGetAllCategoryPosts: state.getAllPostsByCategoryReducer.result,
     errorGetAllCategoryPosts: state.getAllPostsByCategoryReducer.error,
@@ -323,6 +328,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     getAllPostsByCategoryAction,    
     getAllPostsFrontEndAction,
     getAllCategoryAction,
+    getAllPostsRHAction,
     getAllCategoryReset
 }, dispatch);
 
