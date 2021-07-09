@@ -22,11 +22,12 @@ export default function Footer(props) {
                                 <li className="nav-item"><a href={ Constant.applicationRh.myInfos.url } className="nav-link"><span>{ Constant.applicationRh.myInfos.title }</span></a></li>
                                 <li className="nav-item"><a href={ Constant.applicationRh.e_learning.url } className="nav-link"><span>{ Constant.applicationRh.e_learning.title }</span></a></li>
                                 <li className="nav-item"><a href={ Constant.applicationRh.livretAcueil.url } className="nav-link"><span>{ Constant.applicationRh.livretAcueil.title }</span></a></li>
+                                <li className="nav-item"><a href={ Constant.applicationRh.fusion.url } className="nav-link"><span>{ Constant.applicationRh.fusion.title }</span></a></li>
                             </ul>
                             <ul className="nav">
                                 <li className="nav-item"><a href={`${route.faq.root}`} className="nav-link"><span>{t('faq.title')}</span></a></li>
-                                <li className="nav-item d-flex justify-content-start" ><a href="#" className="nav-link"><span>Contact</span></a></li>
-                                <li className="nav-item d-flex justify-content-start"><a href="#" className="nav-link"><span>{t('common.help')}</span></a></li>
+                                {/* <li className="nav-item d-flex justify-content-start" ><a href="#" className="nav-link"><span>Contact</span></a></li> */}
+                                {/* <li className="nav-item d-flex justify-content-start"><a href="#" className="nav-link"><span>{t('common.help')}</span></a></li> */}
                                 <li className="nav-item last" ><a href={`${route.glossary.root}`} className="nav-link"><span>{t('glossary.title')}</span></a></li>
                             </ul>
                         </div>

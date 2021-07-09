@@ -11,6 +11,8 @@ export const Config = {
     getPublicationUrl: `${serverUrl}/api/RhContent/GetPublicationDomaine`,
     getDomainesUrl: `${serverUrl}/api/RhContent/GetPublicationDomaines`,
     addPostUrl: `${serverUrl}/api/RhContent/PostPublish`,
+    addTransUrl: `${serverUrl}/api/Transaction`,
+    getPopularPublish: `${serverUrl}/api/RhContent/GetPopularPublish`,
     getBlogUrl: `${serverUrl}/api/RhContent/PostPublish`,
     getPostByIdUrl: `${serverUrl}/api/RhContent`,
     getAllPostFeatured: `${serverUrl}/api/RhContent`,

@@ -49,7 +49,6 @@ export const fetchGetAllPostByCategoryError = (error) => ({
     result: error
 });
 
-
 export const fetchAddNewPostPending = () => ({
     type: PostsType.ADD_NEW_POST_PENDING
 });
@@ -64,6 +63,23 @@ export const fetchAddNewPostError = (error) => ({
     type: PostsType.ADD_NEW_POST_ERROR,
     result: error
 });
+
+export const fetchAddNewTransactionPending = () => ({
+    type: PostsType.ADD_NEW_TRANSACTION_PENDING 
+})
+
+export const fetchAddNewTransactionReset = () => ({
+    type: PostsType.ADD_NEW_TRANSACTION_RESET 
+})
+
+export const fetchAddNewTransactionSuccess = (res) => ({
+    type: PostsType.ADD_NEW_TRANSACTION_SUCCESS,
+    result: res,
+})
+
+export const fetchAddNewTransactionError = () => ({
+    type: PostsType.ADD_NEW_TRANSACTION_ERROR 
+})
 
 
 export const fetchGetPostByIdPending = () => ({
@@ -109,6 +125,21 @@ export const fetchGetAllPostsRHSuccess = (res) => ({
 });
 export const fetchGetAllPostsRHError = (error) => ({
     type: PostsType.GET_ALL_POST_RH_ERROR,
+    result: error
+});
+
+export const fetchGetAllPostsPopularPending = () => ({
+    type: PostsType.GET_ALL_POST_POPULAR_PENDING
+});
+export const fetchGetAllPostsPopularReset = () => ({
+    type: PostsType.GET_ALL_POST_POPULAR_RESET
+});
+export const fetchGetAllPostsPopularSuccess = (res) => ({
+    type: PostsType.GET_ALL_POST_POPULAR_SUCCESS,
+    result: res,
+});
+export const fetchGetAllPostsPopularError = (error) => ({
+    type: PostsType.GET_ALL_POST_POPULAR_ERROR,
     result: error
 });
 

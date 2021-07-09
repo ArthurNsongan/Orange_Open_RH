@@ -7,6 +7,7 @@ import GetAllPostsByDomainReducer from "./PostsReducer/GetAllPostsByDomainReduce
 import GetAllPostsByCategoryReducer from "./PostsReducer/GetAllPostsByCategoryReducer";
 import GetAllCategoryReducer from "./CategoryReducer/GetAllCategoryReducer";
 import AddNewPostReducer from "./PostsReducer/AddNewPostReducer";
+import AddNewTransactionReducer from "./PostsReducer/AddNewTransactionReducer";
 import GetBlogReducer from "./BlogReducer/GetBlogReducer";
 import GetPostByIdReducer from "./PostsReducer/GetPostByIdReducer";
 import PostCommentReducer from "./CommentReducer/PostCommentReducer";
@@ -32,11 +33,13 @@ import GetAllBlogReducer from "./BlogReducer/GetAllBlogReducer";
 import GetTestimonialReducer from "./TestimonialReducer/GetTestimonialReducer";
 import GetAllFaqReducer from "./FaqReducer/GetAllFaqReducer";
 import GetAllGlossaryReducer from "./GlossaryReducer/GetAllGlossaryReducer";
+import GetAllPostPopularReducer from "./PostsReducer/GetAllPostPopularReducer";
 
 export const rootReducer = combineReducers({
     signInReducer: SignInReducer,
 
     getAllDomainesReducer: GetAllDomainesReducer,
+    getAllPostPopularReducer: GetAllPostPopularReducer,
     getAllPostsReducer: GetAllPostsReducer,
     getAllPostsRhReducer: GetAllPostsRhReducer,
     getAllPostsByDomainReducer: GetAllPostsByDomainReducer,
@@ -44,6 +47,7 @@ export const rootReducer = combineReducers({
 
     getAllCategoryReducer: GetAllCategoryReducer,
     addNewPostReducer: AddNewPostReducer,
+    addNewTransactionReducer: AddNewTransactionReducer,
 
     getBlogReducer: GetBlogReducer,
     getAllBlogReducer: GetAllBlogReducer,

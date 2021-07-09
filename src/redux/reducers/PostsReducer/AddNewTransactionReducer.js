@@ -1,0 +1,37 @@
+import * as PostsType from '../../types/PostsType';
+
+const initialState = {
+    loading: false,
+    result: null,
+    error: null
+};
+
+export default (state = initialState, action) => {
+    switch (action.type) {
+        case PostsType.ADD_NEW_TRANSACTION_PENDING:
+            return {
+                ...state,
+                loading: true
+            }
+        case PostsType.ADD_NEW_TRANSACTION_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                result: action.result.data,
+                error: null
+            }
+        case PostsType.ADD_NEW_TRANSACTION_ERROR:
+            return {
+                ...state,
+                loading: false,
+                result: null,
+                error: action.result
+            }
+        case PostsType.ADD_NEW_TRANSACTION_RESET:
+            return initialState;
+
+        default: {
+            return state;
+        }
+    }
+};

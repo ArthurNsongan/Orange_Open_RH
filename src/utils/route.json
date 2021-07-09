@@ -2,11 +2,19 @@
   "menu_header_user": [
     {
       "title": "navigation.blog",
-      "link": "/blog"
+      "link": "/under-construction"
     },
     {
       "title": "navigation.temoignages",
       "link": "/testimonial"
+    },
+    {
+      "title": "navigation.procedures",
+      "link": "http://172.21.14.23/procedure.php?id=8"
+    },
+    {
+      "title": "navigation.consult_biblio",
+      "link": ""
     }
   ],
   "menu_header_user2": [

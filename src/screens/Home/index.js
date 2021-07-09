@@ -25,7 +25,7 @@ import Interweave from "interweave";
 import { getAllBlogReset, getAllBlogAction } from "../../redux/api/BlogApi";
 import { getAllPostsFrontEndAction } from "../../redux/api/PostsApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleDown, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowAltCircleDown, faUser, faFemale, faMale, faPlus  } from "@fortawesome/free-solid-svg-icons";
 import ReactPlayer from "react-player";
 import * as moment from "moment";
 import Loader from "../../components/Loader";
@@ -89,7 +89,7 @@ function Home(props) {
 
     const ShortcutLink = (props) => (
         <div className={`${props.className}`} style={props.style}>
-            <div className="item p-2 bg-gray1 w-100 rounded-xl d-flex-column align-items-baseline">
+            <div className={`${props.childClass == null ? "rounded-xl" : props.childClass } item p-2 bg-gray1 w-100 d-flex-column align-items-baseline`}>
                 <NavLink to={{
                     pathname: props.link
                 }}
@@ -111,10 +111,15 @@ function Home(props) {
                             {props.count}
                         </div>
                     </div>
+                    { props.children }
                 </NavLink>
             </div>
         </div>
     );
+
+    const eLearners = "Fotsing Bernard,Tanga Benjamin,Egbenchong Laura,Ewambil Edanmoua Claude Gaelle,Tchoupou Alain,Bonga Christelle,Ndjaka Deborah,Ngono Romeo,Melingui Herve,Mmira Abdoulahi,Mvondo Belinda"
+    .split(",");
+
 
     const loadData = () => {
         if (props.resultGetAllPostsFeatured !== null) {
@@ -156,6 +161,7 @@ function Home(props) {
 
     useEffect(() => {
         loadData();
+        console.log("eLearners", eLearners);
     }, [props]);
     useEffect(() => {
         if (props.result === null && props.resultBlog === null)
@@ -168,6 +174,8 @@ function Home(props) {
             props.getAllBlogAction();
 
     });
+
+    const checkAppLink = (e) => ( e !== "" ? e : "/under-construction" );
 
     /*        useEffect(() => {
                 loadData();
@@ -201,15 +209,22 @@ function Home(props) {
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* app 2*/}
-                                            <a href={Constant.applicationRh.e_learning.url} className="btn">
+                                            <a href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="btn">
                                                 <h5> {Constant.applicationRh.e_learning.title}</h5>
+                                            </a>
+                                        </div>
+                                        <div className="col-12" style={{ paddingRight: 0 }}>
+                                            {/* app 3*/}
+
+                                            <a href={ checkAppLink(Constant.applicationRh.livretAcueil.url) } className="btn">
+                                                <h5>{Constant.applicationRh.livretAcueil.title}</h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* app3*/}
 
-                                            <a href={Constant.applicationRh.livretAcueil.url} className="btn">
-                                                <h5>{Constant.applicationRh.livretAcueil.title}</h5>
+                                            <a href={ checkAppLink(Constant.applicationRh.fusion.url) } className="btn">
+                                                <h5>{Constant.applicationRh.fusion.title}</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -220,7 +235,7 @@ function Home(props) {
                                 <LoaderSlider /> :
                                 (props.resultGetAllPostsFeatured !== null) ?
                                     <div className="col-12 col-lg-6">
-                                        <Slider pagination
+                                        {/* <Slider pagination
                                             className={"home-slider"}
                                             slides={props.resultGetAllPostsFeatured}
                                             renderItem={(item) => (
@@ -254,31 +269,143 @@ function Home(props) {
                                                     </div>
                                                 </div>
                                             )
-                                            } />
+                                            } /> */}
+                                            <div className={"home-slider"}>
+                                                {props.resultGetAllPostsFeatured.map((item) => (
+                                                <div className="row pb-5">
+                                                    <div className="col-7" style={{ paddingRight: 0 }}>
+                                                        <h3 className="display-4">{Utils.cutString(item.rhContentTitle, 100)}</h3>
+                                                        <p className="lead text-primary">
+                                                            <Interweave
+                                                                content={Utils.removeTag(Utils.cutString(item.rhContentDescription, 100))} />
+                                                        </p>
+                                                        <NavLink
+                                                            to={{
+                                                                pathname: item.rhContentPostType === Constant.publicationID ?
+                                                                    `${route.post.root}/${item.rhContentDomaine.rhContentCategoryId}/${item.rhContentDomaineId}/${item.rhContentId}` :
+                                                                    `${route.blog.root}/${item.rhContentDomaine.rhContentCategoryId}/${item.rhContentDomaineId}/${item.rhContentId}`,
+                                                                item
+                                                            }}
+                                                            className="btn btn-primary">
+                                                            {t('common.read_more')}
+                                                        </NavLink>
+                                                    </div>
+                                                    <div className="col-5" style={{ paddingLeft: 0 }}>
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <img
+                                                                    src={Config.imageFolder + item.rhContentPrincipalLink}
+                                                                    alt="" className="img-fluid"
+                                                                    loading="lazy" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        )} 
+                                        </div>
+                                        
                                     </div> : <LoaderSlider />
                         }
                         <div className="col-12 col-lg-3 pl-0">
                             <div className="row justify-content-center">
-                                <ShortcutLink title={2}
-                                    subTitle={t('common.nombre_employe')}
-                                    count=""
-                                    icon={faUser}
-                                    className="col-12"
-                                    style={{ paddingRight: ".1em" }} />
+                                <div className="col-12" style={{ paddingRight: ".1em"}}>
+                                <div className="item p-2 bg-gray1 w-100 rounded-xl d-flex-column align-items-baseline">
+                                    <NavLink to={{
+                                        pathname: props.link
+                                    }}
+                                        className="align-items-baseline d-block flex-grow-1"
+                                        exact>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <span className="text-white flex-grow-1 fs-14 text-nowrap font-weight-bold">
+                                                {t('common.nombre_homme')}
+                                            </span>                                      
+                                        </div>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <div className="d-flex flex-grow-1">
+                                                <div className={"fa-2x pr-2 text-primary"}>
+                                                    <FontAwesomeIcon icon={faMale} />
+                                                </div>  
+                                                <h3 className="text-white lead font-weight-bold py-0 my-0">
+                                                    463
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </NavLink>
+                                    <NavLink to={{
+                                        pathname: props.link
+                                    }}
+                                        className="align-items-baseline d-block flex-grow-1"
+                                        exact>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <span className="text-white flex-grow-1 fs-14 text-nowrap font-weight-bold">
+                                                {t('common.nombre_femme')}
+                                            </span>
+                                        </div>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <div className="d-flex flex-grow-1">
+                                                <div className={"fa-2x pr-2 color-primary text-primary"}>
+                                                    <FontAwesomeIcon icon={faFemale} />
+                                                </div>
+                                                <h3 className="text-white lead font-weight-bold py-0 my-0">
+                                                    435
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </NavLink>
+                                    <NavLink to={{
+                                        pathname: props.link
+                                    }}
+                                        className="align-items-baseline d-block flex-grow-1"
+                                        exact>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <span className="text-white flex-grow-1 fs-14 text-nowrap font-weight-bold">
+                                                {"Force de travail"}
+                                            </span>
+                                        </div>
+                                        <div className="d-flex mb-1 align-items-baseline">
+                                            <div className="d-flex flex-grow-1">
+                                                <div className={"fa-2x color-primary text-primary pr-2"}>
+                                                    <FontAwesomeIcon icon={faFemale} />   
+                                                    +
+                                                    <FontAwesomeIcon icon={faMale} />
+                                                </div>
+                                                <h3 className="text-white lead font-weight-bold py-0 my-0">
+                                                    898
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </NavLink>
+                                </div>
 
+                                </div>
                                 <PostWidgetList theme="white"
                                     posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} />
                             </div>
                             <br></br>
+
                             <div className="row justify-content-center">
-                                <ShortcutLink title={2}
-                                    subTitle={t('common.top_ten_elearning')}
+                                <ShortcutLink children={
+                                    // <h5>
+                                        // Fotsing Bernard,Tanga Benjamin,Egbenchong Laura,Ewambil Edanmoua Claude Gaelle,Tchoupou Alain,Bonga Christelle,Ndjaka Deborah,Ngono Romeo,Melingui Herve, Mmira Abdoulahi, Mvondo Belinda.
+                                    // </h5>
+                                    <Slider 
+                                            className={"home-slider mb-0"}
+                                            autoplay={{ delay: 5000, loop: true }}
+                                            slides={eLearners}
+                                            navigation
+                                            pagination
+                                            renderItem={ item => (
+                                                <h4 className="py-1 text-center text-white">{item}</h4>
+                                            )}
+                                    />
+                                }
+                                    subTitle={t('common.top_elearning')}
                                     count=''
+                                    // childClass="rounded-none"
                                     icon={faUser}
                                     className="col-12"
                                     style={{ paddingRight: ".1em" }} />
-
-
 
                                 <PostWidgetList theme="white"
                                     posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} />
@@ -334,7 +461,6 @@ function Home(props) {
                                 </div>
                             </div>*/}
                     </div>
-
                 </div>
                 {
                     /*<div className="col-lg-12 col-sm-12 col-md-12 py-5">
@@ -503,6 +629,7 @@ function Home(props) {
             <section className="home bg-gray">
                 <div className="col-lg-12 col-sm-12 col-md-12 py-0">
                     <div className="container">
+                        
                         <div className="row display-flex">
 
                             {
@@ -634,6 +761,7 @@ function Home(props) {
                                         props.result !== null &&
                                         <Slider
                                             navigation={false}
+                                            pagination={true}
                                             className={"home-slider"}
                                             slides={props.result}
                                             renderItem={(post) => (

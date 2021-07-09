@@ -158,7 +158,12 @@ export const Constant = {
 
         livretAcueil:{
             title:"Livret d’accueil",
-            url:"",
+            url:"/under-construction",
+        },
+
+        fusion:{
+            title:"Fusion",
+            url:"https://login-hdtd-saasfaprod1.fa.ocs.oraclecloud.com/oam/server/obrareq.cgi?encquery%3DDXsGydWSucQMTw5k1%2FZEDa6DmAqB%2BFTlHk2fdrBcD3VxIS%2BMKVdpQyOngM8e3OYaV3GqEjdcJUjAGVp40bSEU%2BaJYMUTt7ouHO2INiA7Q4EYW%2B1ZIHtsUushp%2BBTWBhbDn87DkYhMLnPb2PFZ0eil%2FpuoCVBpNkhBsKiOCicpt2azm3%2B7SplP3wZ2CYljJY6kTXHC1uT58qQxhINLtiL7%2B7%2Br5SrpZ%2B2lNkgneZcJ2n6AaqXsIizlSdSTwWjpr5%2BUJDPcRxhBDOD138XhGH6ooGsqUdLIW8HbeQwe%2BLS8sFT49%2FtQJ4%2FsHHxyXXZn0EIn5t47vjVE2DbGZNGHCUDMV1Bv3UkQNNLR3gJjq%2F27bQWPyQEu9PMfUkkK8XEuqVAMCUaGERgob0qPNyG7R8lusqoIxCvBp3CWyHzoY54FBBJwvsGF2z%2B5eVxnkvymC32c8r6QzRYVk8mR0UkqKVI1Rk15lCSNGC5E9XjkeZbRMFuh6SaNLpJs8fb%2FXoODPu5BBsMIZP%2BRn1q0sDY2AaFQQ%3D%3D%20agentid%3DOraFusionApp_11AG%20ver%3D1%20crmethod%3D2%26cksum%3D841aa419a9a4ce276b89909482ec1d3a047d1341&ECID-Context=1.005ky0RtbUx7EC5pvOc9yX0002Mn0002mR%3BkXjE",
         }
 
 }

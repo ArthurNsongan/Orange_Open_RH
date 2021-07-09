@@ -4,6 +4,7 @@ import NavigationLight from "../../../components/NavigationLight";
 import {FakeData} from "../../../fakeData";
 import {useTranslation} from "react-i18next";
 import PostWidget from "../../../components/PostWidget";
+import PopularPostAside from "../../../components/PopularPostAside";
 import Comments from "../../../components/Comments";
 import CommentField from "../../../components/CommentField";
 import AboutOpenRHWidget from "../../../components/AboutOpenRHWidget";
@@ -184,7 +185,7 @@ function BlogDetail(props) {
                         </div>
 
                         <aside className="col-12 col-lg-3">
-                            <PostWidget categories={FakeData.post_widget_data}/>
+                            <PopularPostAside />
                             <AboutOpenRHWidget/>
                             <ArchiveWidget/>
                         </aside>

@@ -6,6 +6,7 @@ import document from '../assets/img/document.png';
 import envelope from '../assets/img/envelope.png';
 import announcement from '../assets/img/announcement.png';
 import notfoundillustration from '../assets/img/illustration-error-404.png';
+import underConstructIllustration from '../assets/img/under_construction.jpg'
 import openRH1 from '../assets/img/OpenRH_1.svg'
 import openRH2 from '../assets/img/OpenRH_2.svg'
 
@@ -19,5 +20,6 @@ export const Images = {
     announcement,
     openRH1,
     openRH2,
-    notfoundillustration
+    notfoundillustration,
+    underConstructIllustration
 };

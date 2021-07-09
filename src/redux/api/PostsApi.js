@@ -6,6 +6,10 @@ import {
     fetchAddNewPostPending,
     fetchAddNewPostReset,
     fetchAddNewPostSuccess,
+    fetchAddNewTransactionError,
+    fetchAddNewTransactionPending,
+    fetchAddNewTransactionReset,
+    fetchAddNewTransactionSuccess,
     fetchDeletePostError,
     fetchDeletePostPending,
     fetchDeletePostReset,
@@ -36,7 +40,11 @@ import {
     fetchGetPostByIdError,
     fetchGetPostByIdPending,
     fetchGetPostByIdReset,
-    fetchGetPostByIdSuccess
+    fetchGetPostByIdSuccess,
+    fetchGetAllPostsPopularPending,
+    fetchGetAllPostsPopularSuccess,
+    fetchGetAllPostsPopularError,
+    fetchGetAllPostsPopularReset
 } from "../actions/PostsActions";
 import {Constant} from "../../config/Constant";
 import {
@@ -240,6 +248,44 @@ export const addNewPostReset = () => {
     }
 };
 
+export const addNewTransactionAction = ( post ) => {
+    return dispatch => {
+        dispatch(fetchAddNewTransactionPending());
+        console.log("NEW_TRANSACTION", post);
+        axios({
+            url: `${Config.addTransUrl}`,
+            method: 'POST',
+            data: {
+                "rhContentId": post,
+            }
+        }).then(response => {
+            console.log("Transaction sent !", response);
+            dispatch(fetchAddNewTransactionSuccess(response));
+        })
+        .catch(error => {
+            console.warn(error);
+            if (error.response) {
+                dispatch(fetchAddNewTransactionError(error.response));
+                console.log("Transaction error", error.response);
+            }
+            else if (error.request) {
+                dispatch(fetchAddNewTransactionError(error.request));
+                console.log("Transaction error", error.request);
+            }
+            else {
+                dispatch(fetchAddNewTransactionError(error.message));
+                console.log("Transaction error", error.message);
+            }
+        });
+    }
+}
+
+export const addNewTransactionReset = () => {
+    return dispatch => {
+        dispatch(fetchAddNewTransactionReset());
+    }
+}
+
 export const editPostAction = (post, id) => {
 
     return dispatch => {
@@ -329,6 +375,37 @@ export const deletePostByIdAction = (id) => {
 export const deletePostByIdReset = () => {
     return dispatch => {
         dispatch(fetchDeletePostReset());
+    }
+};
+
+export const getAllPostsPopularAction = () => {
+
+    return dispatch => {
+        dispatch(fetchGetAllPostsPopularPending());
+
+        axios({
+            url: `${Config.getPopularPublish}`,
+            method: 'GET',
+        })
+            .then(response => {
+                console.log("Popular Publish", response);
+                dispatch(fetchGetAllPostsPopularSuccess(response));
+            })
+            .catch(error => {
+                console.warn(error);
+                if (error.response)
+                    dispatch(fetchGetAllPostsPopularError(error.response));
+                else if (error.request)
+                    dispatch(fetchGetAllPostsPopularError(error.request));
+                else
+                    dispatch(fetchGetAllPostsPopularError(error.message));
+            });
+    }
+};
+
+export const getAllPostsPopularReset = () => {
+    return dispatch => {
+        dispatch(fetchGetAllPostsPopularReset());
     }
 };
 

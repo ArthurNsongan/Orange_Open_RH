@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as moment from "moment";
 import {useTranslation} from "react-i18next";
+import Interweave from "interweave";
 import {Constant} from "../../config/Constant";
 import ReactPaginate from "react-paginate";
 import PropTypes from "prop-types";
@@ -62,10 +63,10 @@ export default function FaqList(props) {
                                         <div className="card-body">
                                             <blockquote className="blockquote">
                                                 <p className="mb-0">
-                                                    {item.rhContentDescription}
+                                                    <Interweave content={item.rhContentDescription} />
                                                 </p>
-                                                <footer className="blockquote-footer">{moment(item.rhContentDateCeated).format('lll')} {t('common.by')} <cite
-                                                    title="Source Title">{item.user.userName}</cite></footer>
+                                                {/* <footer className="blockquote-footer">{moment(item.rhContentDatePublish).format('lll')} {t('common.by')} <cite
+                                                    title="Source Title">{item.user.userName}</cite></footer> */}
                                             </blockquote>
                                         </div>
                                     </div>

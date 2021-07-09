@@ -25,7 +25,9 @@
     "temp_travail_conge": "Temps de travail et congés",
     "renumeration_epargne": "Rénumération épargne",
     "sante_service_social_prevoyance": "Santé - Service Social Prévoyance",
-    "en_pratique": "En pratique"
+    "en_pratique": "En pratique",
+    "procedures": "Procedures RH",
+    "consult_biblio": "Consulter la Bibliothèque"
   },
   "signin": {
     "title": "Connexion",
@@ -38,12 +40,16 @@
     "latest_posts": "Nos dernières publications",
     "author": "Auteur",
     "help": "Aide",
+    "views": "vues",
+    "view": "vue",
     "my_account": "Mon compte",
     "pending": "En attente",
     "application_Rh":"Application RH",
     "nombre_employe":"Nombre d’Employés",
-    "top_ten_elearning":"Top Ten E-learners",
-    "date_importante":"Date importante",
+    "nombre_homme":"Nombre d'Hommes",
+    "nombre_femme":"Nombre de Femmes",
+    "top_elearning":"Top E-learners",
+    "date_importante":"Date(s) importante(s)",
     "publish_date": "Date de publication",
     "domain": "Domaine",
     "ccuid": "CUID",
@@ -116,8 +122,10 @@
     "all_post": "Toutes les publications",
     "all_blog": "Tous les articles",
     "404_not_found": "Oups, vous vous êtes perdu !",
+    "under_construction": "Page en construction !",
     "page_you_look_for_not_found": "La page que vous recherché n'existe pas",
-    "you_can_return_to_home_page": "Vous pouvez néanmoins retourné à la page d'accueil",
+    "page_you_look_under_construction": "Oops ! Encore en cours de contruction !! Revenez bientôt !",
+    "you_can_return_to_home_page": "Vous pouvez néanmoins retourner à la page d'accueil",
     "send": "Envoyer",
     "dashboard": "Tableau de bord"
   },
@@ -175,13 +183,13 @@
     "add_new_success": "Votre commentaire a été bien pris en compte"
   },
   "glossary": {
-    "title": "Dictionnaire",
-    "add_new": "Nouveau glossaire",
-    "find_glossary": "Rechercher un glossaire",
+    "title": "Siglo-Dico",
+    "add_new": "Nouveau sigle / mot ajouté !!",
+    "find_glossary": "Rechercher un sigle / mot",
     "keyword": "Mot clé",
     "keyword_description": "Définition du mot clé",
-    "no_glossary": "Aucun glossaire à ce jour",
-    "success": "Glossaire posté avec succès"
+    "no_glossary": "Aucun sigle / mot à ce jour",
+    "success": "Sigle / Mot posté avec succès"
   },
   "faq": {
     "title": "FAQ",
@@ -222,7 +230,8 @@
     "testimonial_single": "Témoignage",
     "find_testimonial": "Rechercher un témoignage",
     "new_testimonial": "Nouveau témoignage",
-    "no_testimonial": "Aucun témoignage à ce jour"
+    "no_testimonial": "Aucun témoignage à ce jour",
+    "success": "Nouveau témoignage ajouté avec succès !"
   },
   "job_offer": {
     "title": "Offres d'emploi",

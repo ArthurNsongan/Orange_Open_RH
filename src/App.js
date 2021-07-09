@@ -16,6 +16,7 @@ import 'react-dropzone-uploader/dist/styles.css'
 import "./App.scss";
 import UserLayout from "./layout/UserLayout";
 import UserRoute from "./components/UserRoute";
+import UnderConstruction from "./screens/CommonScreen/UnderConstruction";
 
 let route = require('./utils/route');
 
@@ -24,6 +25,7 @@ function App(props) {
         <div className="App">
             <Switch>
                 <Route path="/auth/:page" component={AuthLayout}/>
+                {/* <Route path="/under-construction" component={UnderConstruction} /> */}
 {/* 
                 {
                     (props.result !== null || Utils.isConnected()) &&

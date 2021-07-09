@@ -8,7 +8,8 @@ import Comments from "../../../components/Comments";
 import CommentField from "../../../components/CommentField";
 import AboutOpenRHWidget from "../../../components/AboutOpenRHWidget";
 import ArchiveWidget from "../../../components/ArchiveWidget";
-import {getAllPostsByDomaineAction, getPostByIdAction, getPostByIdReset} from "../../../redux/api/PostsApi";
+import {getAllPostsByDomaineAction, getPostByIdAction, getAllPostsPopularAction,
+    getPostByIdReset, addNewTransactionAction, addNewTransactionReset} from "../../../redux/api/PostsApi";
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import _ from 'lodash';
@@ -27,6 +28,7 @@ import ReactPlayer from "react-player";
 import SecondaryNavigation from "../../../components/SecondaryNavigation";
 import SocialShare from "../../../components/SocialShare";
 import {Constant} from "../../../config/Constant";
+import PopularPostAside from '../../../components/PopularPostAside';
 
 let route = require('../../../utils/route');
 
@@ -57,19 +59,18 @@ function PostDetail(props) {
                             url={Config.imageFolder + post.rhContentPrincipalLink}
                         />
                     :
-                    <img className="img-fluid img-reponsive img-post" src="https://picsum.photos/800/400" loading="lazy"
-                    />
+                    <img className="img-fluid img-reponsive img-post" src="https://picsum.photos/800/400" loading="lazy" />
             }
             <div className="mt-3">
                 <div className="d-flex justify-content-between">
                     <div className="mb-1 text-muted mr-2 pt-2">
                         <span className="icon icon-calendar-day mr-1" aria-hidden="true"></span>
-                        {moment(post.rhContentDateCreated).format("lll")}
+                        {moment(post.rhContentDatePublish).format("lll")}
                     </div>
 
                     <div className="mb-1 text-muted mr-2 pt-2">
                         <FontAwesomeIcon icon={faEye} className="mr-1"/>
-                        2 vues
+                        {`${post.viewNumber} ${ post.viewNumber === 1 ? t('common.view') : t('common.views')}`}
                     </div>
 
                     <div>
@@ -81,7 +82,7 @@ function PostDetail(props) {
                     <Interweave content={post.rhContentDescription}/>
                 </div>
 
-                <div className="mt-3">
+                {/* <div className="mt-3">
                     <h3>{t('common.piece_jointe')}</h3>
                     <hr/>
                     <div className="row" id="piece-jointe">
@@ -99,7 +100,7 @@ function PostDetail(props) {
                             ))
                         }
                     </div>
-                </div>
+                </div> */}
 
             </div>
 
@@ -109,6 +110,8 @@ function PostDetail(props) {
 
     useEffect(() => {
         props.getPostByIdAction(id);
+        props.addNewTransactionAction(parseInt(id));
+        // props.getAllPostsPopularAction();
         props.getAllPostsByDomaineAction(Constant.publicationID, domaine);
     }, [props.match.params.id]);
 
@@ -119,7 +122,15 @@ function PostDetail(props) {
         }
     }, [props]);
 
+    // useEffect(() => {
+    //     if(post.rhContentId != null) {
+    //         props.addNewTransactionAction(post);
+    //     }
+    // }, [props]);
+
     console.log("post", post);
+    console.log("postResults", props.resultPosts);
+    console.log("resultPopular", props.resultPopular);
 
     return (
         <>
@@ -132,7 +143,37 @@ function PostDetail(props) {
                 </div>
                 <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
                                  categoryId={category}/>
-                <SecondaryNavigation data={props.resultPosts} menuLink={route.post.root}/>
+                { /* <SecondaryNavigation data={props.resultPosts} menuLink={route.post.root}/> */ }
+                <header id="secondary_nav" className="bg-light mb-4 overflow-hidden">
+                    <div className="container-main">
+                        <div className="main-container align-items-center ellispsis-supported row">
+                            <div className="col-xs-1" style={{padding: 0}}>
+                                <ul className="menu clearfix">
+                                    <li className="breadcrumb">
+                                        <span>{/*t('add_post.featured')*/}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="col-8">
+                            <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb bg-transparent mt-0 mb-0">
+                                <li class="breadcrumb-item"><a href="/">{t(route.home.title)}</a></li>
+                                {
+                                    props.resultPosts !== null ? 
+                                    props.resultPosts.filter( item => (item.rhContentDomaineId === post.rhContentDomaineId) )
+                                        .map(item => (
+                                        <li class="breadcrumb-item">
+                                            <a href={`${route.post.root}/${category}`}>{item.rhContentCategory.rhContentCategoryName }</a>
+                                        </li>)) : "Unknown"
+                                }
+                                <li class="breadcrumb-item"><a href={`${route.post.root}/${category}/${post.rhContentDomaineId}`}>{ post.rhContentDomaine != null ? post.rhContentDomaine.rhContentDomaineName : "" }</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{ post.rhContentTitle }</li>
+                              </ol>
+                            </nav>
+                            </div>
+                        </div>
+                    </div>
+                </header>
             </div>
             <section className="container">
                 <div className="row">
@@ -161,7 +202,27 @@ function PostDetail(props) {
                     </div>
 
                     <aside className="col-12 col-lg-3">
-                        <PostWidget categories={FakeData.post_widget_data}/>
+                    
+                        {/* { props.resultPopular !== null ?
+                            <div className="d-flex flex-column">
+                                <h3>Populaires</h3>
+                                <ul class="d-block">
+                            {
+                                props.resultPopular
+                                .slice(0, 5)
+                                .map( (item, index) => (
+                                    <li class="nav-item">
+                                        <a href="#">{ item.rhContentTitle }</a>
+                                    </li>
+                                ))
+                            }
+                                </ul>
+                            </div>
+                            :
+                            <></>
+                        } */}
+                        <PopularPostAside />
+                        {/* <PostWidget categories={FakeData.post_widget_data}/> */}
                         <AboutOpenRHWidget/>
                         <ArchiveWidget/>
                     </aside>
@@ -176,6 +237,14 @@ const mapStateToProps = state => ({
     resultPosts: state.getAllDomainesReducer.result,
     errorPosts: state.getAllDomainesReducer.error,
 
+    loadingTrans: state.addNewTransactionReducer.loading,
+    resultTrans: state.addNewTransactionReducer.result,
+    errorTrans: state.addNewTransactionReducer.result,
+
+    // loadingPopular: state.getAllPostPopularReducer.loading,
+    // resultPopular: state.getAllPostPopularReducer.result,
+    // errorPopular: state.getAllPostPopularReducer.error,
+
     loading: state.getPostByIdReducer.loading,
     result: state.getPostByIdReducer.result,
     error: state.getPostByIdReducer.error,
@@ -184,8 +253,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     getPostByIdAction,
     getPostByIdReset,
-
-    getAllPostsByDomaineAction
+    addNewTransactionAction,
+    addNewTransactionReset,
+    getAllPostsByDomaineAction,
+    // getAllPostsPopularAction,
 }, dispatch);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostDetail));

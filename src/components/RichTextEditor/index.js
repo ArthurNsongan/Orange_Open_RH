@@ -1,5 +1,6 @@
 import React from "react";
 import JoditEditor from "jodit-react";
+import { Editor } from '@tinymce/tinymce-react';   
 import PropTypes from "prop-types";
 import {Constant} from "../../config/Constant";
 import {Config} from "../../config/ServerConfig";
@@ -12,6 +13,80 @@ export default function RichTextEditor(props) {
         value,
         onBlur
     } = props;
+
+    return (
+        <Editor 
+            // ref={ref} 
+            value={value}
+            onInit={(evt, editorRef) => editorRef.current = ref}
+            onEditorChange={onBlur}
+            // tinymceScriptSrc={ process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
+            init={{
+                height: 500,
+                menubar: true,
+                language: "fr_FR",
+                plugins: [
+                 'advlist autolink lists link image charmap print preview anchor',
+                 'searchreplace visualblocks code fullscreen',
+                 'insertdatetime media table paste pastetext code help wordcount'
+               ],
+               toolbar: 'ltr | undo redo | copy paste pastetext | formatselect | image code| ' +
+               'bold italic backcolor | alignleft aligncenter ' +
+               'alignright alignjustify | bullist numlist outdent indent | ' +
+               'removeformat | help',
+               content_style: 'img { max-width: 100% !important; } body { font-family:"HelvNeueOrange", Helvetica,Arial,sans-serif; font-size:14px }',
+               images_upload_handler: (blobInfo, success, failure, progress) => {
+                  var xhr, formData;
+
+                  xhr = new XMLHttpRequest();
+                  xhr.withCredentials = false;
+                  xhr.open('POST', `${Config.uploadImageUrl}`);
+
+                  xhr.upload.onprogress = function (e) {
+                    progress(e.loaded / e.total * 100);
+                  };
+
+                  xhr.onload = function() {
+                    var json;
+
+                    if (xhr.status === 403) {
+                      failure('HTTP Error: ' + xhr.status, { remove: true });
+                      return;
+                    }
+
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                      failure('HTTP Error: ' + xhr.status);
+                      return;
+                    }
+
+                    json = JSON.parse(xhr.responseText);
+
+                    if (json == null || json.imageName == null || typeof(json.imageName) != "string") {
+                        alert(json.imageName);
+                        failure("Server error !");
+                        return;
+                    }
+
+                    // console.log(json);
+                    // alert(json.image_name);
+
+                    success(Config.imageFolder + json.imageName);
+                  };
+
+                  xhr.onerror = function () {
+                    failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+                  };
+
+                  formData = new FormData();
+                  formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                  xhr.send(formData);
+                },
+
+             }}
+        />
+        );
+
     return (
         <JoditEditor
             ref={ref}
@@ -183,7 +258,8 @@ export default function RichTextEditor(props) {
                 colors: Constant.orangeColor
             }}
             tabIndex={1}
-            onBlur={onBlur} // preferred to use only this option to update the content for performance reasons
+            onBlur={onBlur}
+            // preferred to use only this option to update the content for performance reasons
         />
     );
 }

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {NavLink, useParams, useHistory, withRouter} from "react-router-dom";
+import RichTextEditor from "../../../components/RichTextEditor";
 import {Input} from "../../../components/Input";
 import {TextArea} from "../../../components/TextArea/TextArea";
 import {useForm} from "react-hook-form";
@@ -159,7 +160,7 @@ function AdminFAQ(props) {
                                     </div>
 
                                     <div className="col-12">
-                                        <TextArea wrapperClass="form-group"
+                                        {/* <TextArea wrapperClass="form-group"
                                                   inputClass="form-control"
                                                   name="answer"
                                                   required
@@ -171,6 +172,22 @@ function AdminFAQ(props) {
                                                   error={errors.hasOwnProperty("answer")}
                                                   errorText={t('error.required_field')}
                                                   labelText={t('faq.answer')}
+                                        /> */}
+
+                                        <RichTextEditor
+                                            wrapperClass="form-group"
+                                            inputClass="form-control"
+                                            name="answer"
+                                            required
+                                            style={{height: "106px"}}
+                                            ref={register({required: true})}
+                                            id="answer"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                            error={errors.hasOwnProperty("answer")}
+                                            errorText={t('error.required_field')}
+                                            labelText={t('faq.answer')}
+                                            onBlur={value => { setAnswer(value); } } // preferred to use only this option to update the content for performance reasons
                                         />
                                     </div>
 

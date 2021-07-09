@@ -3,6 +3,8 @@ import {useTranslation} from "react-i18next";
 import {useHistory, useParams, withRouter} from "react-router-dom";
 import {FakeData} from "../../fakeData";
 import PostWidget from "../../components/PostWidget";
+import PopularPostAside from "../../components/PopularPostAside";
+
 import {
     getAllPostsAction,
     getAllPostsByDomaineAction,
@@ -259,7 +261,7 @@ function Faq(props) {
 
                         </div>
                         <aside className="col-12 col-lg-3">
-                            <PostWidget categories={FakeData.post_widget_data}/>
+                            <PopularPostAside />
                             <AboutOpenRHWidget/>
                             <ArchiveWidget/>
                         </aside>

@@ -15,9 +15,11 @@ import {getAllCategoryAction, getAllCategoryReset} from "../../redux/api/Categor
 import {Constant} from "../../config/Constant";
 import {getAllPostsFrontEndAction, getAllPostsByCategoryAction, getAllPostsRHAction } from "../../redux/api/PostsApi";
 import './style.css'
+import $ from "jquery"
 
 
 let route = require('../../utils/route');
+
 function openTab(data) {
    // window.open(data);
     //window.location.href = "http://www.w3schools.com";
@@ -29,7 +31,7 @@ function HeaderAdmin(props) {
         color: "DodgerBlue",
         backgroundColor: "#ccc",
         padding: "10px",
-        fontFamily: "Arial"
+        fontFamily: "HelvNeueOrange !important"
       };
       const mystyle2 = {
         color: "#000"       
@@ -52,6 +54,15 @@ function HeaderAdmin(props) {
         console.log("getAllPosts - Start", props.resultGetCategory);
         // if (props.resultGetAllPostsRH === null)
         props.getAllPostsRHAction();
+        // $('#mega-menu .nav-link').on("click", () => {
+        //     $(".navbar-collapse").collapse('hide');
+        //     console.log("NavBar closed !!!");
+        //     alert($("#mega-menu").attr("id"));
+        // });
+        // $(window).on("load", () => {
+        //    $("#mega-menu").megamenu();
+        //     alert("Mega menu loaded !!!!");
+        // })
     }, []);
 
     const NavUser = () => (
@@ -75,7 +86,7 @@ function HeaderAdmin(props) {
                         aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="navbar-collapse justify-content-between collapse" id="mega-menu">
+                <div className="navbar-collapse mt-0 justify-content-between collapse" id="mega-menu">
                     {
                         (result !== null || Utils.isConnected()) &&
                         <>
@@ -108,7 +119,7 @@ function HeaderAdmin(props) {
                                                                  exact>
                                                             {t("common.see_all_post")}
                                                         </NavLink> */}
-                                                        <a className="nav-link close ml-auto"
+                                                        <a className="nav-link ml-auto"
                                                            data-toggle="collapse"
                                                            href={`#mega-level-${index}-collapse`}
                                                            aria-expanded={false}
@@ -127,7 +138,7 @@ function HeaderAdmin(props) {
                                                                     props.resultGetAllPostsRH
                                                                     .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId) && onePost.rhContentDomaine.rhContentDomaineState)
                                                                     .map((post) => (
-                                                                        <li className="nav-item col">
+                                                                        <li className="nav-item">
                                                                             {
                                                                             console.log("Mes test menu",post)
                                                                             }
@@ -147,6 +158,7 @@ function HeaderAdmin(props) {
                                                                             className="Mylink">
                                                                             { post.rhContentTitle }
                                                                         </NavLink>
+                                                                        
                                                                          :
                                                                            <NavLink
                                                                             to={`${route.post.root}/${menu.rhContentCategoryId}/${post.rhContentDomaineId}`}
@@ -221,16 +233,20 @@ function HeaderAdmin(props) {
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenu">
                                             {
                                                 route.menu_header_user.map((menuItem) => (
-                                                    <NavLink to={menuItem.link} className="dropdown-item"
-                                                             aria-expanded
-                                                             isActive={matchWorkaround(menuItem.link)}
-                                                             activeClassName=""
-                                                             activeStyle={{
-                                                                 color: 'var(--orange)'
-                                                             }}
-                                                             exact>
+                                                    menuItem.link.includes("http://") ?
+                                                        <a href={menuItem.link} className="dropdown-item">
+                                                            {t(menuItem.title)}
+                                                        </a> :
+                                                        <NavLink  to={menuItem.link} className="dropdown-item"
+                                                        aria-expanded
+                                                        isActive={matchWorkaround(menuItem.link)}
+                                                        activeClassName=""
+                                                        activeStyle={{
+                                                            color: 'var(--orange)'
+                                                        }}
+                                                        exact>
                                                         {t(menuItem.title)}
-                                                    </NavLink>
+                                                        </NavLink>
                                                 ))
                                             }
                                         </div>

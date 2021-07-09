@@ -4,7 +4,7 @@ import {NavLink, useParams, useHistory, withRouter} from "react-router-dom";
 import NavigationLight from "../../components/NavigationLight";
 import {FakeData} from "../../fakeData";
 import PostList from "../../components/PostList";
-import PostWidget from "../../components/PostWidget";
+import PopularPostAside from "../../components/PopularPostAside";
 import {
     getAllPostsByDomaineReset,
     getAllPostsByDomaineAction,
@@ -147,7 +147,8 @@ function Blog(props) {
 
                     </div>
                     <aside className="col-12 col-lg-3">
-                        <PostWidget categories={FakeData.post_widget_data}/>
+                        {/* <PostWidget categories={FakeData.post_widget_data}/> */}
+                        <PopularPostAside />
                         <AboutOpenRHWidget/>
                         <ArchiveWidget/>
                     </aside>

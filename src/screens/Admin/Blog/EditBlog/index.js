@@ -282,7 +282,7 @@ function EditBlog(props) {
                                            className="is-required">{t('add_post.contenu')}</label>
                                     <RichTextEditor ref={editor}
                                                     value={contenu}
-                                                    onBlur={event => setContenu(event.target.innerHTML)} // preferred to use only this option to update the content for performance reasons
+                                                    onBlur={(value) => setContenu(value)} // preferred to use only this option to update the content for performance reasons
                                     />
                                 </div>
                             </div>

@@ -183,6 +183,8 @@ function EditPost(props) {
     const onEditPost = () => {
         setIsDataSubmit(true);
         console.log("EDIT_OCCURED");
+        if(props.resultUploadImage != null)
+            console.log("Upload Image : " + props.resultUploadImage.imageName);
         props.editPostAction({
             rhContentTitle: title,
             rhContentDescription: contenu,
@@ -192,7 +194,8 @@ function EditPost(props) {
             rhContentPrincipalLink: isImageSelected ?
                 props.resultUploadImage !== null ?
                     props.resultUploadImage.imageName :
-                    props.resultGetPostById.rhContentPrincipalLink :
+                    props.resultGetPostById.rhContentPrincipalLink 
+                :
                 video !== null ?
                     video : props.resultGetPostById.rhContentPrincipalLink,
             rhContentDatePublish: date !== null ? moment(date).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
@@ -372,7 +375,7 @@ function EditPost(props) {
                                             <div {...getRootProps({style})}>
                                                 <input {...getInputProps()} />
                                                 {files.length === 0 && <p>{t('add_post.drad_drop_or_select')}</p>}
-                                                {props.resultGetPostById !== null ? Utils.isImageFileUrl(props.resultGetPostById.rhContentPrincipalLink) &&
+                                                {(props.resultGetPostById !== null && files.length === 0) ? Utils.isImageFileUrl(props.resultGetPostById.rhContentPrincipalLink) &&
                                                     <ThumbsLoadedImage/> : Thumbs}
                                             </div>
 
@@ -525,7 +528,7 @@ function EditPost(props) {
 
                                     <RichTextEditor name="contenu" ref={editor}
                                                     value={contenu}
-                                                    onBlur={event => setContenu(event.target.innerHTML)} // preferred to use only this option to update the content for performance reasons
+                                                    onBlur={value => { setContenu(value); } } // preferred to use only this option to update the content for performance reasons
                                     />
                                 </div>
                             </div>

@@ -25,7 +25,9 @@
     "temp_travail_conge": "Worktime and Holidays",
     "renumeration_epargne": "Rénumération épargne",
     "sante_service_social_prevoyance": "Health - Service Social Prévoyance",
-    "en_pratique": "In Practice"
+    "en_pratique": "In Practice",
+    "procedures": "HR Procedures",
+    "consult_biblio": "Open Library"
   },
   "signin": {
     "title": "Sign In",
@@ -38,11 +40,15 @@
     "latest_posts": "Our latest posts",
     "author": "Author",
     "help": "Help",
+    "views": "views",
+    "view": "view",
     "my_account": "My Account",
     "pending": "Pending",
     "application_Rh":"HR App",
     "nombre_employe":"Number of Employees",
-    "top_ten_elearning":"Top Ten E-learners",
+    "nombre_homme":"Number of men",
+    "nombre_femme":"Number of women",
+    "top_elearning":"Top E-learners",
     "date_importante":"Important Dates",
     "publish_date": "Publish Date",
     "domain": "Domain",
@@ -116,6 +122,8 @@
     "all_post": "All posts",
     "all_blog": "All blogposts",
     "404_not_found": "Oops, You are lost !",
+    "under_construction": "Page Under Construction !",
+    "page_you_look_under_construction": "Oops ! Still under contruction !! Come back later !",
     "page_you_look_for_not_found": "The page you are looking for doesn't exist !",
     "you_can_return_to_home_page": "You can return to the homepage",
     "send": "Send",
@@ -175,8 +183,8 @@
     "add_new_success": "Your comment has been processed !"
   },
   "glossary": {
-    "title": "Dictionnary",
-    "add_new": "New Dictionnary",
+    "title": "Siglo-Dico",
+    "add_new": "New Sigle / Word",
     "find_glossary": "Search a dictionnary",
     "keyword": "Keyword",
     "keyword_description": "Keyword description",
