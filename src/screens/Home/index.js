@@ -270,8 +270,8 @@ function Home(props) {
                                                 </div>
                                             )
                                             } /> */}
-                                            <div className={"home-slider"}>
-                                                {props.resultGetAllPostsFeatured.map((item) => (
+                                            {/* <div className={"home-slider"}>
+                                                {props.resultGetAllPostsFeatured.map((item) => ( 
                                                 <div className="row pb-5">
                                                     <div className="col-7" style={{ paddingRight: 0 }}>
                                                         <h3 className="display-4">{Utils.cutString(item.rhContentTitle, 100)}</h3>
@@ -302,9 +302,13 @@ function Home(props) {
                                                     </div>
                                                 </div>
                                             )
-                                        )} 
-                                        </div>
-                                        
+                                        )} */}
+                                        <ReactPlayer
+                                                className="img-fluid img-reponsive video-preview"
+                                                width="400px"
+                                                height="200px"
+                                                url={Config.imageFolder + "bf8315e4-4b3c-4faa-b8c7-2599bd768dad.mp4"}
+                                            />                                        
                                     </div> : <LoaderSlider />
                         }
                         <div className="col-12 col-lg-3 pl-0">
@@ -379,8 +383,8 @@ function Home(props) {
                                 </div>
 
                                 </div>
-                                <PostWidgetList theme="white"
-                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} />
+                                {/* <PostWidgetList theme="white"
+                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} /> */}
                             </div>
                             <br></br>
 
@@ -407,8 +411,8 @@ function Home(props) {
                                     className="col-12"
                                     style={{ paddingRight: ".1em" }} />
 
-                                <PostWidgetList theme="white"
-                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} />
+                                {/* <PostWidgetList theme="white"
+                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} /> */}
                             </div>
                             <br></br>
 
@@ -423,8 +427,8 @@ function Home(props) {
 
 
 
-                                <PostWidgetList theme="white"
-                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} />
+                                {/* <PostWidgetList theme="white"
+                                    posts={props.resultBlog !== null ? _.slice(props.resultBlog, 0, 3) : null} /> */}
                             </div>
                         </div>
                         {/*<div className="col-3 pl-0 pr-4">
@@ -853,9 +857,9 @@ function Home(props) {
 
                             </div>
 
-                            <div className="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                            {/* <div className="col-lg-3 col-sm-3 col-md-3 col-xs-12">
                                 <PostWidgetList theme="black" posts={props.resultBlog} />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

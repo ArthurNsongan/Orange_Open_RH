@@ -19,3 +19,9 @@ code {
 #post img {
 	height: auto !important; 
 }
+
+@media (min-width: 768px) {
+  .navbar-expand-md .mega-menu .nav-item.dropdown {
+    position: relative !important;
+  }
+}

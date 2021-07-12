@@ -81,12 +81,12 @@ function HeaderAdmin(props) {
                     <img src={Images.openRH1} className="w-100px d-inline-block align-bottom ml-1 mr-1"
                         alt={t("app.name")} title={t("app.name")} loading="lazy"/>
                 </a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#collapsing-navbar2" aria-controls="collapsing-navbar2" aria-expanded="false"
+                <button className="navbar-toggler d-md-none collapsed" type="button" data-toggle="collapse"
+                        data-target="#mega-menu" aria-controls="megamenu" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="navbar-collapse mt-0 justify-content-between collapse" id="mega-menu">
+                <div className="navbar-collapse mega-menu mt-0 justify-content-between collapse" id="mega-menu">
                     {
                         (result !== null || Utils.isConnected()) &&
                         <>
@@ -136,7 +136,7 @@ function HeaderAdmin(props) {
                                                                 // props.resultGetDomaine.filter(domaine => (domaine.rhContentCategoryId === menu.rhContentCategoryId) && (domaine.rhContentDomaineState))
                                                                     props.resultGetAllPostsRH !== null &&
                                                                     props.resultGetAllPostsRH
-                                                                    .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId) && onePost.rhContentDomaine.rhContentDomaineState)
+                                                                    .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId && onePost.rhContentPostType === 5) && onePost.rhContentDomaine.rhContentDomaineState)
                                                                     .map((post) => (
                                                                         <li className="nav-item">
                                                                             {
@@ -255,7 +255,7 @@ function HeaderAdmin(props) {
                             </ul>
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <a href="#" className="nav-link nav-icon svg-search">
+                                    <a href="#" className="nav-link nav-icon svg-search" data-toggle="modal" data-target="#exampleModal">
                                         <span className="sr-only">open search bar</span>
                                     </a>
                                 </li>
@@ -310,7 +310,27 @@ function HeaderAdmin(props) {
                 </div>
             </nav>
             <NavUser/>
-
+            
+            
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-modal="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">{t('posts.find_post')}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ...
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
         </header>
     )
 }

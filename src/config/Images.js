@@ -9,6 +9,7 @@ import notfoundillustration from '../assets/img/illustration-error-404.png';
 import underConstructIllustration from '../assets/img/under_construction.jpg'
 import openRH1 from '../assets/img/OpenRH_1.svg'
 import openRH2 from '../assets/img/OpenRH_2.svg'
+import HRBP from '../assets/img/HRBP.png'
 
 export const Images = {
     logo,
@@ -21,5 +22,6 @@ export const Images = {
     openRH1,
     openRH2,
     notfoundillustration,
-    underConstructIllustration
+    underConstructIllustration,
+    HRBP
 };

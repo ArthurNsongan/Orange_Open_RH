@@ -16,7 +16,7 @@
     "offres": "Offres",
     "temoignages": "Témoignages",
     "faq": "FAQ",
-    "glossaire": "Glossaire",
+    "glossaire": "Siglo-Dico",
     "myspace": "Mon espace",
     "administration": "Administration",
     "other": "Autre",
@@ -184,12 +184,12 @@
   },
   "glossary": {
     "title": "Siglo-Dico",
-    "add_new": "Nouveau sigle / mot ajouté !!",
-    "find_glossary": "Rechercher un sigle / mot",
-    "keyword": "Mot clé",
-    "keyword_description": "Définition du mot clé",
-    "no_glossary": "Aucun sigle / mot à ce jour",
-    "success": "Sigle / Mot posté avec succès"
+    "add_new": "Nouveau mot-clé",
+    "find_glossary": "Rechercher un mot-clé",
+    "keyword": "Mot-clé",
+    "keyword_description": "Définition du mot-clé",
+    "no_glossary": "Pas de mot-clé à ce jour",
+    "success": "Mot-clé posté avec succès"
   },
   "faq": {
     "title": "FAQ",
@@ -269,7 +269,7 @@
     "blog": "Blog",
     "temoignage": "Témoignages",
     "faq": "FAQ",
-    "glossaire": "Glossaire",
+    "glossaire": "Siglo-Dico",
     "publication_management": "Gestion des publications",
     "blog_management": "Gestion des blogs",
     "demands_management": "Gestion des demandes",

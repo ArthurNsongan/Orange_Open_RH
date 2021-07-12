@@ -51,6 +51,7 @@ function AdminGlossary(props) {
             rhContentDatePublish: moment(new Date()).format("YYYY-MM-DD"),
             userId: Utils.getUserConnected().userId
         });
+        alert("keyword", props.resultPostGlossary.toString());
     };
 
     useEffect(() => {
@@ -216,7 +217,7 @@ function AdminGlossary(props) {
                                     <FontAwesomeIcon icon={faTimes} color='var(--danger)' className="mr-1"/>
                             }
                         </td>
-                        <th className="text-center">{moment(post.rhContentDateCeated).format("lll")}</th>
+                        <th className="text-center">{moment(post.rhContentDatePublish).format("YY-MM-DD")}</th>
                         <th className="text-center">{post.user.userName}</th>
                         <th className="text-center">{post.rhContentDomaine.rhContentDomaineName}</th>
                         <th className="text-center">{post.rhContentTitle}</th>

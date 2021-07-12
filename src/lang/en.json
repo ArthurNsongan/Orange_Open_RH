@@ -184,12 +184,12 @@
   },
   "glossary": {
     "title": "Siglo-Dico",
-    "add_new": "New Sigle / Word",
-    "find_glossary": "Search a dictionnary",
+    "add_new": "New keyword",
+    "find_glossary": "Search a keyword",
     "keyword": "Keyword",
     "keyword_description": "Keyword description",
-    "no_glossary": "No Dictionnary to this day",
-    "success": "Dictionnary posted successfully !"
+    "no_glossary": "No keyword to this day",
+    "success": "Keyword posted successfully !"
   },
   "faq": {
     "title": "FAQ",
@@ -268,7 +268,7 @@
     "blog": "Blog",
     "temoignage": "testimony",
     "faq": "FAQ",
-    "glossaire": "Dictionnaire",
+    "glossaire": "Dictionnary",
     "publication_management": "Publication Management",
     "blog_management": "Blog Management",
     "demands_management": "Demands Management",

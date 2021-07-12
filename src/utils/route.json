@@ -14,7 +14,7 @@
     },
     {
       "title": "navigation.consult_biblio",
-      "link": ""
+      "link": "http://sp.adcm.orangecm/Bibliothque%20salle%20dtente/Forms/AllItems.aspx"
     }
   ],
   "menu_header_user2": [
@@ -91,6 +91,10 @@
     "edit_blog": "/admin/blog/edit",
     "edit_blog_domain": "/admin/blog/edit/:id",
     "admin_blog_thematique": "/admin/blog/thematique"
+  },
+  "contact": {
+    "title": "Contact",
+    "link": "/contact"
   },
   "glossary": {
     "root": "/glossary",

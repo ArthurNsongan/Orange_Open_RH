@@ -26,6 +26,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import NotFound from "../../screens/CommonScreen/NotFound";
 import UnderConstruction from '../../screens/CommonScreen/UnderConstruction';
+import Contact from '../../screens/CommonScreen/Contact';
 
 
 let route = require('../../utils/route');
@@ -40,6 +41,7 @@ function MainLayout(props) {
                     <Route exact path={route.home.root} component={Home}/>
                     <Route exact path={route.post.root} component={NotFound}/>
                     <Route exact path="/under-construction" component={UnderConstruction}/>
+                    <Route exact path={route.contact.link} component={Contact}/>
                     <Route exact path={route.blog.root} component={Blog}/>
                     <Route exact path={route.faq.root} component={Faq}/>
                     <Route exact path={route.testimonial.root} component={Testimonial}/>
