@@ -235,6 +235,7 @@ function Home(props) {
                                 <LoaderSlider /> :
                                 (props.resultGetAllPostsFeatured !== null) ?
                                     <div className="col-12 col-lg-6">
+
                                         {/* <Slider pagination
                                             className={"home-slider"}
                                             slides={props.resultGetAllPostsFeatured}
@@ -270,8 +271,15 @@ function Home(props) {
                                                 </div>
                                             )
                                             } /> */}
-                                            {/* <div className={"home-slider"}>
-                                                {props.resultGetAllPostsFeatured.map((item) => ( 
+                                            {/* <ReactPlayer
+                                                className="img-fluid img-reponsive video-preview mb-3"
+                                                width="400px"
+                                                autoplay="true"
+                                                height="200px"
+                                                url={Config.imageFolder + "bf8315e4-4b3c-4faa-b8c7-2599bd768dad.mp4"}
+                                            />    */}
+                                            <div className={"home-slider"}>
+                                                {props.resultGetAllPostsFeatured.map((item, index) => ( 
                                                 <div className="row pb-5">
                                                     <div className="col-7" style={{ paddingRight: 0 }}>
                                                         <h3 className="display-4">{Utils.cutString(item.rhContentTitle, 100)}</h3>
@@ -302,13 +310,8 @@ function Home(props) {
                                                     </div>
                                                 </div>
                                             )
-                                        )} */}
-                                        <ReactPlayer
-                                                className="img-fluid img-reponsive video-preview"
-                                                width="400px"
-                                                height="200px"
-                                                url={Config.imageFolder + "bf8315e4-4b3c-4faa-b8c7-2599bd768dad.mp4"}
-                                            />                                        
+                                        )}
+                                        </div>                              
                                     </div> : <LoaderSlider />
                         }
                         <div className="col-12 col-lg-3 pl-0">

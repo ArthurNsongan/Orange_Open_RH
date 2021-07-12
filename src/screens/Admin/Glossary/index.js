@@ -8,6 +8,8 @@ import {useForm} from "react-hook-form";
 import {bindActionCreators} from 'redux';
 import {Constant} from "../../../config/Constant";
 import * as moment from "moment";
+import $ from "jquery";
+import {validatePublicationAction, validatePublicationReset} from "../../../redux/api/ValidationApi";
 import {
     getAllPostsAction,
     getAllPostsByDomaineAction,
@@ -35,12 +37,14 @@ function AdminGlossary(props) {
 
     const [currentPath, setCurrentPath] = useState(props.location.pathname);
     const [thematique, setThematique] = useState(1);
+    const [contentId, setContentId] = useState('');
     const [title, setTitle] = useState('');
     const [keyword, setKeyword] = useState('');
     const [glossary, setGlossary] = useState(null);
     const [keywordDescription, setKeywordDescription] = useState('');
     const [description, setDescription] = useState('');
     const [search, setSearch] = useState('');
+    
 
     const onSubmitGlossaire = () => {
         props.postGlossaryAction({
@@ -51,8 +55,17 @@ function AdminGlossary(props) {
             rhContentDatePublish: moment(new Date()).format("YYYY-MM-DD"),
             userId: Utils.getUserConnected().userId
         });
-        alert("keyword", props.resultPostGlossary.toString());
+        // alert("keyword", props.resultPostGlossary.toString());
     };
+
+    const onModifyKeyword = () => {
+        props.validatePublicationAction({
+            rhContentId: contentId,
+            rhContentDescription: keywordDescription,
+            rhContentValidationIsValidated: true,
+            userId: Utils.getUserConnected().userId
+        });
+    }
 
     useEffect(() => {
         props.getAllDomaineAction();
@@ -192,11 +205,111 @@ function AdminGlossary(props) {
         </div>
     );
 
+    const renderModalModifyGlossary = () => (
+        <div className="modal fade" id="addGlossaryModal2" data-backdrop="static" data-keyboard="false" tabIndex="-1"
+             aria-labelledby="addGlossaryModalLabel2" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="addGlossaryModalLabel2">{t('glossary.add_new')}</h5>
+                        <button type="button" className="close" data-dismiss="modal">
+                            <span className="sr-only">{t('common.click_to_close')}</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <div className="row">
+                            <div className="col">
+
+                                <form className="row" id="PostAdminEditForm" onSubmit={handleSubmit(onSubmitGlossaire)}>
+
+                                    <div className="col-12">
+                                        <label htmlFor="postThematique"
+                                               className="is-required">{t('common.thematique')}</label>
+                                        {
+                                            props.loadingGetDomaine ?
+                                                <select className="custom-select"
+                                                        id="postThematique" disabled>
+                                                </select> :
+                                                props.resultGetDomaine !== null &&
+                                                <select className="custom-select"
+                                                        id="postThematique"
+                                                        onChange={event => setThematique(event.target.value)}>
+                                                    {
+                                                        props.resultGetDomaine.map((domaine, index) => (
+                                                            <option value={domaine.rhContentDomaineId}
+                                                                    key={`domaine${index}`}>{domaine.rhContentDomaineName}</option>
+                                                        ))
+                                                    }
+                                                </select>
+                                        }
+
+                                    </div>
+
+                                    <div className="col-12 mt-3">
+
+                                        <Input wrapperClass="form-group"
+                                               inputClass="form-control"
+                                               type="text"
+                                               name="keyword"
+                                               required
+                                               ref={register({required: true, maxLength: 255})}
+                                               id="keyword"
+                                               value={keyword}
+                                               onChange={(e) => setKeyword(e.target.value)}
+                                               error={errors.hasOwnProperty("keyword")}
+                                               errorText={t('error.required_field')}
+                                               labelText={t('glossary.keyword')}
+                                               maxLength="255"
+                                        />
+
+                                    </div>
+
+                                    <div className="col-12">
+
+                                        <TextArea wrapperClass="form-group"
+                                                  inputClass="form-control"
+                                                  name="keyword_description"
+                                                  required
+                                                  style={{height: "106px"}}
+                                                  ref={register({required: true, maxLength: 255})}
+                                                  id="keyword_description"
+                                                  value={keywordDescription}
+                                                  onChange={(e) => setKeywordDescription(e.target.value)}
+                                                  error={errors.hasOwnProperty("keyword_description")}
+                                                  errorText={t('error.required_field')}
+                                                  labelText={t('glossary.keyword_description')}
+                                        />
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary"
+                                data-dismiss="modal">{t('common.close')}</button>
+                        {
+                            props.loadingPostGlossary ?
+                                <button className="btn btn-primary" type="button" disabled>
+                                                    <span className="spinner-border spinner-border-sm" role="status"
+                                                          aria-hidden="true"/>
+                                    <span className="sr-only">{t('common.loading')}</span>
+                                </button> :
+                                <button type="button" className="btn btn-primary"
+                                        onClick={handleSubmit(onModifyKeyword)}>{t('common.post')}</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
     const renderGlossaryTable = (data) => (
         <table className="table table-striped table-responsive-lg table-hover has-icon col-12">
 
             <thead>
-            <tr>
+            <tr >
                 <th className="text-center">{t('common.status')}</th>
                 <th className="text-center">{t('add_post.publication_date')}</th>
                 <th className="text-center">{t('common.author')}</th>
@@ -208,7 +321,12 @@ function AdminGlossary(props) {
             <tbody>
             {
                 data.map((post, index) => (
-                    <tr key={index} className="faq-item" onClick={() => {
+                    <tr key={index} className="glossary-item" data-toggle="modal" data-target="#addGlossaryModal2" onClick={() => {
+                        $('#addGlossaryModalLabel2').trigger('click');
+                        setContentId(post.rhContentId);
+                        setKeyword(post.rhContentTitle);
+                        setThematique(post.rhContentDomaine.rhContentDomaineName);
+                        setKeywordDescription(post.rhContentDescription);
                     }}>
                         <td className="text-center">
                             {
@@ -240,6 +358,7 @@ function AdminGlossary(props) {
                 <div className="row">
                     <div className="col-12 o-layer">
                         {renderModalAddGlossary()}
+                        {renderModalModifyGlossary()}
                         <div className="row mb-3">
                             <div className="col-auto mr-auto">
                                 <button type="button" className="btn btn-primary" data-toggle="modal"
@@ -299,6 +418,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
     getAllDomaineAction,
     getAllPostsByDomaineAction,
+
+    validatePublicationAction,
+    validatePublicationReset,
     getAllPostsByDomaineReset,
 
     postGlossaryAction,
