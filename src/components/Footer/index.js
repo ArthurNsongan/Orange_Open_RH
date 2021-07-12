@@ -3,7 +3,7 @@ import "./style.css";
 import * as Utils from "../../utils";
 import { Constant } from "../../config/Constant";
 import { useTranslation } from "react-i18next";
-
+import {NavLink, withRouter, useParams} from "react-router-dom";
 let route = require('../../utils/route');
 
 
@@ -25,10 +25,10 @@ export default function Footer(props) {
                                 <li className="nav-item"><a href={ Constant.applicationRh.fusion.url } className="nav-link"><span>{ Constant.applicationRh.fusion.title }</span></a></li>
                             </ul>
                             <ul className="nav">
-                                <li className="nav-item"><a href={`${route.faq.root}`} className="nav-link"><span>{t('faq.title')}</span></a></li>
-                                <li className="nav-item d-flex justify-content-start" ><a href={`${route.contact.link}`} className="nav-link"><span>Contact</span></a></li>
+                                <li className="nav-item"><NavLink to={`${route.faq.root}`} className="nav-link"><span>{t('faq.title')}</span></NavLink></li>
+                                <li className="nav-item d-flex justify-content-start" ><NavLink to={`${route.contact.link}`} className="nav-link"><span>Contact</span></NavLink></li>
                                 {/* <li className="nav-item d-flex justify-content-start"><a href="#" className="nav-link"><span>{t('common.help')}</span></a></li> */}
-                                <li className="nav-item last" ><a href={`${route.glossary.root}`} className="nav-link"><span>{t('glossary.title')}</span></a></li>
+                                <li className="nav-item last" ><NavLink to={`${route.glossary.root}`} className="nav-link"><span>{t('glossary.title')}</span></NavLink></li>
                             </ul>
                         </div>
                     </div>
