@@ -1,0 +1,79 @@
+.Admin__SideBar {
+    padding: 20px 0;
+    height: 100vh;
+    background-color: lightgray;
+}
+
+.Admin__NavBar {
+    height: 60px;
+    background-color: white;
+    padding: 6px 10px;
+    box-shadow: 0px 0px 5px lightgray;
+}
+
+
+@media screen and (min-width: 780px) {
+    .Admin__SideBar {
+        position: absolute;
+        z-index: 100;
+        width: 260px;
+        background-color: #130f0f;
+        color: white;
+    }
+
+    .Admin__Content {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        max-width: 100%;
+        background-color: #f5f5f5b3;
+        box-sizing: border-box;
+    }
+
+    .Admin__Content__Wrapper {
+        margin-left: 260px;
+    }
+
+    .Admin__SideBar__List {
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Admin__SideBar__List li {
+        display: block;
+    }
+
+    .Admin__SideBar__List li a {
+        padding: 20px 0px;
+        display: block;
+    }
+}
+
+.NavIcon {
+    display: inline-flex;
+    justify-content: center;
+    width: 30px;
+    padding-left: 10px;
+    height: auto;
+}
+
+.Admin__Table {
+    border: 1px solid #f5f5f5;
+}
+
+.Admin__Table thead {
+    /* border-bottom: 1px solid lightgray; */
+    /* border-radius: 25px; */
+    background-color:rgb(236, 236, 236);
+}
+
+.Admin__Table th, .Admin__Table td {
+    padding: 15px 10px;
+    /* text-align: center; */
+    border: none;
+}
+
+.Admin__Table tbody tr:not(:nth-last-child(1)) {
+    border-bottom: 1px solid lightgray;
+}

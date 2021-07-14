@@ -5,13 +5,19 @@ import Home from './screens/Home';
 import { Switch, Route } from 'react-router';
 import MainLayout from './layouts/MainLayout';
 import { BrowserRouter } from 'react-router-dom';
+import AdminLayout from './layouts/AdminLayout';
+import AuthLayout from './layouts/AuthLayout';
+import $ from 'jquery'
+import "bootstrap/dist/js/bootstrap.bundle"
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         {/* <Route exact path="/" component={Home} /> */}
-        <Route exact path="*" component={MainLayout} />
+        <Route exact path="/" component={MainLayout} />
+        <Route exact path="/admin/*" component={AdminLayout} />
+        <Route path="/auth*" component={AuthLayout} />
       </Switch>
     </BrowserRouter>
   );

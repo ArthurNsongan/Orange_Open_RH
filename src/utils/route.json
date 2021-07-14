@@ -18,6 +18,14 @@
         }
     },
     "admin": {
-
+        "link": "/admin",
+        "communautes":{
+            "link" : "/communautes",
+            "title": "Communautés"
+        },
+        "users":{
+            "link" : "/users",
+            "title": "Utilisateurs"
+        }
     }
 }
