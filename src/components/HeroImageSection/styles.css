@@ -1,0 +1,33 @@
+.HeroImage {
+    object-fit: cover;
+    position: relative;
+}
+
+.HeroSection .HeroImage, .HeroSection .HeroContent {
+    width: 100%;
+    height: 100vh;
+}
+
+.HeroSection {
+    position: relative;
+}
+
+.HeroContent {
+    position: absolute;
+    z-index: 100;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    left: 0px;
+    background-color: #000000aa;
+}
+
+.HeroImageHeader {
+    position: relative;
+    margin-top: 80px;
+}
+
+.HeroImageHeader .HeroImage, .HeroImageHeader .HeroContent {
+    width: 100%;
+    height: 300px !important;
+}

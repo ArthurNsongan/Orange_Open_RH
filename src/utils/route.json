@@ -1,0 +1,23 @@
+{
+    "front": {
+        "home": {
+            "link" : "/",
+            "title": "Accueil"
+        },
+        "projets": {
+            "link" : "/projets",
+            "title": "Projets"
+        },
+        "communautes":{
+            "link" : "/communautes",
+            "title": "Communautés"
+        },
+        "propos":{
+            "link" : "/a-propos-de-nous",
+            "title": "A Propos de Nous"
+        }
+    },
+    "admin": {
+
+    }
+}

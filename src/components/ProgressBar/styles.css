@@ -1,0 +1,19 @@
+.ProgressBar-100 {
+    position: relative;
+    background-color: lightgray;
+    height: 15px;
+    width: 100%;
+}
+
+.ProgressBar-Progress {
+    content: "";
+    position: absolute;
+    top: 0px;
+    width: auto;
+    height: 15px;
+    background-color: #ff6501;
+}
+
+.ProgressBar {
+    position: relative;
+}
