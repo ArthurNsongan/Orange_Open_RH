@@ -38,15 +38,15 @@ function SignIn(props) {
 
     console.log(props);
     return (
-        <div className="container">
-            <div className="row justify-content-md-center">
-                <div className="col-8">
+        <div className="container-fluid">
+            <div className="d-flex justify-content-md-center">
+                <div className="col-lg-8">
                     <div className="shadow bg-white rounded">
                         <div className="row">
-                            <div className="col-6 p-0">
+                            <div className="col p-0 align-self-center">
                                 <img src={Images.signInBanner} className="img-fluid" alt="Sign In Banner"/>
                             </div>
-                            <div className="col-6">
+                            <div className="col-md-6 aligb-self-start">
                                 <div className="pl-2 pr-4 pt-4 pb-4 mt-2 mb-5">
                                     <div className="col-12 p-0">
                                         <TitleUnderlined

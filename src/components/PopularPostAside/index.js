@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {useTranslation} from "react-i18next";
 import {useEffect} from 'react';
-import {withRouter} from 'react-router-dom';
+import {withRouter, NavLink} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import _ from 'lodash';
@@ -49,7 +49,7 @@ function PopularPostAside(props) {
                             .slice(0, 5)
                             .map( (item, index) => (
                                 <li class="nav-item">
-                                    <a href={`${route.post.root}/${item.rhContentDomaine.rhContentCategoryId}/${item.rhContentDomaineId}/${item.rhContentId}`}>{ item.rhContentTitle }</a>
+                                    <NavLink to={`${route.post.root}/${item.rhContentDomaine.rhContentCategoryId}/${item.rhContentDomaineId}/${item.rhContentId}`}>{ item.rhContentTitle }</NavLink>
                                 </li>
                             ))
                         }

@@ -65,6 +65,14 @@
 <script src="%PUBLIC_URL%/assets/js/jquery.marquee.min.js"></script>
 <script src="%PUBLIC_URL%/assets/js/custom.js"></script>
 <script>
+    
+    window.onpopstate = history.onpushstate = function(e)
+    {
+        console.log('History has been modified!')
+        console.log(e)
+        alert("History changed !")
+    };
+    
     $(window).on("load", function() {
         $("#mega-menu").megamenu();
         // alert("Mega menu loaded !!!!");

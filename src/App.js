@@ -1,5 +1,6 @@
-import React from "react";
-import {Route, Switch, withRouter} from 'react-router-dom';
+import React, {useEffect} from "react";
+import {Route, Switch, withRouter, useLocation } from 'react-router-dom';
+import $ from "jquery";
 import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
 import PrivateRoute from "./components/PrivateRoute";
@@ -21,6 +22,12 @@ import UnderConstruction from "./screens/CommonScreen/UnderConstruction";
 let route = require('./utils/route');
 
 function App(props) {
+
+    // let location = useLocation();
+
+    // useEffect(() => {
+    // }, [location])
+
     return (
         <div className="App">
             <Switch>

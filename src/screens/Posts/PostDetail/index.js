@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {withRouter, useParams} from 'react-router-dom';
+import {withRouter, useParams, NavLink} from 'react-router-dom';
 import NavigationLight from "../../../components/NavigationLight";
 import {FakeData} from "../../../fakeData";
 import {useTranslation} from "react-i18next";
@@ -163,7 +163,7 @@ function PostDetail(props) {
                                     props.resultPosts.filter( item => (item.rhContentDomaineId === post.rhContentDomaineId) )
                                         .map(item => (
                                         <li class="breadcrumb-item">
-                                            <a href={`${route.post.root}/${category}`}>{item.rhContentCategory.rhContentCategoryName }</a>
+                                            <NavLink to={`${route.post.root}/${category}`}>{item.rhContentCategory.rhContentCategoryName }</NavLink>
                                         </li>)) : "Unknown"
                                 }
                                 <li class="breadcrumb-item"><a href={`${route.post.root}/${category}/${post.rhContentDomaineId}`}>{ post.rhContentDomaine != null ? post.rhContentDomaine.rhContentDomaineName : "" }</a></li>
