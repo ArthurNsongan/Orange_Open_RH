@@ -296,7 +296,7 @@ function HeaderAdmin(props) {
                             ))
                         }
                     </ul>
-                    <ul className="navbar-nav ml-auto">
+                    <ul className="navbar-nav align-items-center ml-auto">
                         {
                             (result !== null || Utils.isConnected()) &&
                             <>
@@ -306,6 +306,7 @@ function HeaderAdmin(props) {
                         }
 
                         <LanguageSwitcher/>
+                        <div className="d-block font-weight-bold fs-5">Bonjour, {`${JSON.parse(localStorage.getItem('USER')).userName}`}</div>
                     </ul>
                 </div>
             </nav>
