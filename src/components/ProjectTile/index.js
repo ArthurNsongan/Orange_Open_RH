@@ -1,13 +1,18 @@
-import React from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { NavLink } from 'react-router-dom'
 import Button from '../Button'
 import ProgressBar from '../ProgressBar'
+import './styles.css'
+import Images from '../../utils/images'
+
+
+
 let route = require('../../utils/route.json')
 
 export default function ProjectTile(props) {
 
     const headingStyle = {
-        "color": "#ff6501",
+        "color": "#98c013",
         "fontWeight": "600",
     }
 
@@ -16,18 +21,46 @@ export default function ProjectTile(props) {
         "fontSize": "14px"
     }
 
+    const [unAnimated, setUnAnimated] = useState(true);
+
+    const projectRef = useRef(null);
+
+    useEffect(() => {
+        // console.log("unAnimated : "  + unAnimated);
+        if( unAnimated === true) {
+            const topPosition = projectRef.current.getBoundingClientRect().top;
+            const clN = projectRef.current.className;
+
+            const onScroll = () => {
+                const scrollPosition = window.scrollY + window.innerHeight - 350;
+                if( topPosition < scrollPosition ) {
+                    setUnAnimated(false)
+                }
+            }
+            window.addEventListener("scroll", onScroll);
+            return() => window.removeEventListener("scroll", onScroll);
+        }
+        // else {
+        //     setPStyle(true);
+        // }
+    }, []);
+
     return (
-        <div className={"ProjectTile mb-5 " + props.className }>
-            <div className="d-flex flex-column bg-white shadow">
-                <img alt="Projet" src="https://s3-alpha-sig.figma.com/img/ed17/9382/af2e54144ebc3a0182b102332e547391?Expires=1627257600&Signature=aA69q74NsPBNNqh8MPmtBKzWigYxOKSq4Gc4sXBhPFpNChCBRxoSth9e9SFdATk3XM1jRH4uvCh0wnAmFl6m3JQHY62OJg97V6fXDeIvqUzvRR8USShqWzLwBs17jQKBDOiRDO8tXKOpuuaqSAAeAKVJk19bF~YXk9d26RN9T9LNSTJHwzgyZfn1NtIVZ0U4i8~o01Ni2pOypG3l0xAfMky5SQQ50pHTdXK-b-fuiq5881Y2mVdZwHe9gKgUlokG6xZ7s2cxaQMTzSlVvkdHEXJHzILApicZYCXvPq~pkW8RQSB-z2eq8c5O-grOPmWbHuvy4X2a0BiOwZ3MLrG3tA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" />
-                <div className="px-4 py-3">
-                    <h3 style={{...headingStyle, "height": "75px"}}>{props.title}</h3>
-                    <p>Par <NavLink to={`${route.front.communautes.link}/1-${props.owner}`} className="fw-bold text-decoration-none text-dark">{props.owner}</NavLink></p>
+        <div className={"ProjectTile mb-5 " + props.className + ` ${ unAnimated ? "unanimated-project" : '' } ` } ref={projectRef}>
+            <div className="d-flex flex-column bg-white shadows">
+                <NavLink className="m-0 p-0 d-flex" to={`${route.front.projets.link}/1-${props.title}`}>
+                    <img className="ProjectTile__Image" alt="Projet" src={props.image !== undefined ? props.image : Images.projectRealization } />
+                </NavLink>
+                <p className="fs-6 px-4 mt-2 mb-0">Par <NavLink to={`${route.front.communautes.link}/1-${props.owner}`} className="text-primary-2 fw-bold text-decoration-none">{props.owner}</NavLink></p>
+                <div className="px-4 pb-3">
+                    <NavLink className="mt-3 d-block text-center" to={`${route.front.projets.link}/1-${props.title}`}>
+                        <h4 className="text-primary-2 fw-bold d-flex" style={{"height": "75px"}}>{props.title}</h4>
+                    </NavLink>
                     <ProgressBar percent={props.percent} />
-                    <span style={headingStyle} className="fw-bold d-block">{`${props.percent} %`}</span>
-                    <span className="mt-3 d-block fw-bold fs-6"><span className="fs-5" style={headingStyle}>{props.contribution}</span> / {props.contributionNeeded } FCFA</span>
-                    <h5 style={headingStyle} className="d-block mt-3 mb-3 fw-bold">{props.contributors} contributeurs</h5>
-                    <NavLink to={`${route.front.projets.link}/1-${props.title}`}><Button>Voir le projet</Button></NavLink>
+                    <span style={headingStyle} className="fw-bold h5 text-center px-3 d-block mb-1">{`${props.percent} %`}</span>
+                    <span className="mb-1 d-block fw-bold text-center fs-6 text-dark"><span className="fs-5 text-primary-2">{props.contribution} collectés </span><br /> sur {props.contributionNeeded } FCFA</span>
+                    {/* <h5 style={headingStyle} className="d-block mt-3 mb-3 fw-bold">{props.contributors} contributeurs</h5> */}
+                    <NavLink className="mt-3 d-block text-center" to={`${route.front.projets.link}/1-${props.title}`}><Button><span className="fw-500">Voir le projet</span></Button></NavLink>
                 </div>
             </div>
         </div>

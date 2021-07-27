@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.Partner img{
+  height: 120px !important;
+  width: auto;
+}
+
+.ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.ant-pagination-item-active {
+  font-weight: 500;
+  color: #fff !important;
+  background-color: #0e71b4 !important; 
+}
+
+.d-contents {
+  display: contents !important;
+}

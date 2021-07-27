@@ -1,7 +1,13 @@
-/* @import url(https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,400italic,500italic,600italic,700italic); */
+
+* {
+  scroll-behavior: none;
+  scroll-snap-stop:unset;
+  font-family: 'Archivo', sans-serif !important;
+}
 
 body {
   margin: 0;
+  font-size: 15px !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -19,7 +25,42 @@ code {
     monospace;
 }
 
+.btn {
+  border-radius: 0px !important;
+}
+
 .btn-primary {
-  background-color: #ff6501 !important;
-  border-color: #ff6501 !important;
+  background-color: #0e71b4 !important;
+  border-color: #0e71b4 !important;
+}
+
+.bg-primary-2 {
+  background-color: #0e71b4 !important;
+}
+
+.text-primary-2 {
+  color: #0e71b4;
+}
+
+.btn-secondary-2 {
+  background-color: #98c013 !important;
+}
+
+.text-secondary-2 {
+  color: #98c013 !important
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.FullButton.btn-primary:hover {
+  background-color: white !important;
+  border-color: white !important;
+  color: #0e71b4 !important;
+  font-weight: 600 !important;
+}
+
+.was-validated .form-control:invalid, .form-control.is-invalid {
+  border-color: #dc3545 !important;
 }

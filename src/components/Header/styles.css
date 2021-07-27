@@ -1,6 +1,6 @@
 .menuNavBar {
     display: flex;
-    height: 80px;
+    height: 70px;
     width: 100vw;
     background-color: white;
     box-shadow: 1px 1px 6px gray;
@@ -13,7 +13,11 @@
     top: 0;
 }
 
-.menuNav {
+.mobileNavActions {
+    display: none;
+}
+
+.menuNavBar .menuNav {
     display: flex;
     list-style-type: none;
     justify-content: space-around;
@@ -22,26 +26,115 @@
     margin-bottom: 0px !important;
 }
 
-.menuNav li a {
-    padding: 0 30px;
+.menuNavBar .menuNav li a {
+    /* padding: 0 30px; */
     font-weight: 400;
     font-size: 15px;
+    color: black !important;
 }
 
-.menuNav li a.active {
-    color: #ff6501 !important;
+.menuNavBar .menuNav li a.active {
+    color: #98c013 !important;
     font-weight: 600;
     position: relative;
 }
 
-.menuNav li a.active::after {
+.menuNavBar .menuNav li a.active::after {
     content: "";
     display: block;
     position: absolute;
-    bottom: -32px !important;
-    background-color: #ff6501;
+    bottom: -27px !important;
+    background-color: #98c013;
     left: 0px;
     width: 100%;
-    height: 10px;
+    height: 7px;
 }
 
+
+.mobileMenuNavBar {
+    display: none;
+    position: fixed;
+    /* padding-top: 70px; */
+    flex-direction: column;
+    justify-content: center;
+    left: 0px;
+    padding-left: 50px;
+    z-index: 8000;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    overflow-y: auto;
+    /* color: white !important; */
+}
+
+.mobileMenuNavBar .menuNav {
+    list-style: none;
+    padding-top: 70px;
+    padding-left: 0px;
+}
+
+.mobileMenuNavBar .menuNav li a {
+    padding: 20px 0 20px 0;
+    display: block;
+}
+
+@media screen and (min-width : 960px) {
+    .menuNavBar .menuNav li a {
+        padding: 0 30px;
+    }
+}
+
+@media screen and (max-width : 960px) and (min-width: 840px) {
+    .menuNavBar .menuNav li a {
+        padding: 0 15px;
+    }
+}
+
+@media screen and (max-width : 840px) {
+
+    .menuNavBar {
+        padding: 0 15px !important;
+    }
+
+    .mobileNavActions {
+        display: block !important;
+    }
+
+    .mobileMenuNavBar {
+        display: flex;
+    }
+    .menuNavBar .menuNav li a {
+        padding: 0 30px;
+    }
+
+    .menuNavBar .menuNavBarItems {
+        position: absolute;
+        z-index: 80;
+        flex-direction: column;
+        display: flex;
+        left: -100%;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #98c013;
+    }
+
+    .mobileMenuNavBar .menuNav {
+        flex-direction: column;
+    }
+
+    .mobileMenuNavBar .menuNav li a, .menuNavBar .menuNav li a.active {
+        color: #98c013 !important;
+    }
+
+    .mobileMenuNavBar .menuNav li a.active::after {
+        content: "";
+        display: block;
+        position: absolute;
+        /* bottom: -27px !important; */
+        background-color: #98c013;
+        left: 0px;
+        width: 100%;
+        height: 7px;    
+    }
+}

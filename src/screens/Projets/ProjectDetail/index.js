@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router'
 import { NavLink } from 'react-router-dom';
 import Button from '../../../components/Button';
 import ProgressBar from '../../../components/ProgressBar';
+import Images from '../../../utils/images';
 
 let route = require('../../../utils/route.json')
 
@@ -22,9 +24,19 @@ function ProjectDetail(props) {
     console.log(projetId + " - " + projetName)
 
     const headingStyle = {
-        "color": "#ff6501",
+        "color": "#98c013",
         "fontWeight": "600",
     }
+
+    const formatThousandsNumber = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    const [animate, setAnimate] = useState(false)
+
+    useEffect(() => {
+        setTimeout( setAnimate(true), 800);
+    }, [])
 
     const StatCard = (props) => (
         <div 
@@ -32,10 +44,10 @@ function ProjectDetail(props) {
             <div className="d-flex mx-0 mb-4 justify-content-center align-items-center flex-column" style = {{
                 "width": "100%",
                 "height": "208px",
-                "boxShadow": "1px 1px 6px lightgray"
+                "boxShadow": "0px 0px 3px lightgray"
             }}>
                 <div>
-                    <h3 style={headingStyle}>{props.title}</h3>
+                    <h3 className="text-primary-2 fw-bold">{props.title}</h3>
                     <h2 className="fw-bold">{props.number}</h2>
                 </div>
             </div>
@@ -44,53 +56,54 @@ function ProjectDetail(props) {
 
     return (
         <>
-          <section className="container relative" style={{ "marginTop": "100px"}}>
+        <Helmet title={`${projetName} - Challenge Solidarité`} />
+          <section className={`container relative ${ !animate ? "AnimatedDiv" : "AnimateDiv"}`} style={{ "marginTop": "100px"}}>
             <div className="row my-5">
                 <div className="col-lg-6">
-                    <img className="px-3" height="auto" width="100%" alt="" src="https://s3-alpha-sig.figma.com/img/4270/3263/ed20c16a91332b00c6f6d0e30f7d1978?Expires=1626652800&Signature=fyxhb5pWROmP6P3YjLdYtkSPglyKWbBVvnhpDBNayEsG5ZXbw1~pFVIDymVnUxe1oseRrI87w8zM-geFbIItbA2OkXh9zNuYWV96OsuB7iOCoDbFy0rBpBQAavHvoB1ZrbBcj6N6WGPt2B-PM65TMkNsYf7WljziPdwjdrvUMFGQ~8unZrmb1lYDf3WcqGq0RllABhknOP9KZWZI7d6znovekP5axHTiDOsJwFPymC4EUA-xnBIBrHTQwh8WngPEEkIciCaYve25ntwRTtWD5tB6ez4Lgth33vzHyhuFx50d9ypa6lIaLhJrILJisXl5yJ4bnvTOoVrMje5hiS7QyQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" />
+                    <img className="px-3" height="auto" width="100%" alt="" src={Images.heroImg}/>
                 </div>
                 <div className="col-lg-6 align-self-center">
-                    <h2 style={{...headingStyle}}>{projetName}</h2>
-                    <h5 className="my-3">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{projet.association}</NavLink></h5>
+                    <h2 className="text-primary-2 fw-bold">{projetName}</h2>
+                    <h5 className="my-3 AnimatedComponent">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{projet.association}</NavLink></h5>
                     <p className="fs-6 fw-bold">Créé le 17 Juin 2021</p>
-                    <ProgressBar percent={projet.percent} />
-                    <span style={headingStyle} className="fw-bold d-block">{`${projet.percent} %`}</span>
-                    <div className="py-3">
-                        <h2 className="fw-bold">{projet.contributions} F CFA acquis</h2>
-                        <h5 className="fw-bold">sur {projet.contributionNeeded} F CFA</h5>
+                    <ProgressBar percent={ !animate ? "0" : projet.percent} className=""/>
+                    <h4 style={headingStyle} className="fw-bold d-block fs-4">{`${ !animate ? "" : projet.percent + " %"}`}</h4>
+                    <div className="py-2 text-">
+                        <h4 className="fw-bold mb-1">{formatThousandsNumber(projet.contributions)} F CFA collectés</h4>
+                        <h5 className="text-gray fw-normal AnimatedComponent">sur {projet.contributionNeeded} F CFA</h5>
                     </div>
                     <Button buttonType="fullWidth">Je participe de 8 000 F CFA</Button>
                 </div>
             </div>
           </section>
 
-          <section className="container">
+          <section className="container AnimatedDiv">
               <div className="row">
                   <StatCard className="col-lg-4" 
-                        number={`${projet.contributions} F CFA`}
+                        number={`${formatThousandsNumber(projet.contributions)} F CFA`}
                         title="Entrées" />
                     <StatCard className="col-lg-4" 
-                        number={projet.contributors}
+                        number={formatThousandsNumber(projet.contributors)}
                         title="Contributeurs" />
                     <StatCard className="col-lg-4" 
-                        number={`${parseInt(projet.contributionNeeded.replaceAll(" ","")) - parseInt(projet.contributions.replaceAll(" ", ""))} F CFA`}
+                        number={`${formatThousandsNumber(parseInt(projet.contributionNeeded.replaceAll(" ","")) - parseInt(projet.contributions.replaceAll(" ", "")))} F CFA`}
                         title="Montant manquant" />
               </div>
           </section>
 
-          <section className="container my-5">
-            <div className="row my-5 py-5">
-                    <h2 className="fw-bold pb-5">Description du projet</h2>
-                    <p className="lh-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          <section className="container AnimatedDiv mb-4">
+            <div className="row my-4">
+                    <h2 className="fw-bold mb-5 headingFunPrim">Description du projet</h2>
+                    <p className="lh-3 fs-6 mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
           </section>
 
-          <section className="container my-5">
+          <section className="container mb-4 AnimatedDiv">
             <div className="d-flex flex-column my-5 py-5">
-                    <h2 className="fw-bold pb-5">Partenaires du projet</h2>
-                    <div className="row">
+                    <h2 className="fw-bold mb-5 headingFunPrim">Partenaires du projet</h2>
+                    <div className="row mt-3">
                         <div className="col">
                             <span className="h2 fw-bold">Cimencam</span>
                         </div>

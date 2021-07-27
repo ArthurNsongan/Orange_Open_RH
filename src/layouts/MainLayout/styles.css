@@ -1,0 +1,89 @@
+section.AnimateDiv *, div.AnimateDiv * {
+    transition: 0.6s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+section.AnimatedDiv h1, div.AnimatedDiv h1,
+.AnimatedDiv .h1, 
+section.AnimatedDiv h2, div.AnimatedDiv h2,
+section.AnimatedDiv h3, div.AnimatedDiv h3, 
+section.AnimatedDiv h4, div.AnimatedDiv h4,
+section.AnimatedDiv .AnimatedComponent, div.AnimatedDiv .AnimatedComponent{
+    transform: translateY(-100px) !important;
+    opacity: 0 !important;
+}
+
+section.AnimatedDiv p, div.AnimatedDiv p {
+    transform: translateY(-100px) !important;
+    opacity: 0 !important;
+}
+section.AnimateDiv p, div.AnimateDiv p {
+    transition-delay: 0.4s !important;
+}
+
+.AnimatedComponent * {
+    transition: none !important;
+}
+
+section.AnimatedDiv img, div.AnimatedDiv img, .AnimatedDiv button {
+    transform: translateY(-100px) !important;
+    opacity: 0 !important;
+}
+
+section.AnimateDiv img, div.AnimateDiv img, .AnimateDiv button{
+    transition-delay: 1s;
+}
+
+.itemFunPrim, .itemFunSec { position: relative; width: fit-content; }
+
+.headingFunPrim, .headingFunSec { position: relative; width: fit-content !important;}
+
+.itemFunPrim::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0px !important;
+    background-color: #98c013;
+    /* left: 0px; */
+    /* right: 0px; */
+    width: 100%;
+    height: 7px;    
+}
+
+.itemFunSec::after {
+content: "";
+display: block;
+position: absolute;
+bottom: 0px !important;
+background-color: #0e71b4;
+/* left: 0px; */
+/* right: 0px; */
+width: 100%;
+height: 7px;    
+}
+
+.headingFunPrim::after {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: -27px !important;
+        background-color: #98c013;
+        /* left: 0px; */
+        /* right: 0px; */
+        width: 50%;
+        height: 7px;    
+}
+.contentLeft::after { left: 0px;}
+.contentCenter::after { left: 25%;}
+.contentRight::after { right: 0px;}
+
+.headingFunSec::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -27px !important;
+    background-color: #0e71b4;
+    /* left: 0px; */
+    /* right: 0px; */
+    width: 50%;
+    height: 7px;    
+}

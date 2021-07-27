@@ -1,0 +1,23 @@
+.funBackgroundGradient {
+    background-image: linear-gradient(120deg, #0e71b4 0%, #98c013 100%);
+}
+
+.StatCard .svg {
+    fill: currentColor;
+    padding: 20px;
+}
+
+.StatCard .svg:hover {
+    fill: #98c013 !important;
+    background-color: white;
+    border-radius: 50%;
+}
+.StatCard .svg:hover svg {
+    fill: #98c013 !important;
+    transform: scale(0.9);
+}
+
+.elevate:hover {
+    box-shadow: 0px 2px 2px 2px rgba(211, 211, 211, 0.836);
+    /* padding: 0px 10px; */
+}

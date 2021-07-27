@@ -20,11 +20,11 @@
     "admin": {
         "link": "/admin",
         "communautes":{
-            "link" : "/communautes",
+            "link" : "/admin/communautes",
             "title": "Communautés"
         },
         "users":{
-            "link" : "/users",
+            "link" : "/admin/users",
             "title": "Utilisateurs"
         }
     }

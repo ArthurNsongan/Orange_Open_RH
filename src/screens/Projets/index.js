@@ -1,10 +1,12 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { HeroImageHeader } from '../../components/HeroImageSection'
 import ProjectTile from '../../components/ProjectTile'
 
 function Projects() {
     return (
         <>
+            <Helmet title="Tous les projets - Challenge Solidarité" />
             <section className="Projets">
                 <HeroImageHeader>
                     <div className="container">

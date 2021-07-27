@@ -1,0 +1,41 @@
+.FullButton:hover, 
+.FullWidth:hover,
+.FlatButton:hover {
+    transition-delay: 0s;
+    transition: 0.4s background-color cubic-bezier(0.455, 0.03, 0.515, 0.955) ,
+        0.4s border-color cubic-bezier(0.455, 0.03, 0.515, 0.955),
+        0.4s color cubic-bezier(0.455, 0.03, 0.515, 0.955) !important;
+    transition-delay: 0ms !important;
+}
+
+.FullButton {
+    background-color: #98c013;
+    padding: 8px 15px;
+    color: white;
+    border-color: #98c013;
+    border-style: solid;
+    border-width: #98c013;
+    font-size: 16px;
+}
+.FullButton:hover, .FullWidth:hover {
+    /* color: #98c013; */
+    background-color: #80a111 !important;
+    border-color: #80a111 !important;
+}
+
+.FlatButton {
+    color: #98c013 !important;
+    padding: 8px 15px;
+    border-color: #98c013 !important;
+}
+
+.FullWidth {
+    background-color: #98c013;
+    padding: 8px 15px;
+    color: white;
+    border-color: #98c013;
+    border-style: solid;
+    border-width: #98c013;
+    font-size: 16px;
+    width: 100%;
+}

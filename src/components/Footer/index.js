@@ -9,6 +9,9 @@ import { faPhone, faEnvelope, faMapMarker } from '@fortawesome/free-solid-svg-ic
 //Modules internes
 import './styles.css'
 
+let route = require('../../utils/route.json')
+
+
 function Footer(props) {
 
     const FooterLink = (props) => (
@@ -40,7 +43,7 @@ function Footer(props) {
             <div className="container py-5 mt-5">
                 <div className="row justify-content-start">
                     <div className="col-lg-3">
-                        <h5 className="text-white mb-5">Challenge <span style={{"color":"#ff6501"}}>Solidarité</span></h5>
+                        <h5 className="text-white mb-5">Challenge <span style={{"color":"#98c013"}}>Solidarité</span></h5>
                         <div className="d-flex flex-column">
                             <FooterItem icon={faMapMarker} content="Douala, Cameroun" />
                             <FooterItem icon={faPhone} content="+237 6 99 94 45 93" />
@@ -50,9 +53,9 @@ function Footer(props) {
                     <div className="col-lg-3">
                         <h5 className="text-white text-uppercase mb-5 d-block">Menu</h5>
                         <div className="d-flex flex-column">
-                            <FooterLink url="/" title="Accueil"/>
-                            <FooterLink url="/associations-et-corporations" title="Associations et Corporations"/>
-                            <FooterLink url="/projets" title="Projets"/>
+                            <FooterLink url={route.front.home.link} title={route.front.home.title}/>
+                            <FooterLink url={route.front.communautes.link} title={route.front.communautes.title}/>
+                            <FooterLink url={route.front.projets.link} title={route.front.projets.title}/>
                             {/* <FooterLink url="/a-propos-de-nous" title="A Propos de Nous"/> */}
                         </div>
                     </div>

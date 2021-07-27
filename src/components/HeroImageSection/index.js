@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './styles.css';
+import Images from "../../utils/images"
 
 
 function HeroImageSection(props) {
@@ -8,11 +9,16 @@ function HeroImageSection(props) {
         children,
     } = props
 
+    // const [ animate, setAnimate] = useState(props.animate)
+
+    // useEffect(()=>{ console.log(props.animate )}, [props.animate])
+    
+
     // let styles = props.height != null ? { "height": `${props.height} !important`} : null
     
     return (
-        <section className={`HeroSection ${props.className !== undefined ? props.className : ''}`}>
-            <img className="HeroImage" alt="" src="https://s3-alpha-sig.figma.com/img/4270/3263/ed20c16a91332b00c6f6d0e30f7d1978?Expires=1626652800&Signature=fyxhb5pWROmP6P3YjLdYtkSPglyKWbBVvnhpDBNayEsG5ZXbw1~pFVIDymVnUxe1oseRrI87w8zM-geFbIItbA2OkXh9zNuYWV96OsuB7iOCoDbFy0rBpBQAavHvoB1ZrbBcj6N6WGPt2B-PM65TMkNsYf7WljziPdwjdrvUMFGQ~8unZrmb1lYDf3WcqGq0RllABhknOP9KZWZI7d6znovekP5axHTiDOsJwFPymC4EUA-xnBIBrHTQwh8WngPEEkIciCaYve25ntwRTtWD5tB6ez4Lgth33vzHyhuFx50d9ypa6lIaLhJrILJisXl5yJ4bnvTOoVrMje5hiS7QyQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" />
+        <section className={`HeroSection ${props.className !== undefined ? props.className : ''} ${props.animate ? "" : "unanimated"} `}>
+            <img className="HeroImage" alt="" src={Images.heroImg} />
             <div className="HeroContent">
                 { children }
             </div>
@@ -24,9 +30,36 @@ export function HeroImageHeader(props) {
 
     // let styles = props.height != null ? { "height": `${props.height} !important`} : null
 
+    const imageStyle = props.image !== undefined ? { "objectFit": "contain"} : {}
+
+    const [unAnimated, setUnAnimated] = useState(true);
+
+    const heroImgHeader = useRef(null);
+
+    useEffect(() => {
+        // console.log("unAnimated : "  + unAnimated);
+        if( unAnimated === true) {
+            // const topPosition = heroImgHeader.current.getBoundingClientRect().top;
+            // const clN = heroImgHeader.current.className;
+
+            // const onScroll = () => {
+            //     const scrollPosition = window.scrollY + window.innerHeight - 350;
+            //     if( topPosition < scrollPosition ) {
+            //         setUnAnimated(false)
+            //     }
+            // }
+            // window.addEventListener("scroll", onScroll);
+            // return() => window.removeEventListener("scroll", onScroll);
+            setTimeout(() => setUnAnimated(false), 300)
+        }
+        // else {
+        //     setPStyle(true);
+        // }
+    }, []);
+
     return(
-        <section className={`HeroImageHeader ${props.className !== undefined ? props.className : ""}`}>
-            <img className="HeroImage" style={{"height": `${props.height} !important`}} alt="" src="https://s3-alpha-sig.figma.com/img/4270/3263/ed20c16a91332b00c6f6d0e30f7d1978?Expires=1626652800&Signature=fyxhb5pWROmP6P3YjLdYtkSPglyKWbBVvnhpDBNayEsG5ZXbw1~pFVIDymVnUxe1oseRrI87w8zM-geFbIItbA2OkXh9zNuYWV96OsuB7iOCoDbFy0rBpBQAavHvoB1ZrbBcj6N6WGPt2B-PM65TMkNsYf7WljziPdwjdrvUMFGQ~8unZrmb1lYDf3WcqGq0RllABhknOP9KZWZI7d6znovekP5axHTiDOsJwFPymC4EUA-xnBIBrHTQwh8WngPEEkIciCaYve25ntwRTtWD5tB6ez4Lgth33vzHyhuFx50d9ypa6lIaLhJrILJisXl5yJ4bnvTOoVrMje5hiS7QyQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" />
+        <section ref={heroImgHeader} className={`HeroImageHeader ${props.className !== undefined ? props.className : "" } ${ unAnimated ? "unanimated" : '' } `}>
+            <img className="HeroImage" style={{...imageStyle, "height": `${props.height} !important`}} alt="" src={ props.image !== undefined ? props.image : Images.heroImg} />
             <div className="HeroContent" style={{"height": `${props.height} !important`}}>
                 { props.children }
             </div>

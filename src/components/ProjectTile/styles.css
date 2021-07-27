@@ -1,0 +1,28 @@
+.ProjectTile__Image {
+    height: 250px;
+    width: 100% !important;
+    object-fit: cover;
+    object-position: center;
+}
+
+.ProjectTile * {     transition: none !important;
+}
+
+.ProjectTile {
+    transition: 0.4s all ease-in;
+    opacity: 1;
+    /* height: max-content; */
+}
+
+.ProjectTile .shadows {
+    box-shadow: 1px 0px 4px 1px lightgray;
+}
+
+.ProjectTile.unanimated-project {
+    transform: translateY(-100px) !important;
+    opacity: 0 !important;
+}
+
+.fs-7 {
+    font-size: 0.9rem !important;
+}

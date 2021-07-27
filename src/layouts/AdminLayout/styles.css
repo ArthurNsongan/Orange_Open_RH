@@ -14,7 +14,7 @@
 
 @media screen and (min-width: 780px) {
     .Admin__SideBar {
-        position: absolute;
+        position: fixed;
         z-index: 100;
         width: 260px;
         background-color: #130f0f;
@@ -62,6 +62,10 @@
     border: 1px solid #f5f5f5;
 }
 
+.Admin__Table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
 .Admin__Table thead {
     /* border-bottom: 1px solid lightgray; */
     /* border-radius: 25px; */
@@ -76,4 +80,9 @@
 
 .Admin__Table tbody tr:not(:nth-last-child(1)) {
     border-bottom: 1px solid lightgray;
+}
+
+.form-control {
+    border-radius: 0.1em !important;
+    border: 1.5px solid #0000006e !important;
 }
