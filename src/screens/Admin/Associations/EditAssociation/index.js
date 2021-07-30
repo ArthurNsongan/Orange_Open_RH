@@ -365,8 +365,8 @@ function EditAssociation(props) {
                         <div className="row">
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Logo</label>
-                                <input className="form-control" type="file" name="logo" onChange={handleAddNewFileInputChange}  placeholder="Logo" />
-                                <img className="img-fluid img-responsive d-block py-3" load="lazy" src={ typeof(association.logo) !== 'object' ? `${apiRoutes.StorageURL}/${association.logo}` : URL.createObjectURL(association.logo)} alt="Logo de l'association" />
+                                <input className="form-control" type="file" name="logo" accept="image/*" onChange={handleAddNewFileInputChange}  placeholder="Logo" />
+                                <img className="img-fluid img-responsive d-block py-3" loading="lazy" src={ typeof(association.logo) !== 'object' ? `${apiRoutes.StorageURL}/${association.logo}` : URL.createObjectURL(association.logo)} alt="Logo de l'association" />
                             </div>
                             <div className="d-flex align-items-center mb-3">
                                 <label className="d-block m-2">Documents</label>

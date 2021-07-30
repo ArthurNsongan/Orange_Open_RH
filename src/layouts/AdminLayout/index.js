@@ -7,6 +7,10 @@ import AddAssociation from '../../screens/Admin/Associations/AddAssociation'
 import EditAssociation from '../../screens/Admin/Associations/EditAssociation'
 import AssociationDetail from '../../screens/Admin/Associations/AssociationDetail'
 import "./styles.css"
+import Projects from '../../screens/Admin/Projects'
+import AddProject from '../../screens/Admin/Projects/AddProject'
+import Partenaires from '../../screens/Admin/Partenaires'
+import EditProject from '../../screens/Admin/Projects/EditProject'
 
 let route = require('../../utils/route.json')
 
@@ -32,7 +36,16 @@ function AdminLayout() {
                                         <Route exact path={route.admin.users.link}>
                                             <h2>{route.admin.users.title}</h2>
                                         </Route>
-                                        <Route exact path="/admin">
+
+                                        <Route exact path={route.admin.projets.link} component={Projects} />
+                                        <Route exact path={`${route.admin.projets.link}/add`} component={AddProject} />
+
+                                        <Route exact path={`${route.admin.communautes.link}/:communaute_id/projet/add`} component={AddProject} />
+                                        <Route exact path={`${route.admin.communautes.link}/:communaute_id/projet/:project_id/edit`} component={EditProject} />
+
+                                        <Route exact path={route.admin.partenaires.link} component={Partenaires} />
+
+                                        <Route path="/admin*">
                                             <Redirect to={route.admin.communautes.link} />
                                         </Route>
                                     </Switch>
@@ -44,5 +57,7 @@ function AdminLayout() {
         // </BrowserRouter>
     )
 }
+
+// const CRUDRouteLayout = ({ parentRoute })
 
 export default AdminLayout

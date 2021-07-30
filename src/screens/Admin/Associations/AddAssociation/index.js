@@ -143,6 +143,7 @@ const handleSubmitNewAssociation = (event) => {
             })
 
             history.push(route.admin.communautes.link)
+            
         }).catch( ({ response }) => {
             console.log(response)
             toast.error(<><div className="d-flex justify-content-center fs-6">Erreur sur le serveur !</div></>, {
@@ -289,7 +290,7 @@ return (
                     </div>
                     <div className="col-lg-6 mb-3">
                         <label className="d-block mb-2">Type</label>
-                        <select className="form-control" name="type_id" onChange={handleAddNewTextInputChange} value={association.type_id} id="associationType"  >
+                        <select className="form-select" name="type_id" onChange={handleAddNewTextInputChange} value={association.type_id} id="associationType"  >
                             { associationTypes.map((item, index) => {
                                 return (
                                     <option key={index} value={item.id}>{item.name}</option>

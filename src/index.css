@@ -54,6 +54,10 @@ code {
   background-color: #000;
 }
 
+.ck.ck-editor__editable{
+  height: 350px !important;
+}
+
 .FullButton.btn-primary:hover {
   background-color: white !important;
   border-color: white !important;

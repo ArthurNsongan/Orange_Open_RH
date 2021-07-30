@@ -26,6 +26,14 @@
         "users":{
             "link" : "/admin/users",
             "title": "Utilisateurs"
+        },
+        "projets": {
+            "link" : "/admin/projets",
+            "title" : "Projets"
+        },
+        "partenaires": {
+            "link" : "/admin/partenaires",
+            "title": "Partenaires"
         }
     }
 }

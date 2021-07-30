@@ -1,4 +1,4 @@
-import { faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faHandHolding, faLaptopMedical, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
@@ -32,6 +32,18 @@ export function SideBar(props) {
                     <NavLink to={route.admin.communautes.link} activeStyle={activeItem}>
                         <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faUsers} /></span>
                         {route.admin.communautes.title}
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={route.admin.projets.link} activeStyle={activeItem}>
+                        <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faLaptopMedical} /></span>
+                        {route.admin.projets.title}
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={route.admin.partenaires.link} activeStyle={activeItem}>
+                        <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faHandHolding} /></span>
+                        {route.admin.partenaires.title}
                     </NavLink>
                 </li>
             </ul>

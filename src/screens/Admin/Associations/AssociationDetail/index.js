@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { faArrowLeft, faEdit, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faEdit, faEllipsisV, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"
@@ -8,7 +8,7 @@ import apiRoutes from "../../../../config/apiConfig"
 
 import $ from "jquery"
 import { toast } from 'react-toastify';
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import ProgressBar from '../../../../components/ProgressBar';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import moment from 'moment';
@@ -43,9 +43,10 @@ function AssociationDetail(props) {
         axios.get(`${apiRoutes.AssociationsURL}/${communaute_id}`)
         .then( response => {
             setAssociation(response.data)
-            setLastProjects(response.data.projets)
             console.log(response.data)
         })
+
+        getAssociationProjects(communaute_id)
 
         setTimeout(() => {
             setLoaded(true);
@@ -123,6 +124,14 @@ function AssociationDetail(props) {
     //     console.log(association)
     // }
 
+    const getAssociationProjects = (association_id) => {
+        axios.get(`${apiRoutes.AssociationProjectsURL}/${association_id}`)
+        .then( response => { 
+            setLastProjects(response.data)
+            console.log(response.data)
+        })
+    }
+
     const { communaute_id } = useParams();
 
 
@@ -136,11 +145,16 @@ function AssociationDetail(props) {
                     <span className="d-block mx-2 fs-6 mb-0">Revenir à la liste</span>
                 </NavLink>
                 <h3 className="fw-bold mb-4">{association.name}</h3>
-                <NavLink className="" exact to={`${route.admin.communautes.link}/edit/${communaute_id}`} >
-                    <button className="btn btn-primary rounded-0">
-                        <FontAwesomeIcon icon={faEdit} className="d-inline-block me-3"></FontAwesomeIcon>Editer
-                    </button>
-                </NavLink>
+                <div className="d-flex">
+                    <NavLink className="m-2" exact to={`${route.admin.communautes.link}/edit/${communaute_id}`} >
+                        <button className="btn btn-primary rounded-0">
+                            <FontAwesomeIcon icon={faEdit} className="d-inline-block me-3"></FontAwesomeIcon>Editer
+                        </button>
+                    </NavLink>
+                    <NavLink className="m-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/add`}>
+                        <button className="btn btn-secondary"><FontAwesomeIcon icon={faPlus} className="d-inline-block me-3"></FontAwesomeIcon>Ajouter un projet</button>
+                    </NavLink>
+                </div>
             </div>
             { association.currentProject != null ?
                 (<>
@@ -173,37 +187,43 @@ function AssociationDetail(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Objectif</th>
-                            <th scope="col">Date de Fin</th>
-                            <th scope="col">Statut</th>
-                            {/* <th scope="col">Image</th> */}
-                            <th scope="col">Actions</th>
+                            <th scope="col" width="300px">Nom</th>
+                            <th scope="col" width="400px">Description</th>
+                            <th scope="col">Etat du projet</th>
+                            <th scope="col">Date de fin des contributions</th>
+                            <th scope="col" width="100px">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        { loaded ?
-                            ( lastProjects.length === 0 ?
-                                (<tr>
-                                    <td colSpan="6" className="text-center"> Aucun projet trouvé</td>
-                                </tr>)
-                                : 
-                                lastProjects.map( (item, index) => (
+                        {
+                            loaded === false ?
+                            (
+                                <tr>
+                                    <th scope="row"><LoadingSpinner /></th>
+                                </tr>
+                            )
+                            : 
+                            (
+                                lastProjects.map((item, index) => (
                                     <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{item.name}</td>
-                                        <td>{item.objective}</td>
-                                        <td>{moment(item.deadlines).format("D MMMM YYYY H:mm") }</td>
-                                        <td>{item.status}</td>
-                                        {/* <td><img src={`${apiRoutes.StorageURL}/${item.image}`} alt="" className="img-fluid" /></td> */}
-                                        <td></td>
+                                        <th scope="col">#</th>
+                                        <td width="300px">{item.title}</td>
+                                        <td width="400px">{item.description}</td>
+                                        <td>{_.capitalize(item.status.replaceAll("_"," ")) }</td>
+                                        <td>{ moment(item.deadlines).format("D MMMM YYYY") }</td>
+                                        <td width="100px">
+                                            <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <FontAwesomeIcon icon={faEllipsisV} />
+                                            </button>
+                                            <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
+                                                <Link to={`${route.admin.communautes.link}/${item.id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
+                                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
+                                                {/* <Link className="dropdown-item">Supprimer</Link> */}
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
-                            ) : (<tr>
-                                <td colSpan="6" className="text-center">
-                                    <LoadingSpinner />
-                                </td>
-                            </tr>)
+                            )
                         }
                     </tbody>
                 </table>
