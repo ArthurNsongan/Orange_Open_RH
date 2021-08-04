@@ -68,9 +68,10 @@
     
     window.onpopstate = history.onpushstate = function(e)
     {
-        console.log('History has been modified!')
-        console.log(e)
-        alert("History changed !")
+        // console.log('History has been modified!')
+        // console.log(e)
+        // alert("History changed !")
+        try { $("#mega-menu").megamenu(); } catch(exception) { console.log(exception)}
     };
     
     $(window).on("load", function() {

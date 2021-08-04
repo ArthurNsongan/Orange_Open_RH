@@ -23,7 +23,7 @@ export default function ProfileDropdown(props) {
     const disconnect = () => {
         localStorage.clear();
         dispatch(fetchLoginReset());
-        history.go(route.auth.sign_in);
+        history.go("/");
     };
 
     return (

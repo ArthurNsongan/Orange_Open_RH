@@ -39,11 +39,11 @@ function SignIn(props) {
     console.log(props);
     return (
         <div className="container-fluid">
-            <div className="d-flex justify-content-md-center">
+            <div className="row justify-content-md-center">
                 <div className="col-lg-8">
-                    <div className="shadow bg-white rounded">
+                    <div className="shadow bg-white rounded d-flex">
                         <div className="row">
-                            <div className="col p-0 align-self-center">
+                            <div className="col align-self-start">
                                 <img src={Images.signInBanner} className="img-fluid" alt="Sign In Banner"/>
                             </div>
                             <div className="col-md-6 aligb-self-start">

@@ -306,7 +306,7 @@ function HeaderAdmin(props) {
                         }
 
                         <LanguageSwitcher/>
-                        <div className="d-block font-weight-bold fs-5">Bonjour, {`${JSON.parse(localStorage.getItem('USER')).userName}`}</div>
+                        { (Utils.isConnected() || props.result !== null) ? (<div className="d-block font-weight-bold fs-5">Bonjour, { (props.result !== null ? props.result.userName : JSON.parse(localStorage.getItem('USER')).userName) }</div>) : ""}
                     </ul>
                 </div>
             </nav>
