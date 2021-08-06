@@ -13,6 +13,8 @@ import { BrowserRouter, Switch, Route, withRouter, useLocation } from 'react-rou
 import ScrollRestoration from 'react-scroll-restoration'
 import { ScrollToTop } from 'react-router-scroll-to-top'
 import { useEffect } from 'react';
+import AuthUserRoute from '../../components/Routes';
+import MemberProfile from '../../screens/Auth/MemberProfile';
 let route = require('../../utils/route.json');
 
 export const formatThousandsNumber = (x) => {
@@ -42,6 +44,7 @@ function MainLayout(props) {
                     window.removeEventListener("scroll", onScroll)
                 }
             }
+
             window.addEventListener("scroll", onScroll);
             
         })
@@ -61,6 +64,7 @@ function MainLayout(props) {
                 {/* <Route exact path="*">
                     <h1>Perdu !!!</h1>
                 </Route> */}
+                <AuthUserRoute exact path={`${route.auth.profile.link}`} component={MemberProfile}/>
             </Switch>
             <Footer />
         </>

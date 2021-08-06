@@ -96,7 +96,7 @@ function AssociationDetail(props) {
                                         {/* <p style={{"lineHeight":"35px"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> */}
                                         <div className="d-flex flex-wrap">
                                             { association.documents.map((doc) => (
-                                                <a className="me-2 mb-2" target="_blank" title="Cliquer pour ouvrir le document dans un nouvel onglet" rel="noreferrer" href={`${apiRoutes.StorageURL}/${doc.path}`}>
+                                                <a className="me-2 mb-2 bg-primary" target="_blank" title="Cliquer pour ouvrir le document dans un nouvel onglet" rel="noreferrer" href={`${apiRoutes.StorageURL}/${doc.path}`}>
                                                     <Button><FontAwesomeIcon icon={faFile} className="me-2"/>{doc.name}</Button>
                                                 </a>
                                             ))}
@@ -120,12 +120,12 @@ function AssociationDetail(props) {
                         <div className="my-5">
                             <h3 className="mb-5 fw-bold headingFunPrim contentLeft d-block">Nos derniers projets</h3>
                             <div className="row mb-5">
-                                <ProjectTile className="col-lg-4 justify-content-center" owner={association.name}
+                                {/* <ProjectTile className="col-lg-4 justify-content-center" owner={association.name}
                                     contribution="40 000 000"
                                     contributionNeeded="100 000 000"
                                     title="Construction du siège social" 
                                     percent="40" 
-                                    contributors="250"/>
+                                    contributors="250"/> */}
                             </div>
                             <div className="d-flex my-5 justify-content-center">
                                 <NavLink to="/projets"><Button>Tous les projets</Button></NavLink>

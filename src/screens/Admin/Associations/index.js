@@ -12,6 +12,8 @@ import $ from "jquery"
 import { Link, NavLink } from 'react-router-dom';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import moment from 'moment';
+import DataTable from '../../../components/DataTable';
+import { formatThousandsNumber } from '../../../config/constants';
 // import '@popperjs/core';
 // import 'bootstrap'
 
@@ -169,15 +171,34 @@ function Associations(props) {
                         </div>
                     </div>
                 </div>
-                <table className="Admin__Table px-0">
+                <DataTable emptyMessage="Aucun résultat" loaded={loaded} datas={associations} columns={[
+                    {title: "#", dataTitle: "id"},
+                    {title: "Nom", dataTitle: "name"},
+                    {title: "Description", dataTitle: "description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    {title: "Membres", dataTitle: "memberNumber", renderData: (item) => ( formatThousandsNumber(item.memberNumber) ) },
+                    {title: "Date de création", dataTitle: "create_date", renderData: (item) => ( moment(item.create_date).format("Do MMMM YYYY")) },
+                    {title: "Actions", renderData: (item) => (
+                        <>
+                            <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <FontAwesomeIcon icon={faEllipsisV} />
+                            </button>
+                            <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
+                                <Link to={`${route.admin.communautes.link}/${item.id}`} className="dropdown-item">Voir</Link>
+                                <Link to={`${route.admin.communautes.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
+                                <Link className="dropdown-item">Supprimer</Link>
+                            </div>
+                        </>
+                    ), sortable: false},
+                ]}/>
+                {/* <table className="Admin__Table px-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" width="300px">Nom</th>
-                            <th scope="col" width="400px">Description</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Description</th>
                             <th scope="col">Membres</th>
                             <th scope="col">Date de Création</th>
-                            <th scope="col" width="100px">Actions</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="fs-6">
@@ -209,7 +230,7 @@ function Associations(props) {
                             </tr>
                         )}
                     </tbody>
-                </table>
+                </table> */}
                 <div className="row my-4 fs-6 justify-content-between">
                     <div className="col-lg-6">
                     Affichage de { paginationOptions.perPage} résultats

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { faArrowLeft, faEdit, faEllipsisV, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faEdit, faEllipsisV, faEye, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"
@@ -13,6 +13,7 @@ import ProgressBar from '../../../../components/ProgressBar';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
+import { getAssociationProjects } from '../../../../services/API';
 
 // import '@popperjs/core';
 // import 'bootstrap'
@@ -46,7 +47,10 @@ function AssociationDetail(props) {
             console.log(response.data)
         })
 
-        getAssociationProjects(communaute_id)
+        getAssociationProjects(communaute_id, (res) => {
+            setLastProjects(res.data)
+            console.log(res.data)
+        }, (res) => { console.log(res.data)})
 
         setTimeout(() => {
             setLoaded(true);
@@ -124,13 +128,13 @@ function AssociationDetail(props) {
     //     console.log(association)
     // }
 
-    const getAssociationProjects = (association_id) => {
-        axios.get(`${apiRoutes.AssociationProjectsURL}/${association_id}`)
-        .then( response => { 
-            setLastProjects(response.data)
-            console.log(response.data)
-        })
-    }
+    // const getAssociationProjects = (association_id) => {
+    //     axios.get(`${apiRoutes.AssociationProjectsURL}/${association_id}`)
+    //     .then( response => { 
+    //         setLastProjects(response.data)
+    //         console.log(response.data)
+    //     })
+    // }
 
     const { communaute_id } = useParams();
 
@@ -156,7 +160,7 @@ function AssociationDetail(props) {
                     </NavLink>
                 </div>
             </div>
-            { association.currentProject != null ?
+            { true ?
                 (<>
                     <hr className="my-4"/>
                     <div className="d-flex flex-column">
@@ -170,6 +174,9 @@ function AssociationDetail(props) {
                                 <span className="d-block fs-5 col-4 my-2"><b>250</b> contributeurs</span>
                             </div>
                         </div>
+                        <NavLink className="my-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/1`}>
+                            <button className="btn btn-secondary-2 text-white"><FontAwesomeIcon icon={faEye} className="d-inline-block me-3"></FontAwesomeIcon>Voir le projet</button>
+                        </NavLink>
                     </div>
                 </>) : null }
             <hr className="my-4"/>
@@ -206,9 +213,10 @@ function AssociationDetail(props) {
                             (
                                 lastProjects.map((item, index) => (
                                     <tr key={index}>
-                                        <th scope="col">#</th>
-                                        <td width="300px">{item.title}</td>
-                                        <td width="400px">{item.description}</td>
+                                        <th scope="col">{index + 1}</th>
+                                        <td width="">{item.title}</td>
+                                        {/* <td width="400px">{item.description}</td> */}
+                                        <td width="200px">{item.description.length > 100 ? item.description.slice(0, 50) + "..." : item.description}</td>
                                         <td>{_.capitalize(item.status.replaceAll("_"," ")) }</td>
                                         <td>{ moment(item.deadlines).format("D MMMM YYYY") }</td>
                                         <td width="100px">
@@ -216,7 +224,7 @@ function AssociationDetail(props) {
                                                 <FontAwesomeIcon icon={faEllipsisV} />
                                             </button>
                                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                                <Link to={`${route.admin.communautes.link}/${item.id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
+                                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
                                                 <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
                                                 {/* <Link className="dropdown-item">Supprimer</Link> */}
                                             </div>

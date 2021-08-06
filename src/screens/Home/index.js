@@ -199,7 +199,7 @@ function Home(props) {
 
                 <div className="container pb-5">
                     <div className="row justify-content-start" style={{ "marginTop": "0"}}>
-                        <ProjectTile className="col-lg-4 my-4 justify-content-center" owner="L'ordre des avocats"
+                        {/* <ProjectTile className="col-lg-4 my-4 justify-content-center" owner="L'ordre des avocats"
                             contribution="40 000 000"
                             contributionNeeded="100 000 000"
                             title="Construction du siège social" 
@@ -210,7 +210,7 @@ function Home(props) {
                             contributionNeeded="100 000 000"
                             title="Réparation des bureaux de l’ordre" 
                             percent="40" 
-                            contributors="250"/>
+                            contributors="250"/> */}
                         
                         <div className="col-lg-4">    
                         </div>

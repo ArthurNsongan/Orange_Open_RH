@@ -35,6 +35,8 @@ function Partenaires(props) {
         })
     }
 
+    const [tableHeadFilter, setTableHeadFilter] = useState({ ascending : true, column:""})
+
     const [partenaires, setPartenaires] = useState([])
 
     const [loaded, setLoaded] = useState(false)
@@ -52,6 +54,18 @@ function Partenaires(props) {
         perPage: 5,
         currentPage: 1
     })
+
+    const handleTableHeadFilter = (name) => {
+        let tableHeadFilterTmp =  { ...tableHeadFilter}
+        if(tableHeadFilterTmp.column === name) {
+            tableHeadFilterTmp.ascending = !tableHeadFilterTmp.ascending
+        } else {
+            tableHeadFilterTmp.column = name
+            tableHeadFilterTmp.ascending = true
+        }
+        setTableHeadFilter(tableHeadFilterTmp)
+        // alert(name)
+    }
 
     const [searchKey, setSearchKey] = useState("")
 
@@ -76,7 +90,9 @@ function Partenaires(props) {
     }
 
     let partenairesToShow = searchKey !== "" ? partenaires.filter( item => (item.name.toLowerCase().includes(searchKey.toLowerCase()) ) ) : partenaires
-
+    partenairesToShow = tableHeadFilter.ascending ? 
+        _.sortBy(partenairesToShow, (item) => { return item[tableHeadFilter.column]})
+        : _.sortBy(partenairesToShow, (item) => { return item[tableHeadFilter.column]}).reverse();
     return (
         <div className="d-flex flex-column">
             <div className="d-flex align-items-center justify-content-between bg-white shadow-sm py-3 px-2 mb-3">
@@ -96,7 +112,7 @@ function Partenaires(props) {
                             <div class="row">
                                 <div className="d-flex flex-column mb-3">
                                     <label className="d-block mb-2">Nom</label>
-                                    <input className="form-control" onChange={(e)=> setFormPartenaire({name: e.target.value}) } type="text" name="name" value={searchKey} placeholder="Nom du Partenaire" />
+                                    <input className="form-control" onChange={(e)=> setFormPartenaire({name: e.target.value}) } type="text" name="name" value={formPartenaire.name} placeholder="Nom du Partenaire" />
                                 </div>
                             </div>
                             <div className="modal-footer">
@@ -120,11 +136,11 @@ function Partenaires(props) {
                 <table className="Admin__Table px-0">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" >Nom</th>
+                            <th scope="col" onClick={() => { handleTableHeadFilter("id") }}><span className={`d-block ${tableHeadFilter.column === "id" ? "dropdown-toggle" :""} ${tableHeadFilter.ascending === false ? "return" :""}`}>#</span></th>
+                            <th scope="col" onClick={() => { handleTableHeadFilter("name") }}><span className={`d-block ${tableHeadFilter.column === "name" ? "dropdown-toggle" :""} ${tableHeadFilter.ascending === false ? "return" :""}`}>Nom</span></th>
                             {/* <th scope="col" width="400px">Description</th>
                             <th scope="col">Date de Création</th> */}
-                            <th scope="col">Date de création</th>
+                            <th scope="col" onClick={() => { handleTableHeadFilter("created_at") }}><span className={`d-block ${tableHeadFilter.column === "created_at" ? "dropdown-toggle" :""}  ${tableHeadFilter.ascending === false ? "return" :""}`}>Date de création</span></th>
                             <th scope="col" width="100px">Actions</th>
                         </tr>
                     </thead>
@@ -134,7 +150,7 @@ function Partenaires(props) {
                                 <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{item.name}</td>
-                                    <td>{moment(item.created_at).format("Do MMMM YYYY")}</td>
+                                    <td>{moment(item.created_at).format("Do MMMM YYYY HH:mm")}</td>
                                 </tr>
                             )) : 
                             <tr>

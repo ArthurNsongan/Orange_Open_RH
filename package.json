@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^29.0.0",
+    "@ckeditor/ckeditor5-custom-build": "^0.0.1",
     "@ckeditor/ckeditor5-font": "^29.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
     "@ckeditor/ckeditor5-upload": "^29.0.0",
@@ -24,13 +25,16 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
+    "react-jwt": "^1.1.3",
     "react-redux": "^7.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-router-scroll-to-top": "^1.1.2",
     "react-scripts": "4.0.3",
     "react-scroll-restoration": "^1.0.8",
+    "react-select": "^4.3.1",
     "react-toastify": "^7.0.4",
+    "reactjs-localstorage": "^1.0.1",
     "redux": "^4.1.0",
     "swiper": "^6.8.0",
     "web-vitals": "^1.1.2"
@@ -58,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ckeditor5-custom-build": "0.0.6"
   }
 }

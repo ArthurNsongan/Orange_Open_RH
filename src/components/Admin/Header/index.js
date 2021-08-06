@@ -20,7 +20,9 @@ export function SideBar(props) {
 
     return ( 
         <div className="Admin__SideBar">
-            <h5 className="fw-bold px-3 mb-5" style={{"color": "inherit"}}>{config.app.name}</h5>
+            <NavLink to={route.front.home.link}>
+                <h5 className="fw-bold px-3 mb-5" style={{"color": "inherit"}}>{config.app.name}</h5>
+            </NavLink>
             <ul className="Admin__SideBar__List ps-0">
                 <li>
                     <NavLink to={route.admin.users.link} activeStyle={activeItem}>

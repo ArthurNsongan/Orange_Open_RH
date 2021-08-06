@@ -11,6 +11,7 @@ import Projects from '../../screens/Admin/Projects'
 import AddProject from '../../screens/Admin/Projects/AddProject'
 import Partenaires from '../../screens/Admin/Partenaires'
 import EditProject from '../../screens/Admin/Projects/EditProject'
+import ProjectDetail from '../../screens/Admin/Projects/ProjectDetail'
 
 let route = require('../../utils/route.json')
 
@@ -41,6 +42,7 @@ function AdminLayout() {
                                         <Route exact path={`${route.admin.projets.link}/add`} component={AddProject} />
 
                                         <Route exact path={`${route.admin.communautes.link}/:communaute_id/projet/add`} component={AddProject} />
+                                        <Route exact path={`${route.admin.communautes.link}/:communaute_id/projet/:project_id`} component={ProjectDetail} />
                                         <Route exact path={`${route.admin.communautes.link}/:communaute_id/projet/:project_id/edit`} component={EditProject} />
 
                                         <Route exact path={route.admin.partenaires.link} component={Partenaires} />

@@ -35,5 +35,23 @@
             "link" : "/admin/partenaires",
             "title": "Partenaires"
         }
+    },
+    "auth": {
+        "login": {
+            "link": "/auth/login",
+            "title": "Connexion"
+        },
+        "signup": {
+            "link": "/auth/sign-up",
+            "title": "Inscription"
+        },
+        "forgot_password": {
+            "link": "/auth/forgot-password",
+            "title": "Mot de Passe Oublié"
+        },
+        "profile": {
+            "link": "/member/profile",
+            "title": "Mon Compte Membre"
+        }
     }
 }

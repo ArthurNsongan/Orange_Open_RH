@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import { HeroImageHeader } from '../../components/HeroImageSection'
 import AssociationTile from '../../components/AssociationTile'
 import apiRoutes from '../../config/apiConfig'
+import { formatThousandsNumber } from '../../config/constants'
+
 
 import axios from 'axios'
-import server from '../../config/serverConfig'
 
 import { Pagination } from 'antd'
 import { Helmet } from 'react-helmet'
@@ -17,10 +18,6 @@ function Associations(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [associations, setAssociations] = useState([]);
     const taille = 5;
-
-    const formatThousandsNumber = (x) => {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
 
     const [paginationOptions, setPaginationOptions] = useState({
         total: 0,

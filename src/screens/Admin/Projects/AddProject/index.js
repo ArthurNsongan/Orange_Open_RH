@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../../components/Button';
 import RichTextEditor from '../../../../components/RichTextEditor';
 import apiRoutes from '../../../../config/apiConfig';
+import { getAllCategories, getAllPartners } from '../../../../services/API';
 import Images from '../../../../utils/images';
 import Partenaires from '../../Partenaires';
 
@@ -54,6 +55,34 @@ function AddProject(props) {
 
     const handleSubmitAddNewProject = (e) => {
         e.preventDefault()
+
+        let inputListNames = ["partenaires_list", "doc_file"]
+        let firstInvalidItem = null
+        let isValid = true
+        let form = document.querySelector("#AddNewProjetForm")
+        Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
+            item.classList.remove("is-invalid")
+            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
+            {
+                item.classList.add("is-invalid");
+                console.log(item)
+                isValid = false;
+            }
+            if(firstInvalidItem === null) { firstInvalidItem = item}
+        })
+        if(isValid === false || form === null) {
+            window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
+            toast.error(<div className="d-flex align-items-center fs-6">Erreur rencontrée au niveau des champs surlignés !!!</div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+            })
+            return false;
+        }
         console.log(project)
 
         var projectFormData = new FormData();
@@ -91,20 +120,31 @@ function AddProject(props) {
             history.push(route.admin.communautes + "/" + communaute_id)
         }).catch( ({response}) => {
             console.log(response.data)
+            toast.error(<><div className="d-flex align-items-center fs-6 ">Une erreur a été rencontrée sur le serveur !!!</div></>, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
         })
     }
 
     const removeProjectPartner = (index) => {
+        let projectPartnersTmp = project.partners
+        projectPartnersTmp.splice(index, 1)
         setProject({
             ...project,
-            partners: project.partners.splice(index, 1)
+            partners: projectPartnersTmp
         })
+        console.log(projectPartnersTmp)
     }
 
-    const [partenaires, setPartenaires] = useState([
-        {"id" : 1, "name": "Cimencam"},
-        {"id" : 2, "name": "Sorepco"}
-    ]);
+    const [partenaires, setPartenaires] = useState([]);
+
+    const [categories, setCategories] = useState([]);
 
     const handleAddNewProjectPartner = (e) => {
         let projectTemp = {
@@ -119,6 +159,11 @@ function AddProject(props) {
     }
 
     useEffect(() => {
+        getAllCategories((res) => {
+            setCategories(res.data);
+        }, (res) => { console.log(res.data)})
+        getAllPartners( res => { setPartenaires(res.data) },
+            res => console.log(res.data) )
         setLoaded(true)
     }, [props])
 
@@ -188,9 +233,10 @@ function AddProject(props) {
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Catégorie</label>
                             <select name="category_id" className="form-select" onChange={handleAddNewTextInputChange}>
+                                <option value="">Sélectionner la catégorie</option>
                                 {
-                                    [{"id": 2, nom: "Social"},{"id": 2, nom: "Social"}].map((item, index) => {
-                                        return ( <option value={item.id}>{item.nom}</option> )
+                                    categories.map((item, index) => {
+                                        return ( <option value={item.id}>{item.name}</option> )
                                     })
                                 }
                             </select>
@@ -198,6 +244,7 @@ function AddProject(props) {
                         <div className="col-lg-6">
                             <label className="d-block mb-2">Partenaires</label>
                             <select name="partenaires_list" onChange={handleAddNewProjectPartner} className="form-select">
+                                <option value="">Sélectionnez les partenaires</option>
                                 { partenaires.map((item, index) => {
                                     return ( <option value={item.id}>{item.name}</option> )
                                 })}

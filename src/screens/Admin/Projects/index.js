@@ -10,6 +10,7 @@ import 'antd/dist/antd.css'
 import { NavLink } from 'react-router-dom';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import moment from 'moment';
+import DataTable from '../../../components/DataTable';
 // import '@popperjs/core';
 // import 'bootstrap'
 
@@ -35,9 +36,9 @@ function Projects(props) {
 
     const [loaded, setLoaded] = useState(false)
 
-    const getProjects = () => {
+    const getProjects = (currentPage, perPage) => {
         setLoaded(false)
-        axios.get(`${apiRoutes.ProjectsURL}/paginate/${paginationOptions.perPage}?page=${paginationOptions.currentPage}`
+        axios.get(`${apiRoutes.ProjectsURL}/paginate/${perPage}?page=${currentPage}`
         )
         .then( response => {
             setProjects(response.data.data)
@@ -59,13 +60,13 @@ function Projects(props) {
 
     useEffect(() => {
         
-        getProjects();
+        getProjects(paginationOptions.currentPage, paginationOptions.perPage);
         setTimeout(() => setLoaded(true), 500);
 
     }, [props])
 
     const onPaginationChange = (currentPage, perPage) => {
-        getProjects();
+        getProjects(currentPage, perPage);
     }
 
     let projectsToShow = projects
@@ -73,6 +74,11 @@ function Projects(props) {
     if(filterStatus !== "") {
         projectsToShow = projectsToShow.filter((item) => ( _.isEqual(item.status, filterStatus) ) )
     }
+
+    
+    const [searchKey, setSearchKey] = useState("")
+
+    projectsToShow = searchKey !== "" ? projectsToShow.filter( item => (item.title.toLowerCase().includes(searchKey.toLowerCase()) ) ) : projectsToShow
 
     return (
         <>
@@ -84,12 +90,12 @@ function Projects(props) {
             </div>
 
             <div className="row bg-white shadow-sm px-2 py-4 mb-3 mx-0">
-                <h5 className="fw-bold mb-4">Projets</h5>
+                <h4 className="fw-bold mb-4">Projets</h4>
                 <div className="row">
                     <div className="col-lg-4">
                         <div className="d-flex align-items-center mb-3 text-dark">
                             <FontAwesomeIcon icon={faSearch} className="d-inline-block me-2"/>
-                            <input className="form-control" placeholder="Rechercher" />
+                            <input className="form-control" placeholder="Rechercher" onChange={(e)=>{ setSearchKey(e.target.value) }} />
                         </div>
                     </div>
                 </div>
@@ -109,7 +115,15 @@ function Projects(props) {
                 </div>
                     </div>
                 </div>
-                <table className="Admin__Table px-0">
+                <DataTable emptyMessage="Aucun projet trouvé !" loaded={loaded} datas={projectsToShow} columns={[
+                    {title: "#", dataTitle: "id"},
+                    {title: "Nom", dataTitle: "title"},
+                    {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(item.status.replaceAll("_"," ") ) ) },
+                    {title: "Date de fin des contributions",dataTitle:"deadlines",  renderData: (item) => ( moment(item.deadlines).format("Do MMMM YYYY")) },
+                    {title: "Actions", renderData: (item) => ("Actions"), sortable: false},
+                ]}/>
+                {/* <table className="Admin__Table px-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -146,8 +160,8 @@ function Projects(props) {
                             )
                         }
                     </tbody>
-                </table>
-                <div className="row my-4 fs-6 justify-content-between">
+                </table> */}
+                <div className="row my-4 fs-6 justify-content-between"> 
                     <div className="col-lg-6">
                     Affichage de { paginationOptions.perPage} résultats
                     </div>

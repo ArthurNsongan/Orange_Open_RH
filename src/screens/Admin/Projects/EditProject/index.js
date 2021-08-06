@@ -9,6 +9,9 @@ import RichTextEditor from '../../../../components/RichTextEditor';
 import apiRoutes from '../../../../config/apiConfig';
 import Images from '../../../../utils/images';
 import Partenaires from '../../Partenaires';
+import moment from "moment"
+import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { changeProjectStatus, getAllCategories, getAllPartners, getProject } from '../../../../services/API';
 
 let route = require("../../../../utils/route.json")
 
@@ -29,7 +32,7 @@ function EditProject(props) {
 
     const handleAddNewTextInputChange = (e) => {
         let { name, value } = e.target
-        let projectTemp = project
+        let projectTemp = { ...project }
         projectTemp[name] = value
         setProject(projectTemp)
         console.log(projectTemp)
@@ -54,15 +57,47 @@ function EditProject(props) {
 
     const handleSubmitAddNewProject = (e) => {
         e.preventDefault()
+
+        let inputListNames = ["partenaires_list", "doc_file"]
+        let firstInvalidItem = null
+        let isValid = true
+        let form = document.querySelector("#EditNewProjetForm")
+        Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
+            item.classList.remove("is-invalid")
+            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
+            {
+                item.classList.add("is-invalid");
+                console.log(item)
+                isValid = false;
+            }
+            if(firstInvalidItem === null) { firstInvalidItem = item}
+        })
+        if(isValid === false || form === null) {
+            window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
+            toast.error(<div className="d-flex align-items-center fs-6">Erreur rencontrée au niveau des champs surlignés !!!</div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+            })
+            return false;
+        }
         console.log(project)
+
+        console.log("projectToShow", project)
 
         var projectFormData = new FormData();
 
         projectFormData.append("title", project.title)
-        projectFormData.append("association_id", project.association_id)
-
-        projectFormData.append("image", project.image)
+        projectFormData.append("association_id", communaute_id)
+        if( typeof(project.image) === "object") {
+            projectFormData.append("image", project.image)
+        }
         projectFormData.append("cost", project.cost)
+        projectFormData.append("status", project.status)
         projectFormData.append("contributionPerMember", project.contributionPerMember)
         projectFormData.append("deadlines", project.deadlines)
         projectFormData.append("start_date", project.start_date)
@@ -71,40 +106,51 @@ function EditProject(props) {
         projectFormData.append("category_id", parseInt(project.category_id))
 
 
-        axios.post(`${apiRoutes.ProjectsURL}`, projectFormData)
+        axios.post(`${apiRoutes.ProjectsURL}/${project_id}`, projectFormData)
         .then( response => {
             console.log(response.data)
-            
-
-            toast.success(
-                (<div className="d-flex flex-column">Projet créé avec succès</div>)
+                toast.success(
+                (<div className="d-flex flex-column">Projet modifié avec succès</div>)
             )
 
             let projectPartnersTmp = {
-                project_id: response.data.id,
+                project_id: project_id,
                 partners: project.partners.map( item => (item.id))
             }
+            console.log(projectPartnersTmp)
             axios.post(`${apiRoutes.ProjectAddPartenaireURL}`, projectPartnersTmp).then(res => console.log(res.data) )
             .catch(({response}) => {
                 console.log(response.data)
             })
+            changeProjectStatus(project.status, project_id, communaute_id)
             history.push(route.admin.communautes + "/" + communaute_id)
         }).catch( ({response}) => {
             console.log(response.data)
+            toast.error(<><div className="d-flex align-items-center fs-6 ">Une erreur a été rencontrée sur le serveur !!!</div></>, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
         })
     }
 
     const removeProjectPartner = (index) => {
+        let projectPartnersTmp = project.partners
+        projectPartnersTmp.splice(index, 1)
         setProject({
             ...project,
-            partners: project.partners.splice(index, 1)
+            partners: projectPartnersTmp
         })
+        console.log(projectPartnersTmp)
     }
 
-    const [partenaires, setPartenaires] = useState([
-        {"id" : 1, "name": "Cimencam"},
-        {"id" : 2, "name": "Sorepco"}
-    ]);
+    const [partenaires, setPartenaires] = useState([]);
+
+    const [categories, setCategories] = useState([]);
 
     const handleAddNewProjectPartner = (e) => {
         let projectTemp = {
@@ -118,24 +164,55 @@ function EditProject(props) {
         console.log(projectTemp.partners)
     }
 
-    const getProject = (id) => {
-        axios.get(`${apiRoutes.ProjectsURL}/${project_id}`)
-        .then( response => {
-            console.log(response.data)
-            setProject(response.data)
-        }).catch( ({response}) => { console.log(response.data)})
+    // const getProject = (id) => {
+    //     setLoaded(false)
+    //     axios.get(`${apiRoutes.ProjectsURL}/${project_id}`)
+    //     .then( response => {
+    //         console.log(response.data)
+    //         setProject(response.data)
+    //         setLoaded(true)
+    //     }).catch( ({response}) => { console.log(response.data)})
+    // }
+
+    let getProjectSuccess = (response) => {
+        console.log(response.data)
+        setProject({
+            // ...project,
+            ...response.data,
+            category_id: response.data.category.id
+        })
+        setLoaded(true)
+    }
+
+    let getProjectError = (response) => {
+        console.log(response.data)
+        setLoaded(true)
     }
 
     useEffect(() => {
-        setLoaded(true)
-        getProject(project_id)
-    }, [props])
+        // getAllCategories((res) => {
+        //     setCategories(res.data);
+        // }, (res) => { console.log(res.data)} );
+
+        getAllPartners( res => { setPartenaires(res.data) },
+            res => console.log(res.data) )
+        getProject(project_id, getProjectSuccess, getProjectError);
+        axios.get(`${apiRoutes.CategoriesURL}`)
+        .then( response => {
+            setCategories(response.data);
+            console.log(response.data)
+        }).catch(exception => console.log(exception))
+    }, [])
+
+    // useEffect(() => {
+    //     console.log("project", project)
+    // }, [project])
 
     return (
         <div className="d-flex flex-column">
-            <h4 className="fw-bold mb-4">Créer un nouveau projet</h4>
+            <h4 className="fw-bold mb-4">Editer un projet</h4>
             <div className="row bg-white shadow-sm px-2 py-4 mb-3 mx-0">
-                <form id="AddNewProjetForm" onSubmit={handleSubmitAddNewProject}>
+                { loaded ? <form id="EditNewProjetForm" onSubmit={handleSubmitAddNewProject}>
                     <div className="row">
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Titre</label>
@@ -147,13 +224,24 @@ function EditProject(props) {
 
                     <div className="row my-5">
                         <div className="col-lg-6 mb-3">
+                            <label className="d-block mb-2">Statut (Etat) du Projet</label>
+                            <select className="form-select" id="Statut" name="status" onChange={handleAddNewTextInputChange}>
+                                <option value="EN_ATTENTE">En Attente</option>
+                                <option value="EN_COURS">En cours</option>
+                                <option value="TERMINE">Terminé</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="row my-5">
+                        <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Image</label>
                             <input className="form-control" type="file" name="image" accept="image/*" id="Image" onChange={handleAddNewFileInputChange}  
                                 placeholder="Image représentative du projet"/>
                             {/* { *
                                 // project.image !== undefined ? 
                                     {/* ( */}
-                                        <img loading="lazy" src={ project.image ? URL.createObjectURL(project.image) : faImage.iconName }
+                                        <img loading="lazy" src={ project.image ? ( typeof(project.image) === "object" ? URL.createObjectURL(project.image) : `${apiRoutes.StorageURL}/${project.image}` ): faImage.iconName }
                                          alt="Représentative du projet" className="SampleImage mt-3" />
                                     {/* ) 
                                     // : ""
@@ -175,12 +263,12 @@ function EditProject(props) {
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Date de fin des contributions</label>
                             <input type="date" className="form-control" name="deadlines" id="deadLines" onChange={handleAddNewTextInputChange} 
-                                placeholder="Date de fin des contributions"  format="yyyy-mm-dd" value={project.deadlines} />
+                                placeholder="Date de fin des contributions"  format="yyyy-mm-dd" value={moment(project.deadlines).format("yyyy-MM-Do")} />
                         </div>
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Date de début du projet</label>
                             <input type="date" className="form-control" name="start_date" id="startDate" onChange={handleAddNewTextInputChange} 
-                                placeholder="Date de début du projet"  format="yyyy-mm-dd" value={project.start_date} />
+                                placeholder="Date de début du projet"  format="yyyy-mm-dd" value={moment(project.start_date).format("yyyy-MM-Do")} />
                         </div>
                     </div>
 
@@ -197,9 +285,10 @@ function EditProject(props) {
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Catégorie</label>
                             <select name="category_id" className="form-select" onChange={handleAddNewTextInputChange}>
+                                <option value="">Sélectionner la catégorie</option>
                                 {
-                                    [{"id": 2, nom: "Social"},{"id": 2, nom: "Social"}].map((item, index) => {
-                                        return ( <option value={item.id}>{item.nom}</option> )
+                                    categories.map((item, index) => {
+                                        return ( <option selected={project.category.id === item.id} value={item.id}>{item.name}</option> )
                                     })
                                 }
                             </select>
@@ -207,6 +296,7 @@ function EditProject(props) {
                         <div className="col-lg-6">
                             <label className="d-block mb-2">Partenaires</label>
                             <select name="partenaires_list" onChange={handleAddNewProjectPartner} className="form-select">
+                                <option value="">Sélectionner vos partenaires</option>
                                 { partenaires.map((item, index) => {
                                     return ( <option value={item.id}>{item.name}</option> )
                                 })}
@@ -235,6 +325,7 @@ function EditProject(props) {
                         <Button type="submit" className="btn-primary m-2">Enregistrer</Button>
                     </div>
                 </form>
+            : <LoadingSpinner /> }
             </div>
         </div>
     )

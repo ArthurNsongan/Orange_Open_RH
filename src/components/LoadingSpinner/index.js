@@ -1,8 +1,8 @@
 import React from 'react';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = (props) => {
     return(
-        <div class="spinner-border text-dark" role="status">
+        <div className={`spinner-border ${props.className}`} style={props.style} role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     )

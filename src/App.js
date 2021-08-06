@@ -16,7 +16,10 @@ import "moment/locale/fr";
 
 // import { ScrollToTop } from 'react-router-scroll-to-top';
 import ScrollRestoration from 'react-scroll-restoration'
+import { Provider } from 'react-redux';
 // import "bootstrap/dist/js/bootstrap.bundle"
+
+import AppStore from './redux/appStore'
 
 function ScrollToTop() {
   useEffect(() => {
@@ -36,21 +39,23 @@ function App() {
 
   moment().locale("fr")
   return (
-    <BrowserRouter>
-      <ScrollRestoration />
-      <Switch>
-        {/* <Route exact path="/" component={Home} /> */}
-        <Route exact path="/admin*" component={AdminLayout} />
-        <Route path="/*" component={MainLayout} />
-        {/* <Route path="/auth*" component={AuthLayout} /> */}
-      </Switch>
-      <ToastContainer position="top-right"
-          hideProgressBar={false}
-          newestOnTop={false}
-          rtl={false}
-          pauseOnFocusLoss
-          pauseOnHover/>
-    </BrowserRouter>
+    <Provider store={AppStore}>
+      <BrowserRouter>
+        <ScrollRestoration />
+        <Switch>
+          {/* <Route exact path="/" component={Home} /> */}
+          <Route exact path="/admin*" component={AdminLayout} />
+          <Route exact path="/auth*" component={AuthLayout} />
+          <Route exact path="/*" component={MainLayout} />
+        </Switch>
+        <ToastContainer position="top-right"
+            hideProgressBar={false}
+            newestOnTop={false}
+            rtl={false}
+            pauseOnFocusLoss
+            pauseOnHover/>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

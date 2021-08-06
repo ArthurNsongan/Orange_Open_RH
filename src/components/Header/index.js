@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import $ from "jquery"
 import './styles.css';
+import ConnectedUser from '../ConnectedUser';
 
 let route = require('../../utils/route.json')
 
@@ -61,15 +62,11 @@ function Header(props) {
                 <div className="menuNavBarItems">
                     <NavBarList />
                 </div>
-                <div className="accountSection">
-                    <button className="btn rounded-none btn-primary">Se connecter</button>
-                </div>
+                <ConnectedUser />
             </nav>
             <nav className="mobileMenuNavBar d-none" id="mobileMenu">
                 <NavBarList />
-                <div className="accountSection">
-                    <button className="btn rounded-none btn-primary">Se connecter</button>
-                </div>
+                <ConnectedUser />
             </nav>
         </>
     );

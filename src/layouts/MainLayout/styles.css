@@ -87,3 +87,7 @@ height: 7px;
     width: 50%;
     height: 7px;    
 }
+
+figure img {
+    width: 100%;
+}
