@@ -25,3 +25,7 @@ code {
     position: relative !important;
   }
 }
+
+#mega-menu .nav-item.dropdown {
+  z-index: 10000 !important;
+}

@@ -39,9 +39,7 @@ function SecondaryNavigation(props) {
                                 data !== null ?
                                     data.map((post, index) => (
                                         <li key={index}>
-                                            <NavLink to={{
-                                                pathname: `${menuLink}/${post.rhContentDomaineId}/${post.rhContentId}`,
-                                            }} exact>
+                                            <NavLink to={`${menuLink}/${post.rhContentDomaineId}/${post.rhContentId}`} exact>
                                                 {post.rhContentTitle}
                                             </NavLink>
                                         </li>

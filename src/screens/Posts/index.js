@@ -31,7 +31,7 @@ function Posts(props) {
     const {t} = useTranslation();
     let history = useHistory();
     const [search, setSearch] = useState('');
-    const [postsFilter, setPostsFilter] = useState(null);
+    const [postsFilter, setPostsFilter] = useState([]);
     let {id, page, category, domaine} = useParams();
     let pathParam = useParams();
 
@@ -81,8 +81,8 @@ function Posts(props) {
                     props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0] !== undefined &&
                     props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0].rhContentCategoryName}</h1>
                 </div>
-                <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
-                                 categoryId={category}/>
+                {/* <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
+                                 categoryId={category}/> */}
 
                 <SecondaryNavigation
                     data={props.resultGetPostByCategory !== null ? props.resultGetPostByCategory : null}
@@ -105,7 +105,6 @@ function Posts(props) {
                                            aria-label={t('posts.find_post')} aria-describedby="button-addon2"
                                            value={search} onChange={(e) => {
                                         setSearch(e.target.value);
-                                        handleSearch();
                                     }}/>
                                     <div className="input-group-append">
                                         <button type="button" className="btn btn-secondary btn-icon">

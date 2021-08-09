@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, useHistory} from "react-router-dom";
 import Home from "../../screens/Home";
 import PostLayout from "../PostLayout";
 import Posts from "../../screens/Posts/index";
@@ -32,6 +32,13 @@ import Contact from '../../screens/CommonScreen/Contact';
 let route = require('../../utils/route');
 
 function MainLayout(props) {
+
+    const history = useHistory();
+
+    useEffect(() => {
+        window.$("#mega-menu").megamenu();
+    }, [history])
+
     return (
         <>
             <Header/>

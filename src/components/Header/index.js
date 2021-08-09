@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Images} from "../../config/Images";
 import {useTranslation} from "react-i18next";
-import {NavLink, withRouter, useParams} from "react-router-dom";
+import {NavLink, withRouter, useParams, useHistory} from "react-router-dom";
 import {Link} from "react-router-dom";
 
 import {bindActionCreators} from "redux";
@@ -27,6 +27,10 @@ function openTab(data) {
   }
   
 function HeaderAdmin(props) {
+
+    const history = useHistory();
+    // const location = useLocation();
+
     const mystyle = {
         color: "DodgerBlue",
         backgroundColor: "#ccc",
@@ -46,6 +50,7 @@ function HeaderAdmin(props) {
     };
 
     useEffect(() => {
+        window.$("#mega-menu").megamenu();
         props.getAllDomaineAction();
         props.getAllCategoryAction();
         // props.getAllPostsFrontEndAction();
@@ -64,6 +69,22 @@ function HeaderAdmin(props) {
         //     alert("Mega menu loaded !!!!");
         // })
     }, []);
+
+    useEffect(() => {
+        window.$("#mega-menu").megamenu();
+        window.$("#mega-menu .dropdown-toggle.nav-link").click(function() {
+            window.$("#mega-menu .mega-menu-panel.collapse.show").collapse("hide");
+        })
+        window.$(document).ready(function () {
+            $(document).click(function (event) {
+                var click = window.$(event.target);
+                var _open = window.$(".mega-menu-panel.collapse").hasClass("show");
+                if (_open === true && !click.hasClass(".nav-link.active")) {
+                    window.$(".mega-menu-panel.collapse.show").collapse("hide");
+                }
+            });
+        });
+    })
 
     const NavUser = () => (
         <nav role="navigation" className="navbar navbar-dark navbar-expand-md" aria-label="Main navigation">
@@ -229,7 +250,7 @@ function HeaderAdmin(props) {
                                     )) :
                                     <li className="nav-item dropdown align-self-start">
                                         <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"
-                                           role="button" id="dropdownMenu">{t("navigation.other")}</a>
+                                           role="button" id="dropdownMenu" onClick={() => window.$(".mega-menu-panel.collapse.show").collapse("hide") }>{t("navigation.other")}</a>
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenu">
                                             {
                                                 route.menu_header_user.map((menuItem) => (

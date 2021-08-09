@@ -141,8 +141,8 @@ function PostDetail(props) {
                 <div className="container">
                     <h1>{t("posts.title")}</h1>
                 </div>
-                <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
-                                 categoryId={category}/>
+                {/* <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
+                                 categoryId={category}/> */}
                 { /* <SecondaryNavigation data={props.resultPosts} menuLink={route.post.root}/> */ }
                 <header id="secondary_nav" className="bg-light mb-4 overflow-hidden">
                     <div className="container-main">
@@ -166,7 +166,7 @@ function PostDetail(props) {
                                             <NavLink to={`${route.post.root}/${category}`}>{item.rhContentCategory.rhContentCategoryName }</NavLink>
                                         </li>)) : "Unknown"
                                 }
-                                <li class="breadcrumb-item"><a href={`${route.post.root}/${category}/${post.rhContentDomaineId}`}>{ post.rhContentDomaine != null ? post.rhContentDomaine.rhContentDomaineName : "" }</a></li>
+                                {/* <li class="breadcrumb-item"><a href={`${route.post.root}/${category}/${post.rhContentDomaineId}`}>{ post.rhContentDomaine != null ? post.rhContentDomaine.rhContentDomaineName : "" }</a></li> */}
                                 <li class="breadcrumb-item active" aria-current="page">{ post.rhContentTitle }</li>
                               </ol>
                             </nav>
