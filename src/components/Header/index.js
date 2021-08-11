@@ -157,7 +157,7 @@ function HeaderAdmin(props) {
                                                                 // props.resultGetDomaine.filter(domaine => (domaine.rhContentCategoryId === menu.rhContentCategoryId) && (domaine.rhContentDomaineState))
                                                                     props.resultGetAllPostsRH !== null &&
                                                                     props.resultGetAllPostsRH
-                                                                    .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId && onePost.rhContentPostType === 5) && onePost.rhContentDomaine.rhContentDomaineState)
+                                                                    .filter(onePost => (onePost.rhContentDomaine.rhContentCategoryId === menu.rhContentCategoryId && onePost.rhContentPostType === Constant.publicationID) && onePost.rhContentDomaine.rhContentDomaineState)
                                                                     .map((post) => (
                                                                         <li className="nav-item">
                                                                             {

@@ -70,6 +70,8 @@ function Posts(props) {
         }
     };
 
+    const postCategory = props.resultGetCategory !== null ? props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0] : ""
+
     return (
         <>
             <Helmet>
@@ -77,10 +79,23 @@ function Posts(props) {
             </Helmet>
             <div className="post-header pt-5 bg-white">
                 <div className="container">
-                    <h1>{props.resultGetCategory !== null &&
+                    <h1 className="mb-1">{props.resultGetCategory !== null &&
                     props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0] !== undefined &&
                     props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0].rhContentCategoryName}</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb bg-transparent mt-0 mb-1">
+                            <li className="breadcrumb-item"><NavLink to="/">{t(route.home.title)}</NavLink></li>
+                            <li className="breadcrumb-item">
+                                {
+                                    postCategory != null && (
+                                        postCategory.rhContentCategoryName || "Unknow"
+                                    )
+                                }
+                            </li>
+                        </ol>
+                    </nav>
                 </div>
+                
                 {/* <NavigationLight menuLink={`${route.post.root}/${category}`} additionnalClasses
                                  categoryId={category}/> */}
 

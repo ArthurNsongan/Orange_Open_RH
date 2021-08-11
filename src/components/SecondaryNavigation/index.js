@@ -37,9 +37,9 @@ function SecondaryNavigation(props) {
                         <ul className="marquee-vertical">
                             {
                                 data !== null ?
-                                    data.map((post, index) => (
+                                    data.filter( item => item.rhContentPostType === Constant.publicationID).map((post, index) => (
                                         <li key={index}>
-                                            <NavLink to={`${menuLink}/${post.rhContentDomaineId}/${post.rhContentId}`} exact>
+                                            <NavLink to={`${menuLink}/${post.rhContentDomaine.rhContentCategoryId}/${post.rhContentDomaineId}/${post.rhContentId}`} exact>
                                                 {post.rhContentTitle}
                                             </NavLink>
                                         </li>
