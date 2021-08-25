@@ -33,7 +33,7 @@ function HeaderAdmin(props) {
 
     const mystyle = {
         color: "DodgerBlue",
-        backgroundColor: "#ccc",
+        // backgroundColor: "#ccc",
         padding: "10px",
         fontFamily: "HelvNeueOrange !important"
       };
@@ -74,7 +74,7 @@ function HeaderAdmin(props) {
         window.$("#mega-menu").megamenu();
         window.$("#mega-menu .dropdown-toggle.nav-link").click(function() {
             window.$("#mega-menu .mega-menu-panel.collapse.show").collapse("hide");
-        })
+        });
         window.$(document).ready(function () {
             $(document).click(function (event) {
                 var click = window.$(event.target);
@@ -83,6 +83,38 @@ function HeaderAdmin(props) {
                     window.$(".mega-menu-panel.collapse.show").collapse("hide");
                 }
             });
+            window.$("#mega-menu .mega-menu-panel-dropdown").hover(
+                function(event) {
+                    var item = window.$(event.target);
+                    console.log("nav-item", item);
+                    window.$("#mega-menu .mega-menu-panel").collapse("hide");
+                    // window.$(event.target.href).collapse("show")
+                    console.log("nav-item href", event.target.href)
+                    item.removeClass("collapsed")
+                    // var link = item.find(".mega-menu-panel-dropdown-link");
+                    item.trigger("click");
+                },
+                function(event) {
+                    var item = window.$(event.target);
+                    console.log("nav-item", item);
+                    // window.$(event.target.href).collapse("hide")
+                    // console.log("nav-item href", event.target.href)
+                    // item.addClass("collapsed")
+                    // item.trigger("click");
+                }
+            )
+            // window.$("#mega-menu .mega-menu-panel.collapse.show").hover(
+            //     function(event) {
+            //     },
+            //     function(event) {
+            //         var item = window.$(event.target);
+            //         item.collapse("hide");
+            //         // window.$(event.target.href).collapse("hide")
+            //         // console.log("nav-item href", event.target.href)
+            //         // item.addClass("collapsed")
+            //         // item.trigger("click");
+            //     }
+            // )
         });
     })
 
@@ -90,7 +122,7 @@ function HeaderAdmin(props) {
         <nav role="navigation" className="navbar navbar-dark navbar-expand-md" aria-label="Main navigation">
             {console.log(result !== null || Utils.isConnected())}
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+                <NavLink className="navbar-brand" exact to="/">
                     <img src={Images.logo} className="d-inline-block align-bottom ml-0 mr-1"
                          alt="Back to homepage" title="Back to homepage" width="50" height="50" loading="lazy"/>
                     {/* <span className="ml-2 align-self-end">
@@ -101,7 +133,7 @@ function HeaderAdmin(props) {
 
                     <img src={Images.openRH1} className="w-100px d-inline-block align-bottom ml-1 mr-1"
                         alt={t("app.name")} title={t("app.name")} loading="lazy"/>
-                </a>
+                </NavLink>
                 <button className="navbar-toggler d-md-none collapsed" type="button" data-toggle="collapse"
                         data-target="#mega-menu" aria-controls="megamenu" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -128,8 +160,8 @@ function HeaderAdmin(props) {
                                     props.resultGetCategory !== null &&
                                     props.resultGetCategory.filter(category => category.rhContentCategoryState)
                                         .map((menu, index) => (
-                                            <li className="nav-item" key={`menu-${index}`}>
-                                                <a className="nav-link" href={`#mega-level-${index}-collapse`}
+                                            <li className="nav-item d-block" role="button" key={`menu-${index}`}>
+                                                <a className="nav-link mega-menu-panel-dropdown" href={`#mega-level-${index}-collapse`}
                                                    data-toggle="collapse">{t(menu.rhContentCategoryName)}</a>
                                                 <div className="mega-menu-panel collapse" style={mystyle}
                                                      id={`mega-level-${index}-collapse`}>
@@ -255,7 +287,7 @@ function HeaderAdmin(props) {
                                             {
                                                 route.menu_header_user.map((menuItem) => (
                                                     menuItem.link.includes("http://") ?
-                                                        <a href={menuItem.link} className="dropdown-item">
+                                                        <a target="_blank" rel="noreferrer" href={menuItem.link} className="dropdown-item">
                                                             {t(menuItem.title)}
                                                         </a> :
                                                         <NavLink  to={menuItem.link} className="dropdown-item"
@@ -335,24 +367,24 @@ function HeaderAdmin(props) {
             
             
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-modal="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">{t('posts.find_post')}</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{t('posts.find_post')}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </header>
     )
 }

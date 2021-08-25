@@ -18,11 +18,11 @@ export default function Footer(props) {
                     <div className="container-fluid">
                         <div className="row justify-content-between mb-0">
                             <ul className="nav">
-                                <li className="nav-item"><a href={ Constant.applicationRh.taleo.url } className="nav-link"><span>{ Constant.applicationRh.taleo.title }</span></a></li>
-                                <li className="nav-item"><a href={ Constant.applicationRh.myInfos.url } className="nav-link"><span>{ Constant.applicationRh.myInfos.title }</span></a></li>
-                                <li className="nav-item"><a href={ Constant.applicationRh.e_learning.url } className="nav-link"><span>{ Constant.applicationRh.e_learning.title }</span></a></li>
-                                <li className="nav-item"><a href={ Constant.applicationRh.livretAcueil.url } className="nav-link"><span>{ Constant.applicationRh.livretAcueil.title }</span></a></li>
-                                <li className="nav-item"><a href={ Constant.applicationRh.fusion.url } className="nav-link"><span>{ Constant.applicationRh.fusion.title }</span></a></li>
+                                <li className="nav-item"><a target="_blank" rel="noreferrer" href={ Constant.applicationRh.taleo.url } className="nav-link"><span>{ Constant.applicationRh.taleo.title }</span></a></li>
+                                <li className="nav-item"><a target="_blank" rel="noreferrer" href={ Constant.applicationRh.myInfos.url } className="nav-link"><span>{ Constant.applicationRh.myInfos.title }</span></a></li>
+                                <li className="nav-item"><a target="_blank" rel="noreferrer" href={ Constant.applicationRh.e_learning.url } className="nav-link"><span>{ Constant.applicationRh.e_learning.title }</span></a></li>
+                                <li className="nav-item"><a target="_blank" rel="noreferrer" href={ Constant.applicationRh.livretAcueil.url } className="nav-link"><span>{ Constant.applicationRh.livretAcueil.title }</span></a></li>
+                                <li className="nav-item"><a target="_blank" rel="noreferrer" href={ Constant.applicationRh.fusion.url } className="nav-link"><span>{ Constant.applicationRh.fusion.title }</span></a></li>
                             </ul>
                             <ul className="nav">
                                 <li className="nav-item"><NavLink to={`${route.faq.root}`} className="nav-link"><span>{t('faq.title')}</span></NavLink></li>
