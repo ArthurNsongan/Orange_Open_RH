@@ -29,6 +29,7 @@ import { faArrowAltCircleDown, faUser, faFemale, faMale, faPlus  } from "@fortaw
 import ReactPlayer from "react-player";
 import * as moment from "moment";
 import Loader from "../../components/Loader";
+import { Images } from '../../config/Images';
 
 let route = require('../../utils/route');
 
@@ -192,37 +193,46 @@ function Home(props) {
                 <div className="container-fluid">
                     <div className="row home-slider-container pt-5 pb-5">
                         <div className="col-12 col-lg-3 ">
-                                <div className="row bg-secondary pl-2 rounded-xl flex-column justify-content-center pt-3 pb-2">
+                                <div className="row pl-2 rounded-xl flex-column justify-content-center pb-2 pt-2">
                                     <h4 className="text-primary">{t("common.application_Rh")}</h4>
                                     <div className="row">
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* taleo*/}
-                                            <a target="_blank"  rel="noreferrer" href={Constant.applicationRh.taleo.url} className="btn">
-                                                <h5>  {Constant.applicationRh.taleo.title}</h5>
+                                            <a target="_blank"  rel="noreferrer" href={Constant.applicationRh.taleo.url} className="btn letter-spacing-1 hrApp">
+                                                <h5 className="font-weight-bold mb-0"> 
+                                                    <img src={Images.Taleo} className="mr-1" alt="" width="auto" height="50px" />
+                                                    <span className="hrAppLabel">{Constant.applicationRh.taleo.title}</span>
+                                                </h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* my infos*/}
-                                            <a target="_blank" rel="noreferrer" href={Constant.applicationRh.myInfos.url} className="btn">
-                                                <h5> {Constant.applicationRh.myInfos.title}</h5>
+                                            <a target="_blank" rel="noreferrer" href={Constant.applicationRh.myInfos.url} className="btn letter-spacing-1 hrApp">
+                                                <h5 className="font-weight-bold mb-0">
+                                                    <img src={Images.myInfo} className="mr-1" alt="" width="auto" height="65px" />
+                                                    <span className="hrAppLabel">{Constant.applicationRh.myInfos.title}</span>
+                                                </h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* e_learning */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="btn">
-                                                <h5> {Constant.applicationRh.e_learning.title}</h5>
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="btn letter-spacing-1 hrApp">
+                                                <h5 className="font-weight-bold mb-0"> 
+                                                    <img src={Images.eLearning} className="mr-1" alt="" width="auto" height="30px" />
+                                                    {/* {Constant.applicationRh.e_learning.title} */}
+                                                </h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* livret d'accueil */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.livretAcueil.url) } className="btn">
-                                                <h5>{Constant.applicationRh.livretAcueil.title}</h5>
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.livretAcueil.url) } className="btn letter-spacing-1 hrApp">
+                                                <h5 className="font-weight-bold mb-0">{Constant.applicationRh.livretAcueil.title}</h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* Fusion */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.fusion.url) } className="btn">
-                                                <h5>{Constant.applicationRh.fusion.title}</h5>
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.fusion.url) } className="btn letter-spacing-1 hrApp">
+                                                <h5 className="font-weight-bold">{Constant.applicationRh.fusion.title}</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -241,11 +251,12 @@ function Home(props) {
                                                 props.result !== null &&
                                                 <Slider
                                                     navigation={false}
+                                                    autoplay={{ delay: 5500, loop: true }}
                                                     pagination={true}
                                                     className={"home-slider"}
                                                     slides={props.result}
                                                     renderItem={(post) => (
-                                                        <div className="col px-2 mx-3">
+                                                        <div className="col">
                                                             <div
                                                                 className="row no-gutters shadow-sm rounded overflow-hidden flex-md-row mb-4 h-md-250 position-relative bg-white">
                                                                 {/*                                            <div className="col-6 p-4 d-flex flex-column position-static">
@@ -272,7 +283,7 @@ function Home(props) {
                                                     </div>*/}
                                                                 <div className="d-flex flex-row"></div>
                                                                 <div className="row news-card bg-white">
-                                                                    <div className="col-md-5">
+                                                                    <div className="col-md-6 px-0">
                                                                         {
                                                                             !_.isNil(post.rhContentPrincipalLink) ?
                                                                                 Utils.isImageFileUrl(post.rhContentPrincipalLink) ?
@@ -291,7 +302,7 @@ function Home(props) {
                                                                                         height="200px"
                                                                                         url={Config.imageFolder + post.rhContentPrincipalLink}
                                                                                     />
-                                                                                : <img className="img-fluid img-reponsive"
+                                                                                : <img className=""
                                                                                     loading="lazy"
                                                                                     alt=""
                                                                                     style={{ objectFit: "cover", width: "100%", height: "250px"}}
@@ -299,12 +310,12 @@ function Home(props) {
                                                                         }
 
                                                                     </div>
-                                                                    <div className="col-md-7 p-3 pr-3">
+                                                                    <div className="col-md-6 align-self-center p-3 pr-3">
                                                                         <div className="news-feed-text">
                                                                             <h4 className="">{post.rhContentTitle}</h4>
                                                                             <span className="date">
-                                                                                <div className="mb-1 font-weight-medium h6">
-                                                                                    {moment(post.rhContentDateCreated).format("lll")}
+                                                                                <div className="mb-1 font-weight-medium text-dark text-capitalize h6">
+                                                                                    {moment(post.rhContentDatePublish).format("ll")}
                                                                                 </div>
                                                                             </span>
                                                                             <span>
@@ -509,19 +520,19 @@ function Home(props) {
                                         // Fotsing Bernard,Tanga Benjamin,Egbenchong Laura,Ewambil Edanmoua Claude Gaelle,Tchoupou Alain,Bonga Christelle,Ndjaka Deborah,Ngono Romeo,Melingui Herve, Mmira Abdoulahi, Mvondo Belinda.
                                     // </h5>
                                     <Slider 
-                                            className={"mb-0"}
-                                            autoplay={{ delay: 5000, loop: true }}
-                                            slides={eLearners}
-                                            navigation
-                                            pagination
-                                            renderItem={ item => (
-                                                <h4 className="py-1 text-center text-white">{item}</h4>
-                                            )}
+                                        className={"mb-0"}
+                                        autoplay={{ delay: 5000, loop: true }}
+                                        slides={eLearners}
+                                        navigation
+                                        pagination
+                                        renderItem={ item => (
+                                            <h4 className="py-1 text-center text-white">{item}</h4>
+                                        )}
                                     />
                                 }
                                     subTitle={t('common.top_elearning')}
                                     count=''
-                                    childClass="bg-primary"
+                                    childClass="bg-green1"
                                     icon={faUser}
                                     className="col-12"
                                     style={{ paddingRight: ".1em" }} />
@@ -866,7 +877,7 @@ function Home(props) {
                 </div>
             </section>
 
-            <section className="home">
+            {/* <section className="home">
                 <div className="col-lg-12 col-sm-12 col-md-12 py-5">
                     <div className="container">
                         <h3 className="text-capitalize pb-3
@@ -909,7 +920,7 @@ function Home(props) {
                                                 <img src="https://picsum.photos/800/450" alt={post.rhContentTitle}
                                                      className="img-fluid bd-placeholder-img"/>
                                             </div>*/}
-                                                        <div className="d-flex flex-row"></div>
+                                                        {/* <div className="d-flex flex-row"></div>
                                                         <div className="row news-card bg-white">
                                                             <div className="col-md-5">
                                                                 {
@@ -970,15 +981,15 @@ function Home(props) {
 
                                 }
 
-                            </div>
+                            </div> */}
 
                             {/* <div className="col-lg-3 col-sm-3 col-md-3 col-xs-12">
                                 <PostWidgetList theme="black" posts={props.resultBlog} />
                             </div> */}
-                        </div>
+                        {/* </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
         </>
     );
 

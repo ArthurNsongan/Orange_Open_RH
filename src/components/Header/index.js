@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Images} from "../../config/Images";
 import {useTranslation} from "react-i18next";
 import {NavLink, withRouter, useParams, useHistory} from "react-router-dom";
@@ -50,6 +50,9 @@ function HeaderAdmin(props) {
     };
 
     useEffect(() => {
+        // window.setTimeout = function() {
+
+        // }
         window.$("#mega-menu").megamenu();
         props.getAllDomaineAction();
         props.getAllCategoryAction();
@@ -70,13 +73,20 @@ function HeaderAdmin(props) {
         // })
     }, []);
 
+    const [timeoutID, setTimeoutID] = useState("")
+    const hideMegaMenu = () => {
+        window.$("#mega-menu .mega-menu-panel.collapse.show").collapse("hide");
+    }
+
     useEffect(() => {
+
         window.$("#mega-menu").megamenu();
         window.$("#mega-menu .dropdown-toggle.nav-link").click(function() {
             window.$("#mega-menu .mega-menu-panel.collapse.show").collapse("hide");
         });
         window.$(document).ready(function () {
-            $(document).click(function (event) {
+            // if (this.matchMedia("(min-width: 768px)").matches) {
+                $(document).click(function (event) {
                 var click = window.$(event.target);
                 var _open = window.$(".mega-menu-panel.collapse").hasClass("show");
                 if (_open === true && !click.hasClass(".nav-link.active")) {
@@ -86,35 +96,51 @@ function HeaderAdmin(props) {
             window.$("#mega-menu .mega-menu-panel-dropdown").hover(
                 function(event) {
                     var item = window.$(event.target);
-                    console.log("nav-item", item);
                     window.$("#mega-menu .mega-menu-panel").collapse("hide");
                     // window.$(event.target.href).collapse("show")
                     console.log("nav-item href", event.target.href)
-                    item.removeClass("collapsed")
+                    item.toggleClass("collapsed","active");
                     // var link = item.find(".mega-menu-panel-dropdown-link");
-                    item.trigger("click");
+                    item.parent().find(".mega-menu-panel.collapse").collapse("show");
                 },
                 function(event) {
                     var item = window.$(event.target);
-                    console.log("nav-item", item);
+                    // setTimeout(hideMegaMenu, 1000, {"timeoutID": 13502});
                     // window.$(event.target.href).collapse("hide")
                     // console.log("nav-item href", event.target.href)
                     // item.addClass("collapsed")
                     // item.trigger("click");
                 }
             )
-            // window.$("#mega-menu .mega-menu-panel.collapse.show").hover(
+            // $("#mega-menu .mega-menu-item").hover(
             //     function(event) {
+            //       const $this = $(this);
+            //       console.log("nav-item href", event.target)
+            //     //   $this.addClass("show");
+            //       $this.find(".mega-menu-panel-dropdown").attr("aria-expanded", "true").removeClass("collapsed");
+            //       $this.find(".mega-menu-panel").addClass("show");
             //     },
             //     function(event) {
-            //         var item = window.$(event.target);
-            //         item.collapse("hide");
-            //         // window.$(event.target.href).collapse("hide")
-            //         // console.log("nav-item href", event.target.href)
-            //         // item.addClass("collapsed")
-            //         // item.trigger("click");
+            //         const $this = $(this);
+            //         console.log("nav-item href", event.target)
+            //         //   $this.removeClass(showClass);
+            //         $this.find(".mega-menu-panel-dropdown").attr("aria-expanded", "false").addClass("collapsed").trigger("click");
+            //         //   $this.find($dropdownMenu).removeClass(s);
+            //     }
+            //   );
+            // window.$("#mega-menu .mega-menu-panel.collapse").hover(
+            //     function(event) {
+            //         clearTimeout(13502);
+            //     },
+            //     function(event) {
+            //         var click = window.$(event.target);
+            //         var _open = window.$(".mega-menu-panel.collapse").hasClass("show");
+            //         if (_open === true && !click.hasClass(".nav-link.active")) {
+            //             window.$(".mega-menu-panel.collapse.show").collapse("hide");
+            //         }
             //     }
             // )
+            // }
         });
     })
 
@@ -160,7 +186,7 @@ function HeaderAdmin(props) {
                                     props.resultGetCategory !== null &&
                                     props.resultGetCategory.filter(category => category.rhContentCategoryState)
                                         .map((menu, index) => (
-                                            <li className="nav-item d-block" role="button" key={`menu-${index}`}>
+                                            <li className="nav-item mega-menu-item d-block" role="button" key={`menu-${index}`}>
                                                 <a className="nav-link mega-menu-panel-dropdown" href={`#mega-level-${index}-collapse`}
                                                    data-toggle="collapse">{t(menu.rhContentCategoryName)}</a>
                                                 <div className="mega-menu-panel collapse" style={mystyle}

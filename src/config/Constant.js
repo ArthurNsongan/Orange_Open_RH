@@ -143,7 +143,7 @@ export const Constant = {
     },
     applicationRh:{
         myInfos:{
-            title:"My infos",
+            title:"MyInfo",
             url:"https://sirh-prod-app.adcm.orangecm:4443/",
         },
          taleo:{

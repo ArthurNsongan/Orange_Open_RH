@@ -11,6 +11,10 @@ import openRH1 from '../assets/img/OpenRH_1.svg'
 import openRH2 from '../assets/img/OpenRH_2.svg'
 import HRBP from '../assets/img/HRBP.png'
 
+import eLearning from '../assets/img/Orange Learning.png'
+import myInfo from '../assets/img/MyInfo.png'
+import Taleo from '../assets/img/Taleo.png'
+
 export const Images = {
     logo,
     signInBanner,
@@ -23,5 +27,8 @@ export const Images = {
     openRH2,
     notfoundillustration,
     underConstructIllustration,
-    HRBP
+    HRBP,
+    eLearning,
+    myInfo,
+    Taleo
 };
