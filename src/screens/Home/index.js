@@ -194,7 +194,7 @@ function Home(props) {
                     <div className="row home-slider-container pt-5 pb-5">
                         <div className="col-12 col-lg-3 ">
                                 <div className="row pl-2 rounded-xl flex-column justify-content-center pb-2 pt-2">
-                                    <h4 className="text-primary">{t("common.application_Rh")}</h4>
+                                    <h4 className="text-dark">{t("common.application_Rh")}</h4>
                                     <div className="row">
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* taleo*/}
