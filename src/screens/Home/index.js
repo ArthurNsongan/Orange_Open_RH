@@ -200,8 +200,8 @@ function Home(props) {
                                             {/* taleo*/}
                                             <a target="_blank"  rel="noreferrer" href={Constant.applicationRh.taleo.url} className="btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0"> 
-                                                    <img src={Images.Taleo} className="mr-1" alt="" width="auto" height="50px" />
-                                                    <span className="hrAppLabel">{Constant.applicationRh.taleo.title}</span>
+                                                    {/* <img src={Images.Taleo} className="mr-1" alt="" width="auto" height="50px" /> */}
+                                                    {Constant.applicationRh.taleo.title}
                                                 </h5>
                                             </a>
                                         </div>
@@ -209,8 +209,8 @@ function Home(props) {
                                             {/* my infos*/}
                                             <a target="_blank" rel="noreferrer" href={Constant.applicationRh.myInfos.url} className="btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0">
-                                                    <img src={Images.myInfo} className="mr-1" alt="" width="auto" height="65px" />
-                                                    <span className="hrAppLabel">{Constant.applicationRh.myInfos.title}</span>
+                                                    {/* <img src={Images.myInfo} className="mr-1" alt="" width="auto" height="65px" /> */}
+                                                    {Constant.applicationRh.myInfos.title}
                                                 </h5>
                                             </a>
                                         </div>
@@ -218,8 +218,8 @@ function Home(props) {
                                             {/* e_learning */}
                                             <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0"> 
-                                                    <img src={Images.eLearning} className="mr-1" alt="" width="auto" height="30px" />
-                                                    {/* {Constant.applicationRh.e_learning.title} */}
+                                                    {/*<img src={Images.eLearning} className="mr-1" alt="" width="auto" height="30px" />*/}
+                                                    {Constant.applicationRh.e_learning.title}
                                                 </h5>
                                             </a>
                                         </div>
