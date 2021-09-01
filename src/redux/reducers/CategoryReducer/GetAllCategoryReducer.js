@@ -1,5 +1,7 @@
 import * as CategoryType from '../../types/CategoryType';
 
+var _ = require("lodash");
+
 const initialState = {
     loading: false,
     result: null,
@@ -17,7 +19,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                result: action.result.data.filter(category => category.rhContentCategoryId > 4),
+                result: _.sortBy(action.result.data.filter(category => category.rhContentCategoryId > 4), ['rhContentCategoryDateCreated']),
                 error: null
             };
         case CategoryType.GET_CATEGORY_ERROR:

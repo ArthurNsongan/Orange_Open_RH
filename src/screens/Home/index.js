@@ -119,7 +119,7 @@ function Home(props) {
         </div>
     );
 
-    const eLearners = "Fotsing Bernard,Tanga Benjamin,Egbenchong Laura,Ewambil Edanmoua Claude Gaelle,Tchoupou Alain,Bonga Christelle,Ndjaka Deborah,Ngono Romeo,Melingui Herve,Mmira Abdoulahi,Mvondo Belinda"
+    const eLearners = "Kemtsop Raissa, Chenesoh Chofobuzi, Douala Marie, Asse Fabrice, Ngono Romeo, Tetang Pierre , Abunaw Enow , Biboum Bernard, Bouopda Elie, Yameni Ngomso Brice"
     .split(",");
 
 

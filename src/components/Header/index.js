@@ -184,7 +184,9 @@ function HeaderAdmin(props) {
                                 </li>
                                 {
                                     props.resultGetCategory !== null &&
-                                    props.resultGetCategory.filter(category => category.rhContentCategoryState)
+                                    ( props.resultGetCategory.filter(category => category.rhContentCategoryState).length < 4 ? 
+                                        props.resultGetCategory.filter(category => category.rhContentCategoryState) 
+                                        : props.resultGetCategory.filter(category => category.rhContentCategoryState).slice(0, 5) )
                                         .map((menu, index) => (
                                             <li className="nav-item mega-menu-item d-block" role="button" key={`menu-${index}`}>
                                                 <a className="nav-link mega-menu-panel-dropdown" href={`#mega-level-${index}-collapse`}
@@ -292,7 +294,8 @@ function HeaderAdmin(props) {
                                         ))
                                 }
                                 {props.resultGetCategory !== null &&
-                                props.resultGetCategory.filter(category => category.rhContentCategoryState).length <= 4 ?
+                                props.resultGetCategory.filter(category => category.rhContentCategoryState).length <= 
+                                3 ?
                                     route.menu_header_user.map((menu, index) => (
                                         <li className="nav-item" key={`menu-${index}`}>
                                             <NavLink to={menu.link} className="nav-link"
@@ -311,7 +314,24 @@ function HeaderAdmin(props) {
                                            role="button" id="dropdownMenu" onClick={() => window.$(".mega-menu-panel.collapse.show").collapse("hide") }>{t("navigation.other")}</a>
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenu">
                                             {
-                                                route.menu_header_user.map((menuItem) => (
+                                                ( props.resultGetCategory != null && props.resultGetCategory.filter(
+                                                    category => category.rhContentCategoryState).length > 3 ) && 
+                                                props.resultGetCategory.filter(
+                                                    category => category.rhContentCategoryState).slice(5).map((item, index) => {
+                                                    return (<NavLink  to={`${route.post.root}/${item.rhContentCategoryId}`} className="dropdown-item"
+                                                    aria-expanded
+                                                    // isActive={matchWorkaround(menuItem.link)}
+                                                    activeClassName=""
+                                                    activeStyle={{
+                                                        color: 'var(--orange)'
+                                                    }}
+                                                    exact>
+                                                        { item.rhContentCategoryName }
+                                                    </NavLink>)
+                                                })
+                                            }
+                                            {
+                                                props.resultGetCategory != null &&                                                route.menu_header_user.map((menuItem) => (
                                                     menuItem.link.includes("http://") ?
                                                         <a target="_blank" rel="noreferrer" href={menuItem.link} className="dropdown-item">
                                                             {t(menuItem.title)}
