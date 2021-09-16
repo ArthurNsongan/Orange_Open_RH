@@ -36,6 +36,19 @@ code {
   background-color: #0e71b4 !important;
 }
 
+.btn-primary-2 {
+  /* border-radius: 50px !important; */
+  background: linear-gradient(145deg, #0f79c1, #0d66a2);
+  box-shadow: inset 10px 10px 30px #0b5587, inset -10px -10px 30px #128de1 !important;
+}
+
+.btn-secondary-2 {
+  /* border-radius: 50px !important; */
+  background: #b4e60f !important;
+  box-shadow: inset 10px 10px 30px #87ad0b,
+    inset -10px -10px 30px #e1ff13 !important;
+}
+
 .text-primary-2 {
   color: #0e71b4;
 }

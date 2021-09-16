@@ -65,6 +65,7 @@ function MainLayout(props) {
                     <h1>Perdu !!!</h1>
                 </Route> */}
                 <AuthUserRoute exact path={`${route.auth.profile.link}`} component={MemberProfile}/>
+                {/* <Route exact path={`${route.auth.profile.link}`} component={MemberProfile} /> */}
             </Switch>
             <Footer />
         </>

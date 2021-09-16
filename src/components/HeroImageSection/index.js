@@ -18,7 +18,7 @@ function HeroImageSection(props) {
     
     return (
         <section className={`HeroSection ${props.className !== undefined ? props.className : ''} ${props.animate ? "" : "unanimated"} `}>
-            <img className="HeroImage" alt="" src={Images.heroImg} />
+            <img className="HeroImage" alt="" src={ props.image !== undefined ? props.image : Images.heroImg2} />
             <div className="HeroContent">
                 { children }
             </div>
@@ -59,7 +59,7 @@ export function HeroImageHeader(props) {
 
     return(
         <section ref={heroImgHeader} className={`HeroImageHeader ${props.className !== undefined ? props.className : "" } ${ unAnimated ? "unanimated" : '' } `}>
-            <img className="HeroImage" style={{...imageStyle, "height": `${props.height} !important`}} alt="" src={ props.image !== undefined ? props.image : Images.heroImg} />
+            <img className="HeroImage" style={{...imageStyle, "height": `${props.height} !important`}} alt="" src={ props.image !== undefined ? props.image : Images.heroImg2} />
             <div className="HeroContent" style={{"height": `${props.height} !important`}}>
                 { props.children }
             </div>

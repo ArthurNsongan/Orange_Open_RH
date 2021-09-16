@@ -91,3 +91,8 @@ height: 7px;
 figure img {
     width: 100%;
 }
+
+#contributionPaymentModal {
+    z-index: 10000000;
+    background-color: #00000090 !important;
+}

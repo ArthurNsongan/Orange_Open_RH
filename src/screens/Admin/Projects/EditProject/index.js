@@ -11,13 +11,26 @@ import Images from '../../../../utils/images';
 import Partenaires from '../../Partenaires';
 import moment from "moment"
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import { changeProjectStatus, getAllCategories, getAllPartners, getProject } from '../../../../services/API';
+import { changeProjectStatus, getAllCategories, getAllPartners, getProject, removeProjectPartner } from '../../../../services/API';
+import { getSupervisorAssociationId, hasRole, isAdmin, isSupervisor } from '../../../../services/Auth';
 
 let route = require("../../../../utils/route.json")
 
 function EditProject(props) {
 
-    const {communaute_id, project_id} = useParams()
+    const {project_id} = useParams()
+    const params = useParams()
+
+    var redirect_route = ""
+    var communaute_id = null
+
+    if( isSupervisor() && !isAdmin()) {
+       communaute_id = getSupervisorAssociationId()
+       redirect_route = route.supervisor.link
+    } else if( isAdmin() ) {
+        communaute_id = params.communaute_id
+        redirect_route = route.admin.communautes.link + "/" + communaute_id
+    }
 
     let history = useHistory();
 
@@ -55,10 +68,10 @@ function EditProject(props) {
         // setLoaded(true)
     }
 
-    const handleSubmitAddNewProject = (e) => {
+    const handleSubmitEditNewProject = (e) => {
         e.preventDefault()
 
-        let inputListNames = ["partenaires_list", "doc_file"]
+        let inputListNames = ["partenaires_list", "doc_file", "image"]
         let firstInvalidItem = null
         let isValid = true
         let form = document.querySelector("#EditNewProjetForm")
@@ -85,6 +98,7 @@ function EditProject(props) {
             })
             return false;
         }
+
         console.log(project)
 
         console.log("projectToShow", project)
@@ -92,7 +106,7 @@ function EditProject(props) {
         var projectFormData = new FormData();
 
         projectFormData.append("title", project.title)
-        projectFormData.append("association_id", communaute_id)
+        // projectFormData.append("association_id", communaute_id)
         if( typeof(project.image) === "object") {
             projectFormData.append("image", project.image)
         }
@@ -109,21 +123,28 @@ function EditProject(props) {
         axios.post(`${apiRoutes.ProjectsURL}/${project_id}`, projectFormData)
         .then( response => {
             console.log(response.data)
-                toast.success(
-                (<div className="d-flex flex-column">Projet modifié avec succès</div>)
-            )
-
             let projectPartnersTmp = {
                 project_id: project_id,
                 partners: project.partners.map( item => (item.id))
             }
+            
             console.log(projectPartnersTmp)
             axios.post(`${apiRoutes.ProjectAddPartenaireURL}`, projectPartnersTmp).then(res => console.log(res.data) )
             .catch(({response}) => {
                 console.log(response.data)
             })
-            changeProjectStatus(project.status, project_id, communaute_id)
-            history.push(route.admin.communautes + "/" + communaute_id)
+
+            changeProjectStatus(project.status, project_id, communaute_id, 
+                (res) => { },
+                (exception) => { if(exception.response) {
+                    toast.error(
+                        (<div className="d-flex flex-column">{ exception.response.data.error }</div>)
+                    )        
+                }})
+            toast.success(
+                (<div className="d-flex flex-column">{ "Projet modifié avec succès !" }</div>)
+            ) 
+            history.push(redirect_route)
         }).catch( ({response}) => {
             console.log(response.data)
             toast.error(<><div className="d-flex align-items-center fs-6 ">Une erreur a été rencontrée sur le serveur !!!</div></>, {
@@ -136,10 +157,17 @@ function EditProject(props) {
                     progress: undefined,
                 })
         })
+        
     }
 
-    const removeProjectPartner = (index) => {
+    const removeProjectPartnerItem = (index) => {
         let projectPartnersTmp = project.partners
+        removeProjectPartner({
+            project_id: project.id,
+            partners: [projectPartnersTmp[index].id]
+        }, (response) => {
+            toast.success(<div className="d-flex flex-column">{ "Partenaire supprimé avec succès !!" }</div>)
+        })
         projectPartnersTmp.splice(index, 1)
         setProject({
             ...project,
@@ -212,7 +240,7 @@ function EditProject(props) {
         <div className="d-flex flex-column">
             <h4 className="fw-bold mb-4">Editer un projet</h4>
             <div className="row bg-white shadow-sm px-2 py-4 mb-3 mx-0">
-                { loaded ? <form id="EditNewProjetForm" onSubmit={handleSubmitAddNewProject}>
+                { loaded ? <form id="EditNewProjetForm" onSubmit={handleSubmitEditNewProject}>
                     <div className="row">
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Titre</label>
@@ -226,9 +254,10 @@ function EditProject(props) {
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Statut (Etat) du Projet</label>
                             <select className="form-select" id="Statut" name="status" onChange={handleAddNewTextInputChange}>
-                                <option value="EN_ATTENTE">En Attente</option>
-                                <option value="EN_COURS">En cours</option>
-                                <option value="TERMINE">Terminé</option>
+                                <option>Sélectionner un statut</option>
+                                <option value="EN_ATTENTE" selected={ "EN_ATTENTE" === project.status}>En Attente</option>
+                                <option value="EN_COURS" selected={ "EN_COURS" === project.status}>En cours</option>
+                                <option value="TERMINE" selected={ "TERMINE" === project.status}>Terminé</option>
                             </select>
                         </div>
                     </div>
@@ -304,7 +333,7 @@ function EditProject(props) {
                             <div className="d-flex mt-3">
                                 { project.partners !== undefined ? project.partners.map( (item, index) => (
                                     <span className="d-inline-block bg-secondary rounded m-2 text-gray">
-                                        <button className="border-0 p-2 fw-bold" onClick={() => removeProjectPartner(index)}><FontAwesomeIcon icon={faTimes} className="me-3" role="button" />{item.name}</button>
+                                        <button className="border-0 p-2 fw-bold" onClick={() => removeProjectPartnerItem(index)}><FontAwesomeIcon icon={faTimes} className="me-3" role="button" />{item.name}</button>
                                     </span>
                                  ) ) : null}
                             </div>            

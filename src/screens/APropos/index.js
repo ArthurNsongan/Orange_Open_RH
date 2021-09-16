@@ -1,5 +1,6 @@
 import React from 'react'
 import Equipe from '../../components/Equipe'
+import Experts from '../../components/Experts'
 import { HeroImageHeader } from '../../components/HeroImageSection'
 import Partenaires from '../../components/Partenaires'
 
@@ -32,6 +33,13 @@ function APropos(props) {
                 <div className="row my-5 py-5 justify-content-center">
                     <h2 className="fw-bold mb-5 text-center headingFunPrim contentCenter">Nos partenaires</h2>
                     <Partenaires />
+                </div>
+                <div className="row mb-5 justify-content-center">
+                    <h2 className="fw-bold mb-5 text-center headingFunPrim contentCenter">Nos experts</h2>
+                    <p className="fs-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <Experts />
+                    </p>
                 </div>
                 <div className="row mb-5 justify-content-center">
                     <h2 className="fw-bold mb-5 text-center headingFunPrim contentCenter">Notre histoire</h2>

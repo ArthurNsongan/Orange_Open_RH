@@ -74,7 +74,7 @@ function Home(props) {
             >    
                 <SwiperSlide>
                     { ( { isActive } ) => (
-                        <HeroImageSection animate={isActive}>
+                        <HeroImageSection animate={isActive} image={Images.heroImg3}>
                                                     {/* {console.log(isActive)} */}
                         <div className="HeroHeading container">
                             <div className="justify-content-center d-flex">
@@ -109,8 +109,8 @@ function Home(props) {
                 <div className="row justify-content-start">
                     <div className="col-lg-6 align-self-center">
                         <h2 className="h2 mb-5 d-block text-primary-2 fw-bold">Notre solution solidaire au service de l'entrepreunariat</h2>
-                        <p className="mb-5 fs-5 d-block">Challenge Solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
-                            Challenge Solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
+                        <p className="mb-5 fs-5 d-block">Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
+                            Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
                         <NavLink to={route.front.communautes.link}><Button>Visitez les communautés</Button></NavLink>
                     </div>
                     <div className="col-lg-6">
@@ -124,8 +124,8 @@ function Home(props) {
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
                             <div className="h1 pb-5 text-center" style={{ "fontWeight": "600"}}>Nous sommes une <span className=" pt-3 text-secondary-2">entreprise sérieuse et intègre</span></div>
-                            <p className="text-center fs-5">Challenge Solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
-                                Challenge Solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
+                            <p className="text-center fs-5">Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
+                                Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
                             <div className="d-flex justify-content-center"><Button data-bs-toggle="modal" className="btn-primary text-center" data-bs-target="#ChallengeSolDocsModal">Voir nos documents</Button></div>
 
                             <div className="modal" id="ChallengeSolDocsModal">
@@ -168,22 +168,22 @@ function Home(props) {
                             <div className="d-flex justify-content-center">
                                 <span className="d-flex align-items-center justify-content-center fs-1 fw-bold itemFunSec p-2">1</span>
                             </div>
-                            <p className="h4 text-center fw-bold my-3">Créez votre <br />association</p>
-                            <p className="fs-5 text-center lh-2">Challenge solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
+                            <p className="h4 text-center fw-bold my-3">Créez votre <br />communauté</p>
+                            <p className="fs-5 text-center lh-2">Challenge solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
                         </div>
                         <div className="col-lg-4 elevate">
                             <div className="d-flex justify-content-center">
                                 <span className="d-flex align-items-center justify-content-center fs-1 fw-bold p-2 itemFunSec">2</span>
                             </div>
                             <p className="h4 text-center fw-bold my-3">Invitez votre membres <br />à contribuer à vos projets</p>
-                            <p className="fs-5 text-center lh-2">Challenge solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
+                            <p className="fs-5 text-center lh-2">Challenge solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
                         </div>
                         <div className="col-lg-4 elevate">
                             <div className="d-flex justify-content-center">
                                 <span className="d-flex align-items-center justify-content-center fs-1 fw-bold p-2 itemFunSec">3</span>
                             </div>
                             <p className="h4 text-center fw-bold my-3">Contrôlez les contributions <br />au projet</p>
-                            <p className="fs-5 text-center lh-2">Challenge solidarité est une association de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
+                            <p className="fs-5 text-center lh-2">Challenge solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités.</p>
                         </div>
                     </div>
             </div>
@@ -228,7 +228,7 @@ function Home(props) {
                                 className="col-lg-3 col-md-6" 
                                 number={10}
                                 iconComp={<Images.Communities width="100px" height="100px" />}
-                                title="Associations"/>
+                                title="Communautés"/>
                             <StatCard 
                                 className="col-lg-3 col-md-6 " 
                                 number={10}

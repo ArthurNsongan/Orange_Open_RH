@@ -22,10 +22,10 @@ function ConnectedUser() {
                     </NavLink>
                 </div>) :
                 <div className="accountSection">
-                    <NavLink to={`${route.front.home.link}`}>
+                    <NavLink to={`${route.auth.profile.link}`}>
                         <button className="btn rounded-none btn-primary">Bonjour <span className="text-capitalize">{ getConnectedUser().name }</span></button>
-                        <button className="btn rounded-none btn-secondary-2" onClick={() => { userLogout(() => { history.push(route.auth.login.link) }) }}><FontAwesomeIcon icon={faSignOutAlt} /></button>
                     </NavLink>
+                    <button className="btn rounded-none btn-secondary-2" title="Déconnexion" onClick={() => { userLogout((response) => { history.push(route.auth.login.link) }) }}><FontAwesomeIcon icon={faSignOutAlt} /></button>
                 </div> 
             }
         </>

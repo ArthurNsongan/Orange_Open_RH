@@ -7,7 +7,7 @@ import { Pagination } from "antd"
 import 'antd/dist/antd.css'
 // import Button from '../../../components/Button'
 
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import moment from 'moment';
 import DataTable from '../../../components/DataTable';
@@ -28,9 +28,15 @@ function Projects(props) {
     })
 
     const statuses = [
-        "EN_COURS",
-        "TERMINE"
+        { value : "EN_COURS", label: "En cours"},
+        { value : "TERMINE", label: "Terminé"},
     ]
+
+    const formattedStatus = {
+        "EN_COURS" : "En Cours",
+        "TERMINE" : "Terminé",
+        "EN_ATTENTE": "En Attente"
+    }
 
     const [filterStatus, setfilterStatus] = useState("")
 
@@ -61,7 +67,6 @@ function Projects(props) {
     useEffect(() => {
         
         getProjects(paginationOptions.currentPage, paginationOptions.perPage);
-        setTimeout(() => setLoaded(true), 500);
 
     }, [props])
 
@@ -107,8 +112,8 @@ function Projects(props) {
                     {
                         statuses.map((item, index) => {
                             return(
-                                <span onClick={() => setfilterStatus(item)} role="button"
-                                className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === item ? "border-bottom border-3 text-primary fw-bold border-primary" : ""}`}>{_.capitalize(item.replaceAll("_", " "))}</span>
+                                <span onClick={() => setfilterStatus(item.value)} role="button"
+                                className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === item.value ? "border-bottom border-3 text-primary fw-bold border-primary" : ""}`}>{_.capitalize(item.label)}</span>
                             )
                         })
                     }
@@ -116,12 +121,24 @@ function Projects(props) {
                     </div>
                 </div>
                 <DataTable emptyMessage="Aucun projet trouvé !" loaded={loaded} datas={projectsToShow} columns={[
-                    {title: "#", dataTitle: "id"},
+                    {title: "#", dataTitle: "id", sortable: false},
                     {title: "Nom", dataTitle: "title"},
-                    {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
-                    {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(item.status.replaceAll("_"," ") ) ) },
+                    {title: "Communauté", renderData: (item) =>( <b>{item.holder}</b>)},
+                    // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(formattedStatus[item.status].replaceAll("_"," ") ) ) },
                     {title: "Date de fin des contributions",dataTitle:"deadlines",  renderData: (item) => ( moment(item.deadlines).format("Do MMMM YYYY")) },
-                    {title: "Actions", renderData: (item) => ("Actions"), sortable: false},
+                    {title: "Actions", renderData: (item) => (
+                        <>
+                            <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <FontAwesomeIcon icon={faEllipsisV} />
+                            </button>
+                            <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
+                                <Link to={`${route.admin.communautes.link}/${item.association_id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
+                                <Link to={`${route.admin.communautes.link}/${item.association_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
+                                {/* <Link className="dropdown-item">Supprimer</Link> */}
+                            </div>
+                        </>
+                    ), sortable: false},
                 ]}/>
                 {/* <table className="Admin__Table px-0">
                     <thead>

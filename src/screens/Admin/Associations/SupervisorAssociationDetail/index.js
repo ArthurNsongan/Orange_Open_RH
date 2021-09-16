@@ -6,19 +6,18 @@ import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"
 // import Button from '../../../components/Button'
 
-import $, { data } from "jquery"
+import $ from "jquery"
 import { toast } from 'react-toastify';
 import { Link, NavLink, useParams } from 'react-router-dom';
-import { Pagination } from "antd"
-import 'antd/dist/antd.css'
 import ProgressBar from '../../../../components/ProgressBar';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 import { activateMember, getAssociationInactiveMembers, getAssociationMembers, getAssociationProjects } from '../../../../services/API';
+import { defaultUserRoles, getRoles, getSupervisorAssociationId } from '../../../../services/Auth';
+import { Pagination } from 'antd';
 import DataTable from '../../../../components/DataTable';
 import Button from '../../../../components/Button';
-import { formatThousandsNumber } from '../../../../config/constants';
 
 // import '@popperjs/core';
 // import 'bootstrap'
@@ -29,92 +28,53 @@ let route = require('../../../../utils/route.json')
 var _ = require('lodash');
 
 
-function AssociationDetail(props) {
+function SupervisorAssociationDetail(props) {
     // const [associations, setAssociations] = useState([]);
 
     const [association, setAssociation] = useState({})
 
     const [lastProjects, setLastProjects] = useState([])
 
-    const [members, setMembers] = useState([])
-
     const [inactiveMembers, setInactiveMembers] = useState([])
 
     const [loaded, setLoaded] = useState(false)
 
     const [inactiveMembersLoaded, setInactiveMembersLoaded] = useState(false)
-
-
-    // const [associationMembers, setAssociationMembers] = useState([])
+    
+    const [members, setMembers] = useState([])
 
     // const [associationTypes, setAssociationTypes] = useState([]);
 
     // const taille = 10;
 
+    const communaute_id = getSupervisorAssociationId()
+
     useEffect(() => {
+
+        // alert(getRoles().find(item => item.name === defaultUserRoles.SUPERVISOR_ROLE ).pivot.association_id)
 
         axios.get(`${apiRoutes.AssociationsURL}/${communaute_id}`)
         .then( response => {
             setAssociation(response.data)
-            // setPaginationOptions(
-            //     {
-            //         total: response.data.meta.total,
-            //         perPage: response.data.meta.per_page,
-            //         currentPage: response.data.meta.current_page,
-            //     }
-            // )
             console.log(response.data)
         })
 
         getAssociationProjects(communaute_id, (res) => {
             setLastProjects(res.data)
             console.log(res.data)
-        }, (exception) => { console.log(exception?.response.data) })
+        }, (res) => { console.log(res.data)})
 
         getAssociationMembers(communaute_id, (res) => {
             setMembers(res.data)
             console.log(res.data)
         }, (exception) => { console.log(exception?.response?.data) })
 
+
         setTimeout(() => {
             setLoaded(true);
         }, 3000)
 
-    }, [props])
-
-    const [notifyRequest, setNotifyRequest] = useState({
-        processing: false,
-        content: ""
-    })
-
-    function getAssocInactiveMembers() {
-        getAssociationInactiveMembers(communaute_id, (response) => {
-            console.log(response.data)
-            setInactiveMembers(response.data)
-            setInactiveMembersLoaded(true);
-        }, exception => {
-            console.log(exception?.response?.data)
-        })
-    }
-
-
-    const notifyMembers = () => {
-        setNotifyRequest({...notifyRequest, processing: true});
-        setTimeout(() => { setNotifyRequest({...notifyRequest, processing: false}); })
-        toast.success(`Tous les utilisateurs de l'association ${association.name} ont été relancées`)
-    }
-
-
-    const paginationOptions = {
-        total: 0,
-        perPage: 5,
-        currentPage: 1
-    }
-
-    const [projectsPaginationOptions, setProjectsPaginationOptions] = useState(paginationOptions)
-
-    const [membersPaginationOptions, setMembersPaginationOptions] = useState(paginationOptions)
-
+    }, [communaute_id])
 
     // const handleSubmitNewAssociation = () => {
     //     console.log("Association Object : \n");
@@ -194,7 +154,30 @@ function AssociationDetail(props) {
     //     })
     // }
 
-    const { communaute_id } = useParams();
+    // const { communaute_id } = useParams();
+
+    const paginationOptions = {
+        total: 0,
+        perPage: 5,
+        currentPage: 1
+    }
+
+    const [notifyRequest, setNotifyRequest] = useState({
+        processing: false,
+        content: ""
+    })
+
+
+    const notifyMembers = () => {
+        setNotifyRequest({...notifyRequest, processing: true});
+        setTimeout(() => { setNotifyRequest({...notifyRequest, processing: false}); })
+        toast.success(`Tous les utilisateurs de l'association ${association.name} ont été relancées`)
+    }
+
+
+    const [projectsPaginationOptions, setProjectsPaginationOptions] = useState(paginationOptions)
+
+    const [membersPaginationOptions, setMembersPaginationOptions] = useState(paginationOptions)
 
     const onProjectsPaginationChange = (currentPage, perPage) => {
         // getProjects(currentPage, perPage);
@@ -202,6 +185,16 @@ function AssociationDetail(props) {
 
     const onMembersPaginationChange = (currentPage, perPage) => {
         // getProjects(currentPage, perPage);
+    }
+
+    function getAssocInactiveMembers() {
+        getAssociationInactiveMembers(communaute_id, (response) => {
+            console.log(response.data)
+            setInactiveMembers(response.data)
+            setInactiveMembersLoaded(true);
+        }, exception => {
+            console.log(exception?.response?.data)
+        })
     }
 
     const memberActivation = (member_id, index) => {
@@ -226,10 +219,10 @@ function AssociationDetail(props) {
             {/* <h2>Communautés</h2> */}
             { !_.isEqual({}, association) ? <Helmet title={association.name + " - Communautés"} /> : "" }
             <div className="d-flex flex-column">
-                <NavLink className="d-flex align-items-center mb-3" to={`${route.admin.communautes.link}`}>
+                {/* <NavLink className="d-flex align-items-center mb-3" to={`${route.admin.communautes.link}`}>
                     <FontAwesomeIcon icon={faArrowLeft} />
                     <span className="d-block mx-2 fs-6 mb-0">Revenir à la liste</span>
-                </NavLink>
+                </NavLink> */}
                 <h3 className="fw-bold mb-4">{association.name}</h3>
                 <div className="d-flex">
                     <NavLink className="m-2" exact to={`${route.admin.communautes.link}/edit/${communaute_id}`} >
@@ -245,24 +238,24 @@ function AssociationDetail(props) {
                     </div>    
                     <div className="m-2">
                         <button className="btn btn-secondary-2 text-white" data-bs-toggle="modal" data-bs-target="#inactiveAssociationMembersModal" onClick={getAssocInactiveMembers}><FontAwesomeIcon icon={faUserLock} className="d-inline-block me-3"></FontAwesomeIcon>Membres inactifs</button>
-                    </div>            
+                    </div>
                 </div>
             </div>
-            { association.projets != null ?
+            { true ?
                 (<>
                     <hr className="my-4"/>
                     <div className="d-flex flex-column">
                         <h4 className="fw-bold">Projet en cours</h4>
-                        <h4 className="mt-3 fw-bold mx-3">{ association.projets.title }</h4>
+                        <h4 className="mt-3 fw-bold mx-3">Construction du siège social</h4>
                         <div className="my-3 mx-3">
-                            <ProgressBar percent={association.projets.stat.pourcentage.replace("%","")} />
+                            <ProgressBar percent="30" />
                             <div className="row">
-                                <span className="d-block fw-bold col-4 fs-5 my-2">{association.projets.stat.pourcentage}</span>
-                                <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(association.projets.cost - association.projets.stat.reste)} acquis</b><br/>sur {formatThousandsNumber(association.projets.cost)} F</span>
-                                <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(association.projets.stat.contributions)}</b> contributions</span>
+                                <span className="d-block fw-bold col-4 fs-5 my-2">30%</span>
+                                <span className="d-block fs-5 col-4 my-2"><b>4 000 000 acquis FCFA</b><br/>sur 12 000 000 F</span>
+                                <span className="d-block fs-5 col-4 my-2"><b>250</b> contributeurs</span>
                             </div>
                         </div>
-                        <NavLink className="my-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/${association.projets.id}`}>
+                        <NavLink className="my-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/1`}>
                             <button className="btn btn-secondary-2 text-white"><FontAwesomeIcon icon={faEye} className="d-inline-block me-3"></FontAwesomeIcon>Voir le projet</button>
                         </NavLink>
                     </div>
@@ -278,51 +271,7 @@ function AssociationDetail(props) {
                         </div>
                     </div>
                 </div>
-                {/* <table className="Admin__Table px-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" width="300px">Nom</th>
-                            <th scope="col" width="400px">Description</th>
-                            <th scope="col">Etat du projet</th>
-                            <th scope="col">Date de fin des contributions</th>
-                            <th scope="col" width="100px">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            loaded === false ?
-                            (
-                                <tr>
-                                    <th scope="row"><LoadingSpinner /></th>
-                                </tr>
-                            )
-                            : 
-                            (
-                                lastProjects.map((item, index) => (
-                                    <tr key={index}>
-                                        <th scope="col">{index + 1}</th>
-                                        <td width="">{item.title}</td>
-                                        <td width="400px">{item.description}</td>
-                                        <td width="200px">{item.description.length > 100 ? item.description.slice(0, 50) + "..." : item.description}</td>
-                                        <td>{_.capitalize(item.status.replaceAll("_"," ")) }</td>
-                                        <td>{ moment(item.deadlines).format("D MMMM YYYY") }</td>
-                                        <td width="100px">
-                                            <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <FontAwesomeIcon icon={faEllipsisV} />
-                                            </button>
-                                            <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
-                                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
-                                                <Link className="dropdown-item">Supprimer</Link>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            )
-                        }
-                    </tbody>
-                </table> */}
+                
                 <DataTable className="Admin__Table__Fixed" emptyMessage="Aucun projet trouvé !" loaded={loaded} datas={lastProjects} columns={[
                     {title: "#", renderData: (item, index) => { return <span className="fw-bold px-2">{ index + 1 }</span> }, sortable: false},
                     {title: "Nom", dataTitle: "title"},
@@ -355,7 +304,7 @@ function AssociationDetail(props) {
                     Affichage de { projectsPaginationOptions.perPage} résultats
                     </div>
                     <div className="col-lg-6">
-                        <Pagination 
+                        <Pagination
                             className="d-flex justify-content-end"
                             total={projectsPaginationOptions.total}
                             pageSize={projectsPaginationOptions.perPage}
@@ -377,49 +326,6 @@ function AssociationDetail(props) {
                         </div>
                     </div>
                 </div>
-                {/* <table className="Admin__Table px-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Prénom</th>
-                            <th scope="col">Téléphone</th>
-                            <th scope="col">Date d'Inscription</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { loaded ?
-                            ( associationMembers.length === 0 ?
-                                (<tr>
-                                    <td colSpan="6" className="text-center"> Aucun membre trouvé</td>
-                                    <th scope="row">1</th>
-                                    <td>Anga</td>
-                                    <td>John</td>
-                                    <td>699 999 999</td>
-                                    <td>{ moment().format("D MMMM YYYY H:mm") }</td>
-                                    <td></td>
-                                </tr>)
-                                : 
-                                associationMembers.map( (item, index) => (
-                                    <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{item.name}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.memberNumber}</td>
-                                        <td>{ moment(item.created_at).format("D MMMM YYYY H:mm") }</td>
-                                        <td></td>
-                                    </tr>
-                                ))
-                            ) :
-                            (<tr>
-                                <td colSpan="6" className="text-center">
-                                    <LoadingSpinner />
-                                </td>
-                            </tr>)
-                        }
-                    </tbody>
-                </table> */}
                 <DataTable emptyMessage="Aucun membre pour le moment !" loaded={loaded} datas={members} columns={[
                     {title: "#", dataTitle: "id", sortable: false, renderData: (item, index) => ( index + 1 )},
                     {title: "Nom", dataTitle: "name"},
@@ -434,7 +340,7 @@ function AssociationDetail(props) {
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
                                 {/* <Link to={`${route.admin.users.link}/${item.id}`} className="dropdown-item">Voir</Link> */}
                                 { item.pivot.is_active === 0 
-                                    && <button className="dropdown-item" onClick={() => { memberActivation(item.id, index) }}>Activer</button> }
+                                    && <button href="#" className="dropdown-item" onClick={() => memberActivation(item.id, index )}>Activer</button> }
                                 <Link to={`${route.admin.users.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
                                 {/* <Link className="dropdown-item">Supprimer</Link> */}
                             </div>
@@ -466,7 +372,7 @@ function AssociationDetail(props) {
                                         <h2 className="text-center fw-normal headingFunPrim contentCenter">Notifier les membres de <b>{ association.name }</b></h2>
                                     </div>
                                     <div className="d-flex flex-column mt-4 mb-3">
-                                        <textarea rows="6" className="form-control" onChange={(e) => { setNotifyRequest({...notifyRequest, content: e.target.value}) }} value={notifyRequest.content} placeholder="Contenu du message de relance"></textarea>
+                                        <textarea className="form-control" rows="6" onChange={(e) => { setNotifyRequest({...notifyRequest, content: e.target.value}) }} value={notifyRequest.content} placeholder="Contenu du message de relance"></textarea>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
@@ -481,6 +387,7 @@ function AssociationDetail(props) {
                     </div>
                 </div>
 
+                
                 <div className="modal fade" id="inactiveAssociationMembersModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
                     <div className="modal-dialog modal-fullscreen modal-dialog-centered">                
                         <div className="modal-content">
@@ -533,4 +440,4 @@ function AssociationDetail(props) {
     )
     }
 
-export default AssociationDetail;
+export default SupervisorAssociationDetail;

@@ -28,12 +28,13 @@ function Projects(props) {
     useEffect(() => {
         getAllInProgressProjects(paginationOptions.currentPage, paginationOptions.perPage, 
             (response) => {
+                console.log(response.data)
                 setIsLoading(false)
                 setPaginationOptions(
                     {
-                        total: response.data.total,
-                        perPage: response.data.per_page,
-                        currentPage: response.data.current_page,
+                        total: response.data.meta.total,
+                        perPage: response.data.meta.per_page,
+                        currentPage: response.data.meta.current_page,
                     }
                 )
                 setProjects(response.data.data)
@@ -46,6 +47,7 @@ function Projects(props) {
         getAllInProgressProjects(currentPage, perPage, 
             (response) => {
                 setIsLoading(false)
+                console.log(response.data)
                 setPaginationOptions(
                     {
                         total: response.data.total,
@@ -54,7 +56,6 @@ function Projects(props) {
                     }
                 )
                 setProjects(response.data.data)
-                console.log(response.data)
             }, (res) => { console.log(res) }, 
             () => { setIsLoading(true)})
     }
@@ -99,7 +100,6 @@ function Projects(props) {
                         <ProjectTile project={item} key={index} className="col-lg-4 justify-content-center" owner={item.holder}
                         contribution={formatThousandsNumber(item.cost)}
                         image={item.image}
-                        contributionNeeded={formatThousandsNumber(100000000)}
                         title={item.title} 
                         percent="40" 
                         contributors="250"/>

@@ -40,6 +40,8 @@ function Associations(props) {
         return ( item.name.includes(`${search}`) || item.description.includes(`${search}`) )
     }
 
+    const [associationToToggle, setAssociationToToggle] = useState({})
+
     const [paginationOptions, setPaginationOptions] = useState({
         total: 0,
         perPage: 5,
@@ -67,10 +69,9 @@ function Associations(props) {
                 }
             )
             setAssociations(response.data.data)
+            setLoaded(true)
             console.log(response.data)
         })
-
-        setTimeout(() => setLoaded(true), 500)
 
     }, [props])
 
@@ -89,6 +90,10 @@ function Associations(props) {
             setLoaded(true)
             console.log(response.data)
         })
+    }
+
+    const handleDeactivateAssociation = () => {
+
     }
 
     const handleSubmitNewAssociation = () => {
@@ -151,7 +156,11 @@ function Associations(props) {
     //     setAssociation(assocTemp)
     //     console.log(association)
     // }
-    
+
+    const [searchKey, setSearchKey] = useState("")
+
+    let filteredAssocs = searchKey !== "" ? associations.filter( item => (item.name.toLowerCase().includes(searchKey.toLowerCase()) ) ) : associations
+
     return (
         <div className="d-flex flex-column">
             {/* <h2>Communautés</h2> */}
@@ -167,11 +176,11 @@ function Associations(props) {
                     <div className="col-lg-4">
                         <div className="d-flex align-items-center mb-3 text-dark">
                             <FontAwesomeIcon icon={faSearch} className="d-inline-block me-2"/>
-                            <input className="form-control" placeholder="Rechercher" />
+                            <input className="form-control" placeholder="Rechercher" onChange={(e) => setSearchKey(e.target.value) }/>
                         </div>
                     </div>
                 </div>
-                <DataTable emptyMessage="Aucun résultat" loaded={loaded} datas={associations} columns={[
+                <DataTable emptyMessage="Aucun résultat" loaded={loaded} datas={filteredAssocs} columns={[
                     {title: "#", dataTitle: "id"},
                     {title: "Nom", dataTitle: "name"},
                     {title: "Description", dataTitle: "description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
@@ -185,7 +194,7 @@ function Associations(props) {
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
                                 <Link to={`${route.admin.communautes.link}/${item.id}`} className="dropdown-item">Voir</Link>
                                 <Link to={`${route.admin.communautes.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
-                                <Link className="dropdown-item">Supprimer</Link>
+                                <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteAssocForm" onClick={()=>{setAssociationToToggle(item)}}>Supprimer</button>
                             </div>
                         </>
                     ), sortable: false},
@@ -246,6 +255,24 @@ function Associations(props) {
                         />
                     </div>
                 </div>
+                <div className="modal fade" id="deleteAssocForm" tabIndex="-1" aria-labelledby="deleteAssocFormLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title fw-bold h3" id="addAssociationFormLabel">Suppression d'une communauté</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <h4 className="fw-normal text-center">Voulez-vous désactiver la communauté { "<<" } <b>{ associationToToggle.name }</b> { ">>" } ? </h4>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                                <button type="button" className="btn btn-primary" onClick={handleDeactivateAssociation}>Oui</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* <div className="modal fade" id="addAssociationForm" tabIndex="-1" aria-labelledby="addAssociationFormLabel" aria-hidden="true">
                     <div className="modal-dialog modal-xl">
                         <div className="modal-content">

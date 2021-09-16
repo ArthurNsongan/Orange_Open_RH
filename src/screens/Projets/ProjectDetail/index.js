@@ -10,6 +10,8 @@ import apiRoutes from '../../../config/apiConfig';
 import Images from '../../../utils/images';
 import { formatThousandsNumber } from '../../../config/constants'
 import Interweave from 'interweave'
+import { getAccessToken, initPayment } from '../../../services/API';
+import { toast } from 'react-toastify';
 
 let route = require('../../../utils/route.json')
 const _ = require("lodash")
@@ -18,7 +20,7 @@ function ProjectDetail(props) {
 
     const { projetId, projetName } = useParams();
 
-    const [project, setProject] = useState({})
+    const [project, setProject] = useState({ stat: {} })
 
     const projet = {
         "association": "L'ordre des médécins",
@@ -42,15 +44,70 @@ function ProjectDetail(props) {
 
     const [loaded, setLoaded] = useState(false)
 
+    const [contributionProcess, setContributionProcess] = useState({
+        OmAccountNumber: "",
+        PIN: null,
+        processing: false,
+        accessToken: "",
+        amount: "1",
+    })
+
+    const handleProcessChange = (e) => {
+        let contributionTmp = contributionProcess;
+        contributionTmp[e.target.name] = e.target.value;
+        setContributionProcess({...contributionProcess, contributionTmp});
+        console.log(contributionTmp)
+        console.log("Input Length : " + e.target.value.length + " is a Number : " + !isNaN(e.target.value))
+    }
+
     const getProject = () => {
         setLoaded(false)
         axios.get(`${apiRoutes.ProjectsURL}/${projetId}`)
         .then( response => {
             setProject(response.data)
+            // setContributionProcess({...contributionProcess, amount: response.data.contributionPerMember})
             setTimeout( () => setLoaded(true), 1000)
             // setLoaded(true)
             console.log(response.data)
         }).catch( ({response}) => { console.log(response.data)})
+    }
+
+    const preparePayment = () => {
+        // alert("OmAccount Number " + contributionProcess.OmAccountNumber);
+        // alert("OmAccount Number " + contributionProcess.PIN);
+        setContributionProcess({...contributionProcess, processing: true})
+        getAccessToken(
+            (response) => {
+                console.log("front", response.data);
+                setContributionProcess({...contributionProcess, accessToken: response.data.data.payToken})
+                initProjectPayment(response.data.data.payToken);
+                toast.success("Paiement initié avec succès.")
+                setContributionProcess({...contributionProcess, processing: false})
+                window.$("#contributionPaymentModal").modal("hide")
+            },
+            (exception) => {
+                console.log(exception?.response);
+                toast.error(exception.response.data.error);
+                setContributionProcess({...contributionProcess, processing: false})
+            }
+        )
+    }
+
+    const initProjectPayment = (accessToken) => {
+        initPayment(accessToken, contributionProcess.OmAccountNumber, contributionProcess.PIN, 
+            contributionProcess.amount, project.id,
+            (response) => {
+                console.log("initPaymentProcess", response.data);
+                toast.success("Paiement initié avec succès. Consultez votre téléphone et validez la transaction.")
+                setContributionProcess({...contributionProcess, processing: false})
+            },
+            (exception) => {
+                console.log("initPaymentError", exception?.response);
+                if(exception.response) {
+                    toast.error(exception.response.data.error);
+                }
+                setContributionProcess({...contributionProcess, processing: false})
+            });
     }
 
     useEffect(() => {
@@ -117,13 +174,13 @@ function ProjectDetail(props) {
                             <h2 className="text-primary-2 fw-bold">{project.title}</h2>
                             <h5 className="my-3 AnimatedComponent">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{project.holder}</NavLink></h5>
                             <p className="fs-6 fw-bold">Créé le 17 Juin 2021</p>
-                            <ProgressBar percent={!animate ? "0" : projet.percent} className="AnimatedComponent" />
-                            <h4 style={headingStyle} className="fw-bold d-block fs-4">{`${!animate ? "" : projet.percent + " %"}`}</h4>
+                            <ProgressBar percent={!animate ? "0" : project.stat.pourcentage?.replace("%", "") } className="AnimatedComponent" />
+                            <h4 style={headingStyle} className="fw-bold d-block fs-4">{`${!animate ? "" : ( project.stat.pourcentage?.includes("%") ? project.stat.pourcentage : project.stat.pourcentage + "%") }`}</h4>
                             <div className="py-2 text-">
-                                <h4 className="fw-bold mb-1">{projet.contributions} F CFA collectés</h4>
+                                <h4 className="fw-bold mb-1">{ formatThousandsNumber(project.cost - project.stat.reste) } F CFA collectés</h4>
                                 <h5 className="text-gray fw-normal AnimatedComponent">sur {formatThousandsNumber(project.cost == null ? 0 : project.cost)} F CFA</h5>
                             </div>
-                            <Button buttonType="fullWidth">Je participe de {formatThousandsNumber(project.contributionPerMember)} F CFA</Button>
+                            <Button buttonType="fullWidth" data-bs-target="#contributionPaymentModal" className="fs-5" data-bs-toggle="modal">Je contribue</Button>
                         </div>
                     </div>
                 </section>
@@ -131,13 +188,13 @@ function ProjectDetail(props) {
                 <section className="container AnimatedDiv">
                     <div className="row">
                         <StatCard className="col-lg-4"
-                            number={`${formatThousandsNumber(projet.contributions)} F CFA`}
+                            number={`${formatThousandsNumber(project.cost - project.stat.reste)} F CFA`}
                             title="Entrées" />
                         <StatCard className="col-lg-4"
-                            number={formatThousandsNumber(projet.contributors)}
-                            title="Contributeurs" />
+                            number={formatThousandsNumber(project.stat.contributions)}
+                            title="Contributions" />
                         <StatCard className="col-lg-4"
-                            number={`${formatThousandsNumber(parseInt(projet.contributionNeeded.replaceAll(" ", "")) - parseInt(projet.contributions.replaceAll(" ", "")))} F CFA`}
+                            number={`${formatThousandsNumber(project.stat.reste)} F CFA`}
                             title="Montant manquant" />
                     </div>
                 </section>
@@ -145,9 +202,6 @@ function ProjectDetail(props) {
                 <section className="container AnimatedDiv mb-4">
                     <div className="row my-4">
                         <h2 className="fw-bold mb-5 headingFunPrim">Description du projet</h2>
-                        <p className="lh-3 fs-6 mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                         <Interweave content={project.description} />
                     </div>
                 </section>
@@ -155,9 +209,6 @@ function ProjectDetail(props) {
                 <section className="container AnimatedDiv mb-4">
                     <div className="row my-4">
                         <h2 className="fw-bold mb-5 headingFunPrim">Plan du projet</h2>
-                        <p className="lh-3 fs-6 mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                         <Interweave content={project.project_plan} />
                     </div>
                 </section>
@@ -168,7 +219,10 @@ function ProjectDetail(props) {
                         <div className="row mt-3">
                             { project.partners != null ? project.partners.map((item, index) => (
                                 <div className="col-lg-3">
-                                    <span className="h2 fw-bold">{item.name}</span>
+                                    { item.logo != null && item.logo !== "" ?
+                                        <img src={`${apiRoutes.StorageURL}/${item.logo}`} alt="LogoPartenaire__Admin"/>
+                                        : <span className="h2 fw-bold">{item.name}</span>
+                                    }
                                 </div>
                             )) : ""}
                             {/* <div className="col-lg-3">
@@ -186,6 +240,35 @@ function ProjectDetail(props) {
                         </div>
                     </div>
                 </section>
+
+                <div className="modal fade" id="contributionPaymentModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                    <div className="modal-dialog modal-lg modal-dialog-centered">                
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <div class="row justify-content-center">
+                                    <div className="col-lg-6">
+                                        <h2 className="text-center fw-bold headingFunPrim contentCenter">Payer votre contribution à ce projet</h2>
+                                    </div>
+                                    <div className="d-flex flex-column mb-3 mt-4">
+                                        <label className="d-block mb-2">Numéro Orange Money</label>
+                                        <input className="form-control" onChange={handleProcessChange} type="text" name="OmAccountNumber" value={contributionProcess.OmAccountNumber} placeholder="" />
+                                    </div>
+                                    <div className="d-flex flex-column mb-3">
+                                        <label className="d-block mb-2">Montant</label>
+                                        <input className="form-control" onChange={handleProcessChange} type="number" min="0" name="amount" value={contributionProcess.amount} placeholder="Montant de votre choix" />
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="button" className="btn btn-primary d-flex align-items-center"
+                                        disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
+                                        onClick={preparePayment}>
+                                            { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </>
           }

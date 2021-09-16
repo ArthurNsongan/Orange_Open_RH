@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './screens/Home';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import { BrowserRouter } from 'react-router-dom';
 import AdminLayout from './layouts/AdminLayout';
@@ -20,6 +20,9 @@ import { Provider } from 'react-redux';
 // import "bootstrap/dist/js/bootstrap.bundle"
 
 import AppStore from './redux/appStore'
+import { everyRequestConfig, getAuthHeaders, getToken, IsConnected } from './services/Auth';
+
+import Layouts from './layouts';
 
 function ScrollToTop() {
   useEffect(() => {
@@ -37,16 +40,16 @@ function ScrollToTop() {
 
 function App() {
 
-  moment().locale("fr")
+  everyRequestConfig();
+
+  moment().locale("fr");
+  
   return (
     <Provider store={AppStore}>
       <BrowserRouter>
         <ScrollRestoration />
         <Switch>
-          {/* <Route exact path="/" component={Home} /> */}
-          <Route exact path="/admin*" component={AdminLayout} />
-          <Route exact path="/auth*" component={AuthLayout} />
-          <Route exact path="/*" component={MainLayout} />
+          <Layouts />
         </Switch>
         <ToastContainer position="top-right"
             hideProgressBar={false}

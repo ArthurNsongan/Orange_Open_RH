@@ -65,9 +65,6 @@ function RichTextEditor({ onChange, onReady, onBlur, data, className}) {
 					]
 				},
 					licenseKey: '',
-					
-					
-					
 				}}
                 id="CkEditor"
                 editor={Editor}

@@ -19,11 +19,15 @@
     },
     "admin": {
         "link": "/admin",
+        "dashboard": {
+            "link": "/admin/dashboard",
+            "title": "Tableau de Bord"
+        },
         "communautes":{
             "link" : "/admin/communautes",
             "title": "Communautés"
         },
-        "users":{
+        "users": {
             "link" : "/admin/users",
             "title": "Utilisateurs"
         },
@@ -35,6 +39,10 @@
             "link" : "/admin/partenaires",
             "title": "Partenaires"
         }
+    },
+    "supervisor": {
+        "link": "/admin/mon-association",
+        "title": "Mon Association"
     },
     "auth": {
         "login": {
