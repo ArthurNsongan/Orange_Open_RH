@@ -138,3 +138,11 @@
         height: 7px;    
     }
 }
+
+.dropdown-item.active, .dropdown-item:active {
+    color: white !important;
+}
+
+#connected_user_action:focus {
+    box-shadow: none !important;
+}

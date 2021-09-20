@@ -39,11 +39,12 @@ function Dashboard() {
                     today: 1000,
                     week: 25000,
                     month: 1000000,
-                    semester: 25000000,
+                    semester_1: 25000000,
+                    semester_2: 25000000,
                 });
             }
         )
-    })
+    }, [])
     
     return (
         <>
@@ -108,7 +109,7 @@ function Dashboard() {
                     <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
-                            <span className="fs-4 fw-medium text-center d-block">{ formatThousandsNumber(contributionsStats.semester) } F CFA</span>
+                            <span className="fs-4 fw-medium text-center d-block">{ formatThousandsNumber(new Date().getMonth() <= 6 ? contributionsStats.semester_1 : contributionsStats.semester_2) } F CFA</span>
                         </div>
                         <span className="fs-4 fw-medium text-center d-block">Semestre</span>
                     </div>

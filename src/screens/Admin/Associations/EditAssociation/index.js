@@ -132,8 +132,8 @@ function EditAssociation(props) {
         assocFormData.append("email", assocTemp.email)
         console.log(assocTemp.first_representative_phone)
     
-        let axiosRequest = axios.create();
-        axiosRequest.post(`${apiRoutes.AssociationsURL}/${communaute_id}`, assocFormData)
+        // let axiosRequest = axios.create();
+        axios.post(`${apiRoutes.AssociationsURL}/${communaute_id}`, assocFormData)
             .then(response => {
                 console.log(response.data)
                 toast.success(<><div className="d-flex align-items-center fs-6 ">Association éditée avec succès !!!</div></>, {
@@ -169,7 +169,7 @@ function EditAssociation(props) {
                 })
             })
         
-        console.log(axiosRequest)
+        // console.log(axiosRequest)
 
     }
 

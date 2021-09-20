@@ -48,6 +48,7 @@ function ProjectDetail(props) {
         OmAccountNumber: "",
         PIN: null,
         processing: false,
+        step: 0,
         accessToken: "",
         amount: "1",
     })
@@ -81,9 +82,9 @@ function ProjectDetail(props) {
                 console.log("front", response.data);
                 setContributionProcess({...contributionProcess, accessToken: response.data.data.payToken})
                 initProjectPayment(response.data.data.payToken);
-                toast.success("Paiement initié avec succès.")
-                setContributionProcess({...contributionProcess, processing: false})
-                window.$("#contributionPaymentModal").modal("hide")
+                // toast.success("Paiement initié avec succès.")
+                setContributionProcess({...contributionProcess, processing: false, step: 1})
+                // window.$("#contributionPaymentModal").modal("hide")
             },
             (exception) => {
                 console.log(exception?.response);
@@ -98,8 +99,8 @@ function ProjectDetail(props) {
             contributionProcess.amount, project.id,
             (response) => {
                 console.log("initPaymentProcess", response.data);
-                toast.success("Paiement initié avec succès. Consultez votre téléphone et validez la transaction.")
-                setContributionProcess({...contributionProcess, processing: false})
+                // toast.success("Paiement initié avec succès. Consultez votre téléphone et validez la transaction.")
+                setContributionProcess({...contributionProcess, processing: false, step: 2})
             },
             (exception) => {
                 console.log("initPaymentError", exception?.response);
@@ -158,7 +159,7 @@ function ProjectDetail(props) {
 
     return (
         <>
-        <Helmet title={`${projetName} - Challenge Solidarité`} />
+        <Helmet title={`${project.title || projetName} - Challenge Solidarité`} />
         { !loaded ? <div style={{ zIndex: "10"}} className="d-flex bg-white fixed position-fixed top-0 start-0 container min-vw-100 min-vh-100 align-items-center justify-content-center">
                 <LoadingSpinner />
                 <h1 className="h1 ps-3">Chargement...</h1>
@@ -241,30 +242,69 @@ function ProjectDetail(props) {
                     </div>
                 </section>
 
-                <div className="modal fade" id="contributionPaymentModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered">                
+                <div className="modal fade rounded-none" id="contributionPaymentModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                    <div className="modal-dialog rounded-none modal-lg modal-dialog-centered">                
                         <div className="modal-content">
                             <div className="modal-body">
                                 <div class="row justify-content-center">
-                                    <div className="col-lg-6">
-                                        <h2 className="text-center fw-bold headingFunPrim contentCenter">Payer votre contribution à ce projet</h2>
-                                    </div>
-                                    <div className="d-flex flex-column mb-3 mt-4">
-                                        <label className="d-block mb-2">Numéro Orange Money</label>
-                                        <input className="form-control" onChange={handleProcessChange} type="text" name="OmAccountNumber" value={contributionProcess.OmAccountNumber} placeholder="" />
-                                    </div>
-                                    <div className="d-flex flex-column mb-3">
-                                        <label className="d-block mb-2">Montant</label>
-                                        <input className="form-control" onChange={handleProcessChange} type="number" min="0" name="amount" value={contributionProcess.amount} placeholder="Montant de votre choix" />
+                                    <div className="col-lg-12 d-flex align-items-center justify-content-between">
+                                            <h2 className="text-center fw-bold">Paiement sécurisé via Orange Money</h2>
+                                            <img src={Images.orangeMoney} width="150" height="auto" alt="Logo Orange Money" />
                                     </div>
                                 </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                    <button type="button" className="btn btn-primary d-flex align-items-center"
-                                        disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
-                                        onClick={preparePayment}>
-                                            { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button>
-                                </div>
+                                { contributionProcess.step === 0 && 
+                                    <>
+                                        <div class="row justify-content-center">
+                                            <div className="d-flex flex-column mb-3 mt-4">
+                                                <label className="d-block mb-2 h6">Numéro Orange Money</label>
+                                                <input className="form-control" onChange={handleProcessChange} type="text" name="OmAccountNumber" value={contributionProcess.OmAccountNumber} placeholder="" />
+                                                <p></p>
+                                            </div>
+                                            <div className="d-flex flex-column mb-3">
+                                                <label className="d-block mb-2 h6">Montant</label>
+                                                <input className="form-control" onChange={handleProcessChange} type="number" min="0" name="amount" value={contributionProcess.amount} placeholder="Montant de votre choix" />
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="button" className="btn btn-OM d-flex align-items-center" 
+                                                disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
+                                                onClick={preparePayment}>
+                                                    { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button>
+                                        </div>
+                                    </>
+                                }
+                                { contributionProcess.step === 1 && 
+                                    <>
+                                        <div class="row justify-content-center">
+                                            <h2 className="text-center fw-bold col-lg-6">Initiation du paiement</h2><br />
+                                            <h6 className="text-center">Numéro <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
+                                            <h6 className="text-center">Montant <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
+                                            <div className="text-center">
+                                                <LoadingSpinner />
+                                            </div><br/>
+                                            <p className="col-lg-6">Consultez votre téléphone, vous allez recevoir une alerte pour confirmer la transaction. Merci.</p>
+                                        </div>
+                                    </>
+                                }
+                                { contributionProcess.step === 2 && 
+                                    <>
+                                        <div class="row justify-content-center">
+                                            <h2 className="text-center fw-bold col-lg-6">Paiement initié avec succès</h2>
+                                            <h6 className="text-center">Numéro <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
+                                            <h6 className="text-center">Montant <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
+                                            <p className="col-lg-6">Confirmer la transaction Orange Money en saisissant votre code secret. Merci.</p>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Terminer</button>
+                                            <button type="button" className="btn btn-OM" onClick={()=>{ setContributionProcess({...contributionProcess, step : 0}) }}>Initier un nouveau paiement</button>
+                                            {/* <button type="button" className="btn btn-OM d-flex align-items-center" 
+                                                disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
+                                                onClick={preparePayment}>
+                                                    { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button> */}
+                                        </div>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

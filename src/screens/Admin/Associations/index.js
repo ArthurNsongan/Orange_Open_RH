@@ -113,15 +113,15 @@ function Associations(props) {
         assocFormData.append("type_id", parseInt(assocTemp.type_id))
         // console.log(assocFormData.getAll("name"))
 
-        let axiosRequest = axios.create();
-        axiosRequest.post(apiRoutes.AssociationsURL, assocFormData)
+        // let axiosRequest = axios.create();
+        axios.post(apiRoutes.AssociationsURL, assocFormData)
             .then(response => {
                 console.log(response.data)
             }).catch( ({ response }) => {
                 console.log(response)
             })
         
-        console.log(axiosRequest)
+        // console.log(axiosRequest)
     }
 
     // const handleAddNewTextInputChange = (e) => {

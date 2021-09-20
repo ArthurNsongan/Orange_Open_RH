@@ -45,8 +45,8 @@ code {
 .btn-secondary-2 {
   /* border-radius: 50px !important; */
   background: #b4e60f !important;
-  box-shadow: inset 10px 10px 30px #87ad0b,
-    inset -10px -10px 30px #e1ff13 !important;
+  /*box-shadow: inset 10px 10px 30px #87ad0b,
+    inset -10px -10px 30px #e1ff13 !important;*/
 }
 
 .text-primary-2 {

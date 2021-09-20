@@ -59,12 +59,6 @@ function AdminLayout() {
                                     <Route exact path={`${route.admin.communautes.link}/add`} component={AddAssociation} />
                                     <Route exact path={`${route.admin.communautes.link}/edit/:communaute_id`} component={EditAssociation} /> */}
 
-                                    { ( hasRole(defaultUserRoles.SUPERVISOR_ROLE ) && IsConnected() ) ?
-                                        <Route exact path={`${route.supervisor.link}`} component={SupervisorAssociationDetail} />
-                                    : 
-                                        <Route exact path={`${route.admin.communautes.link}/:communaute_id`} component={AssociationDetail} />
-                                    }
-
 
                                     <Route exact path={route.admin.users.link} component={Users} />
                                     <Route exact path={`${route.admin.users.link}/add`} component={AddUser} />
@@ -82,6 +76,12 @@ function AdminLayout() {
                                     <Route exact path={route.admin.partenaires.link} component={Partenaires} />
                                     
                                     <AssociationAndProjectLayout />
+
+                                    {/* { ( hasRole(defaultUserRoles.SUPERVISOR_ROLE ) && IsConnected() ) ?
+                                        <Route exact path={`${route.supervisor.link}`} component={SupervisorAssociationDetail} />
+                                    : 
+                                        <Route exact path={`${route.admin.communautes.link}/:communaute_id`} component={AssociationDetail} />
+                                    } */}
 
                                 </Switch>
                             </div>

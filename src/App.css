@@ -62,3 +62,15 @@
 .AuthSection {
   /* background-color: #0e71b445 !important; */
 }
+
+.btn-OM {
+  background-color: #ff7900 !important;
+  border-color: #ff7900 !important;
+  /* color: white !important; */
+  font-weight: 700 !important;
+}
+
+.text-OM {
+  color: #ff7900 !important;
+}
+

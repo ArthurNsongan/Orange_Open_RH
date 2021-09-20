@@ -79,7 +79,6 @@ function Projects(props) {
     if(filterStatus !== "") {
         projectsToShow = projectsToShow.filter((item) => ( _.isEqual(item.status, filterStatus) ) )
     }
-
     
     const [searchKey, setSearchKey] = useState("")
 

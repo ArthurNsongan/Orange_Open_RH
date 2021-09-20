@@ -224,7 +224,7 @@ export const AddMember = (user_id, association_id, registration_number, success 
         console.log(response)
     }).catch( (exception) => {
         console.log(exception)
-        // try { console.log(exception.response.data); }
+        // try { console.log(exception?.response?.data); }
         // catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -350,7 +350,7 @@ export const resendTwoFactorCode = (token, success = null, error = null, before 
         success(response);
         console.log(response)
     }).catch( (response) => { 
-        try { console.log(response.response.data); }
+        try { console.log(response?.response?.data); }
         catch(exc) { console.log(exc); }
         error(response);
     })
@@ -365,7 +365,7 @@ export const getUserMe = (success = null, error = null, before = () => {}, after
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -380,7 +380,7 @@ export const getUsers = (success = null, error = null, before = () => {}, after 
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -395,7 +395,7 @@ export const getUsersPagination = (currentPage = null, perPage = null, success =
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -410,7 +410,7 @@ export const getUser = (user_id, success = null, error = null, before = () => {}
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })    
@@ -424,7 +424,7 @@ export const getRoles = (success = null, error = null, before = () => {}, after 
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -438,7 +438,7 @@ export const AllAssociations = (success = null, error = null, before = () => {},
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -452,7 +452,7 @@ export const UpdateUser = (user, success = null, error = null, before = () => {}
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        // try { console.log(exception.response.data); }
+        // try { console.log(exception?.response?.data); }
         // catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -466,7 +466,7 @@ export const CreateUser = (user, success = null, error = null, before = () => {}
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -480,7 +480,7 @@ export const CreateMember = (user, success = null, error = null, before = () => 
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -494,7 +494,7 @@ export const getRoleByUser = (user_id, success = null, error = null, before = ()
         success(response);
         console.log(response)
     }).catch( (exception) => { 
-        // try { console.log(exception.response.data); }
+        // try { console.log(exception?.response?.data); }
         // catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -514,7 +514,7 @@ export const AddRole = (user_id, role_id, association_id, success = null, error 
         console.log(response)
     }).catch( (exception) => {
         console.log(exception)
-        // try { console.log(exception.response.data); }
+        // try { console.log(exception?.response?.data); }
         // catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -533,7 +533,7 @@ export const RemoveRole = (user_id, role_id, success = null, error = null, befor
         console.log(response)
     }).catch( (exception) => {
         console.log(exception) 
-        try { console.log(exception.response.data); }
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
         error(exception);
     })
@@ -548,7 +548,7 @@ export const getAccessToken = (success = null, error = () => {}, before = () => 
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -573,7 +573,7 @@ export const initPayment = (accessToken, OmAccountNumber, PIN, amount, project_i
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -589,7 +589,7 @@ export const getAllPaymentByProject = (project_id, success = null, error = () =>
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -608,7 +608,7 @@ export const activateMember = (member_id, association_id, success = null, error 
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -624,7 +624,7 @@ export const getProjectStat = ( project_id , success = null, error = null, befor
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -640,7 +640,7 @@ export const getAssociationInactiveMembers = ( association_id , success = null, 
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -656,7 +656,7 @@ export const getDashboardContributionsStats = (success = null, error = null, bef
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -672,7 +672,7 @@ export const getDashboardProjects = (success = null, error = null, before = () =
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -688,7 +688,7 @@ export const resetPasswordInit = ( email, success = null, error = null, before =
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);
@@ -704,7 +704,7 @@ export const resetPasswordProcess = (email, password, password_confirmation, pas
         console.log(response);
     }).catch( exception => {
         try { 
-            console.log(exception.response.data); 
+            console.log(exception?.response?.data); 
         }
         catch(exc) { console.log(exc); }
         error(exception);

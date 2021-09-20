@@ -114,8 +114,8 @@ const handleSubmitNewAssociation = (event) => {
     assocFormData.append("email", assocTemp.email)
     console.log(assocTemp.first_representative_phone)
 
-    let axiosRequest = axios.create();
-    axiosRequest.post(apiRoutes.AssociationsURL, assocFormData)
+    // let axiosRequest = axios.create();
+    axios.post(apiRoutes.AssociationsURL, assocFormData)
         .then(response => {
             console.log(response.data)
             const dbAssoc = response.data;
@@ -157,7 +157,7 @@ const handleSubmitNewAssociation = (event) => {
             })
         })
     
-    console.log(axiosRequest)
+    // console.log(axiosRequest)
 }
 
 const handleAddNewTextInputChange = (e) => {

@@ -40,7 +40,7 @@ export function NavBar() {
             <div className="Admin__SideBar__Toggler col-6">
                 <OpenNavIcon toggleMobile={openNav} />
             </div>
-            <div className="col-6">
+            <div className="col d-flex justify-content-end">
                 <ConnectedUser />
             </div>
         </div>
@@ -76,7 +76,7 @@ export function SideBar(props) {
                     </NavLink>
                 </li>
                 {
-                    // ( hasRole(defaultUserRoles.ADMIN_ROLE) && IsConnected() && getRoles() !== undefined ) ?
+                    ( hasRole(defaultUserRoles.ADMIN_ROLE) && IsConnected() && getRoles() !== undefined ) ?
                     <>
                         <li>
                             <NavLink to={route.admin.users.link} activeClassName={activeItem}>
@@ -103,7 +103,7 @@ export function SideBar(props) {
                             </NavLink>
                         </li>
                     </> 
-                    // : <></>
+                     : <></>
                 }
                 {
                     ( hasRole(defaultUserRoles.SUPERVISOR_ROLE) && !hasRole(defaultUserRoles.ADMIN_ROLE) && IsConnected() && getRoles() !== undefined) ?

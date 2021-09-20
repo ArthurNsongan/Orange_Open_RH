@@ -6,6 +6,7 @@ import { ReactComponent as Communities} from "../assets/communities.svg"
 import { ReactComponent as ProjectManag } from "../assets/project-management.svg"
 import peopleAgreeing from "../assets/people_agreeing.jpg"
 import projectRealization from "../assets/projectRealization.jfif"
+import OMLogo from "../assets/orange_money_logo.png"
 import { ReactComponent as Project} from "../assets/idea.svg"
 // import heroImg from "../assets/shakingHands.jpg"
 
@@ -18,6 +19,7 @@ const Images = {
     "Communities": Communities,
     "ProjectManag": ProjectManag,
     "Project": Project,
+    orangeMoney: OMLogo,
     peopleAgreeing: peopleAgreeing,
     projectRealization: projectRealization,
 }
