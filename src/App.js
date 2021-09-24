@@ -1,32 +1,54 @@
 import React, {useEffect} from "react";
-import {Route, Switch, withRouter, useLocation } from 'react-router-dom';
-import $ from "jquery";
+import {Route, Switch, withRouter, useLocation, useHistory } from 'react-router-dom';
+// import $ from "jquery";
 import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
 import PrivateRoute from "./components/PrivateRoute";
-import Home from "./screens/Home";
+// import Home from "./screens/Home";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import AdminRoute from "./components/AdminRoute";
 import AdminLayout from "./layout/AdminLayout";
-import Admin from "./screens/Admin";
+// import Admin from "./screens/Admin";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Utils from "./utils/index";
 import 'react-dropzone-uploader/dist/styles.css'
+import {useDispatch} from "react-redux";
+import moment from "moment"
 import "./App.scss";
-import UserLayout from "./layout/UserLayout";
-import UserRoute from "./components/UserRoute";
-import UnderConstruction from "./screens/CommonScreen/UnderConstruction";
+// import UserLayout from "./layout/UserLayout";
+// import UserRoute from "./components/UserRoute";
+// import UnderConstruction from "./screens/CommonScreen/UnderConstruction";
+
+import {fetchLoginReset} from "./redux/actions/AuthActions";
 
 let route = require('./utils/route');
 
 function App(props) {
 
-    // let location = useLocation();
+    let location = useLocation();
+    const dispatch = useDispatch();
+    let history = useHistory();
 
-    // useEffect(() => {
-    // }, [location])
+    const disconnect = () => {
+        localStorage.clear();
+        dispatch(fetchLoginReset());
+        history.go("/");
+    };
+
+    useEffect(() => {
+        let date_con = moment(localStorage.getItem("DATE_CONNECTED"));
+        let now = moment(new Date().toISOString());
+        let user = localStorage.getItem("USER");
+        if(user !== undefined) {
+            if( now.diff(date_con,"minutes") >= 30 ) {
+                disconnect();
+            } else {
+                localStorage.setItem("DATE_CONNECTED", new Date().toISOString());
+            }
+        }
+    }, [location])
 
     return (
         <div className="App">

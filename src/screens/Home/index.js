@@ -33,6 +33,8 @@ import { Images } from '../../config/Images';
 
 let route = require('../../utils/route');
 
+const eLearners = require('../../top_e_learners.json');
+
 function Home(props) {
 
     const { t } = useTranslation();
@@ -119,8 +121,7 @@ function Home(props) {
         </div>
     );
 
-    const eLearners = "Kemtsop Raissa, Chenesoh Chofobuzi, Douala Marie, Asse Fabrice, Ngono Romeo, Tetang Pierre , Abunaw Enow , Biboum Bernard, Bouopda Elie, Yameni Ngomso Brice"
-    .split(",");
+    // const eLearners = .split(",");
 
 
     const loadData = () => {

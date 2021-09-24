@@ -26,6 +26,6 @@ code {
   }
 }
 
-#mega-menu .nav-item.dropdown {
-  z-index: 10000 !important;
+.nav-item.dropdown {
+  z-index: 1031 !important;
 }

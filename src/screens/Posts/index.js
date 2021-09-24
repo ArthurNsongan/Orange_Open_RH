@@ -59,18 +59,20 @@ function Posts(props) {
         $("body").addClass("bg-gray");
     });
 
-    const handleSearch = () => {
-        console.log(search);
-        if (props.result !== null) {
-            if (domaine === undefined)
-                setPostsFilter(props.resultGetPostByCategory.filter((post) => post.rhContentTitle.toLowerCase().includes(search.toLowerCase())))
-            else
-                setPostsFilter(props.result.filter((post) => post.rhContentTitle.toLowerCase().includes(search.toLowerCase())))
-
-        }
+    const handleSearch = (e) => {
+        setSearch(e.target.value)
+        // let searchTemp = e.target.value
+        // if (props.result !== null && search !== "") {
+        //     if (domaine === undefined)
+        //         setPostsFilter(props.resultGetPostByCategory.filter((post) => post.rhContentTitle.toLowerCase().includes( searchTemp.toLowerCase() )))
+        //     else
+        //         setPostsFilter(props.result.filter((post) => ( post.rhContentTitle.toLowerCase().includes(searchTemp.toLowerCase()))))
+        // }
     };
 
     const postCategory = props.resultGetCategory !== null ? props.resultGetCategory.filter((cat) => cat.rhContentCategoryId === parseInt(category))[0] : ""
+
+    // console.log("searchInPosts", props.result);
 
     return (
         <>
@@ -118,9 +120,7 @@ function Posts(props) {
                                 <div className="input-group">
                                     <input type="text" className="form-control" placeholder={t('posts.find_post')}
                                            aria-label={t('posts.find_post')} aria-describedby="button-addon2"
-                                           value={search} onChange={(e) => {
-                                        setSearch(e.target.value);
-                                    }}/>
+                                           value={search} onChange={handleSearch}/>
                                     <div className="input-group-append">
                                         <button type="button" className="btn btn-secondary btn-icon">
                                             <span className="sr-only">Icon</span>
@@ -138,7 +138,9 @@ function Posts(props) {
                                     (domaine === undefined ?
                                         (props.resultGetDomaine !== null && props.resultGetPostByCategory !== null) ?
                                             <PostList
-                                                posts={search !== '' ? postsFilter : props.resultGetPostByCategory}/> :
+                                                posts={search !== '' ? 
+                                                props.resultGetPostByCategory.filter((post) => (post.rhContentTitle.toLowerCase().includes( search.toLowerCase()) && post.rhContentValidateState ))
+                                                : props.resultGetPostByCategory}/> :
                                             (props.errorGetDomaine !== null && props.error !== null) &&
                                             <div className="alert alert-danger" role="alert">
                                                 <span className="alert-icon"><span
@@ -147,7 +149,9 @@ function Posts(props) {
                                             </div> :
                                         (props.resultGetDomaine !== null && props.result !== null) ?
                                             <PostList
-                                                posts={search !== '' ? postsFilter : props.result}/> :
+                                                posts={search !== '' ? 
+                                                props.resultGetPostByCategory.filter((post) => (post.rhContentTitle.toLowerCase().includes( search.toLowerCase()) && post.rhContentValidateState))
+                                                : props.result}/> :
                                             (props.errorGetDomaine !== null && props.error !== null) &&
                                             <div className="alert alert-danger" role="alert">
                                                 <span className="alert-icon"><span

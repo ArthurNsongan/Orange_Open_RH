@@ -84,7 +84,7 @@ function HeaderAdmin(props) {
                             alt={t("app.name")} title={t("app.name")} loading="lazy"/>
                         
                     </a>
-                    <button className="navbar-toggler d-sm-block d-md-none mb-md-0 mt-md-auto ml-auto ml-md-3 collapsed"
+                    {/* <button className="navbar-toggler d-sm-block d-md-none mb-md-0 mt-md-auto ml-auto ml-md-3 collapsed"
                             type="button" data-toggle="collapse" data-target="#collapsing-navbar11"
                             aria-controls="collapsing-navbar11" aria-expanded="false" aria-label="Toggle navigation">
                         <span aria-hidden="true" className="navbar-toggler-icon"></span>
@@ -95,7 +95,7 @@ function HeaderAdmin(props) {
                                 <span className="sr-only">Search bar</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             </nav>
 

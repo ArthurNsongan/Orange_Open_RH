@@ -17,14 +17,13 @@ import {getAllPostsFrontEndAction, getAllPostsByCategoryAction, getAllPostsRHAct
 import './style.css'
 import $ from "jquery"
 
-
 let route = require('../../utils/route');
 
-function openTab(data) {
-   // window.open(data);
-    //window.location.href = "http://www.w3schools.com";
-    <a href="">salut</a>
-  }
+// function openTab(data) {
+//    // window.open(data);
+//     //window.location.href = "http://www.w3schools.com";
+//     <a href="">salut</a>
+//   }
   
 function HeaderAdmin(props) {
 
@@ -36,10 +35,11 @@ function HeaderAdmin(props) {
         // backgroundColor: "#ccc",
         padding: "10px",
         fontFamily: "HelvNeueOrange !important"
-      };
-      const mystyle2 = {
-        color: "#000"       
-      };
+    };
+    
+    // const mystyle2 = {
+    //     color: "#000"       
+    // };
 
     const {result} = props;
     const {t} = useTranslation();
@@ -48,6 +48,13 @@ function HeaderAdmin(props) {
     const matchWorkForDashboard = (match, location) => {
         return false;
     };
+
+    const [search, setSearch] = useState("");
+
+    const handleSearch = e => {
+        e.preventDefault();
+        // history.push(route())
+    }
 
     useEffect(() => {
         // window.setTimeout = function() {
@@ -71,7 +78,13 @@ function HeaderAdmin(props) {
         //    $("#mega-menu").megamenu();
         //     alert("Mega menu loaded !!!!");
         // })
+
     }, []);
+
+    useEffect(() => {
+        window.$("#exampleModal").modal("hide");
+        setSearch("");
+    }, [history.location])
 
     const [timeoutID, setTimeoutID] = useState("")
     const hideMegaMenu = () => {
@@ -405,7 +418,7 @@ function HeaderAdmin(props) {
                         }
 
                         <LanguageSwitcher/>
-                        { (Utils.isConnected() || props.result !== null) ? (<div className="d-block font-weight-bold fs-5">Bonjour, { (props.result !== null ? props.result.userName : JSON.parse(localStorage.getItem('USER')).userName) }</div>) : ""}
+                        { (Utils.isConnected() || props.result !== null) ? (<div className="d-block font-weight-bold fs-5">{t('common.hello')}, { (props.result !== null ? props.result.userName : JSON.parse(localStorage.getItem('USER')).userName) }</div>) : ""}
                     </ul>
                 </div>
             </nav>
@@ -422,11 +435,54 @@ function HeaderAdmin(props) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div className="row">
+                            <div className="col-auto">
+                                <div className="input-group">
+                                    <input type="text" className="form-control"
+                                            aria-label={t('posts.find_post')} aria-describedby="button-addon2"
+                                        value={search} onChange={(e) => {
+                                        setSearch(e.target.value);
+                                    }}/>
+                                    <div className="input-group-append">
+                                        <button type="button" className="btn btn-secondary btn-icon">
+                                            <span className="sr-only">Icon</span>
+                                            <span className="icon icon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mt-3 p-0">
+                            <div className="col-12">
+                            { ( search !== "" && props.resultGetAllPostsRH ) &&
+                                <>
+                                    <h3 className="mb-3">Résultats</h3>
+                                    <div className="overflow-auto" style={{height: "60vh", overflow: "auto"}}>
+                                    { props.resultGetAllPostsRH
+                                        .filter( (post) => (
+                                            post.rhContentTitle && post.rhContentPostType === Constant.publicationID && post.rhContentTitle.toLowerCase().includes(search.toLowerCase())
+                                        ))
+                                        .map((post) => (
+                                            <h5>
+                                                 <NavLink
+                                                    to={{
+                                                        pathname: `${route.post.root}/${post.rhContentDomaine.rhContentCategoryId}/${post.rhContentDomaineId}/${post.rhContentId}`,
+                                                        post
+                                                    }}
+                                                    className="Mylink">
+                                                    { post.rhContentTitle }
+                                                </NavLink>
+                                            </h5>
+                                        ))
+                                    }
+                                    </div>
+                                </>
+                            }
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     </div>
                     </div>
                 </div>
