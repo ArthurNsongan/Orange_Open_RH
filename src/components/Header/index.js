@@ -97,6 +97,7 @@ function HeaderAdmin(props) {
         window.$("#mega-menu .dropdown-toggle.nav-link").click(function() {
             window.$("#mega-menu .mega-menu-panel.collapse.show").collapse("hide");
         });
+        
         window.$(document).ready(function () {
             // if (this.matchMedia("(min-width: 768px)").matches) {
                 $(document).click(function (event) {
@@ -418,7 +419,7 @@ function HeaderAdmin(props) {
                         }
 
                         <LanguageSwitcher/>
-                        { (Utils.isConnected() || props.result !== null) ? (<div className="d-block font-weight-bold fs-5">{t('common.hello')}, { (props.result !== null ? props.result.userName : JSON.parse(localStorage.getItem('USER')).userName) }</div>) : ""}
+                        { (Utils.isConnected() || props.result !== null) ? (<div id="greetings" className="d-block font-weight-bold fs-5 skiptranslate">{t('common.hello')}, { (props.result !== null ? props.result.userName : JSON.parse(localStorage.getItem('USER')).userName) }</div>) : ""}
                     </ul>
                 </div>
             </nav>

@@ -6,6 +6,10 @@ import translationFR from './fr.json';
 import translationEN from './en.json';
 
 let defaultLanguage = Language.FR;
+let currentLanguage = localStorage.getItem("i18nextLng");
+let actualLanguage = ( currentLanguage === "" || currentLanguage == null ) ? defaultLanguage : currentLanguage;
+
+// alert("actualLanguage : " + actualLanguage);
 
 const resources = {
     en: {
@@ -15,12 +19,13 @@ const resources = {
         translation: translationFR
     }
 };
+
 i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources,
-        lng: defaultLanguage,
+        lng: actualLanguage,
         keySeparator: '.',
         interpolation: {
             escapeValue: false

@@ -35,6 +35,10 @@ code {
   z-index: 1050 !important;
 }
 
+#greetings.skiptranslate {
+  display: block !important;
+}
+
 div.skiptranslate, iframe.skiptranslate {
   display: none !important;
   margin: 0px !important;

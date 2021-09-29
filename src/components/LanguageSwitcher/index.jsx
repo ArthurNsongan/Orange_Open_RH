@@ -4,7 +4,7 @@ import {Language} from "../../lang/Language";
 
 export default function LanguageSwitcher() {
     const [t, i18n] = useTranslation();
-    const [lang, setLang] = useState(Language.FR);
+    const [lang, setLang] = useState(localStorage.getItem("i18nextLng"));
 
     useEffect(() => {
         changeLanguage(lang);

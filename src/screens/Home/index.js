@@ -199,7 +199,7 @@ function Home(props) {
                                     <div className="row">
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* taleo*/}
-                                            <a target="_blank"  rel="noreferrer" href={Constant.applicationRh.taleo.url} className="btn letter-spacing-1 hrApp">
+                                            <a target="_blank"  rel="noreferrer" href={Constant.applicationRh.taleo.url} className="skiptranslate btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0"> 
                                                     {/* <img src={Images.Taleo} className="mr-1" alt="" width="auto" height="50px" /> */}
                                                     {Constant.applicationRh.taleo.title}
@@ -208,7 +208,7 @@ function Home(props) {
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* my infos*/}
-                                            <a target="_blank" rel="noreferrer" href={Constant.applicationRh.myInfos.url} className="btn letter-spacing-1 hrApp">
+                                            <a target="_blank" rel="noreferrer" href={Constant.applicationRh.myInfos.url} className="skiptranslate btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0">
                                                     {/* <img src={Images.myInfo} className="mr-1" alt="" width="auto" height="65px" /> */}
                                                     {Constant.applicationRh.myInfos.title}
@@ -217,7 +217,7 @@ function Home(props) {
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* e_learning */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="btn letter-spacing-1 hrApp">
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.e_learning.url) } className="skiptranslate btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0"> 
                                                     {/*<img src={Images.eLearning} className="mr-1" alt="" width="auto" height="30px" />*/}
                                                     {Constant.applicationRh.e_learning.title}
@@ -226,13 +226,13 @@ function Home(props) {
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* livret d'accueil */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.livretAcueil.url) } className="btn letter-spacing-1 hrApp">
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.livretAcueil.url) } className="skiptranslate btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold mb-0">{Constant.applicationRh.livretAcueil.title}</h5>
                                             </a>
                                         </div>
                                         <div className="col-12" style={{ paddingRight: 0 }}>
                                             {/* Fusion */}
-                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.fusion.url) } className="btn letter-spacing-1 hrApp">
+                                            <a target="_blank" rel="noreferrer" href={ checkAppLink(Constant.applicationRh.fusion.url) } className="skiptranslate btn letter-spacing-1 hrApp">
                                                 <h5 className="font-weight-bold">{Constant.applicationRh.fusion.title}</h5>
                                             </a>
                                         </div>
