@@ -40,7 +40,7 @@ function MainLayout(props) {
     }, [history])
 
     return (
-        <>
+        <div id="translationTarget">
             <Header/>
             <main role="main" id="content" style={{minHeight: "100vh"}}>
                 <Switch>
@@ -72,7 +72,7 @@ function MainLayout(props) {
                 </Switch>
             </main>
             <Footer/>
-        </>
+        </div>
     );
 }
 

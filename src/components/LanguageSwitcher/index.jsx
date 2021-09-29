@@ -13,21 +13,29 @@ export default function LanguageSwitcher() {
     const changeLanguage = (language) => {
 
         switch (language) {
-            case Language.EN:
+            case Language.EN: {
                 //setLang(Language.EN);
                 i18n.changeLanguage(Language.EN);
+                window.TranslatePage(language);
                 break;
-            case Language.FR:
-            default:
+            }
+            case Language.FR: {
+                i18n.changeLanguage(Language.FR);
+                window.TranslatePage(Language.FR);
+                break;
+            }
+            default: {
                 //setLang(Language.FR);
                 i18n.changeLanguage(Language.FR);
+                window.TranslatePage(Language.FR);
                 break;
+            }
         }
 
     }
 
     return (
-        <li className="nav-item dropdown">
+        <li className="nav-item dropdown skiptranslate">
             {/*            <button type="button"
                     className="nav-link btn btn-link btn-inverse dropdown-toggle d-flex align-items-center"
                     data-toggle="dropdown">

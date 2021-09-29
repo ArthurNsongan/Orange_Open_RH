@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  top: 0px !important;
 }
 
 code {
@@ -26,6 +27,16 @@ code {
   }
 }
 
-.nav-item.dropdown {
-  z-index: 1031 !important;
+/*.dropdown-menu {
+  z-index: 11000 !important;
+}
+*/
+.nav-item.dropdown .dropdown-menu {
+  z-index: 1050 !important;
+}
+
+div.skiptranslate, iframe.skiptranslate {
+  display: none !important;
+  margin: 0px !important;
+  padding: 0px !important;
 }
