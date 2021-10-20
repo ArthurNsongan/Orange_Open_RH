@@ -52,15 +52,31 @@
 .ant-pagination-item-active {
   font-weight: 500;
   color: #fff !important;
-  background-color: #0e71b4 !important; 
+  background-color: #f16e00 !important; 
+  border-color: #f16e00 !important;
 }
 
+.ant-pagination-prev:focus-visible .ant-pagination-item-link, 
+.ant-pagination-next:focus-visible .ant-pagination-item-link, 
+.ant-pagination-prev:hover .ant-pagination-item-link, 
+.ant-pagination-next:hover .ant-pagination-item-link, .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: #f16e00 !important;
+  color: #f16e00 !important;
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #f16e00 !important;
+}
+
+.ant-pagination-item:hover {
+  border-color: #f16e00 !important;
+}
 .d-contents {
   display: contents !important;
 }
 
 .AuthSection {
-  /* background-color: #0e71b445 !important; */
+  /* background-color: #f16e0045 !important; */
 }
 
 .btn-OM {
@@ -72,5 +88,9 @@
 
 .text-OM {
   color: #ff7900 !important;
+}
+
+.animatedWidth {
+  transition: height 1s ease !important;
 }
 

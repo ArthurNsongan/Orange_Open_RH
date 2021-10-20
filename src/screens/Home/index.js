@@ -26,12 +26,12 @@ SwiperCore.use([Autoplay, Navigation]);
 function Home(props) {
 
     const headingStyle = {
-        // "color": "#0e71b4",
+        // "color": "#f16e00",
         // "fontWeight": "600"
     }
 
     const hiwStyle = {
-        "backgroundColor": "#0e71b4",
+        "backgroundColor": "#f16e00",
         "fontWeight": "600",
         "color": "black",
         "height": "50px",
@@ -79,7 +79,7 @@ function Home(props) {
                         <div className="HeroHeading container">
                             <div className="justify-content-center d-flex">
                                 <div className="col-lg-12 col-xl-10 com-md-10 text-center">
-                                    <h1 className="text-secondary-2 fw-bold text-center">New Challenge</h1>
+                                    <h1 className="text-primary fw-bold text-center">New Challenge</h1>
                                     <h1 className="text-white text-center">Bienvenue sur notre plateforme d'autofinancement des projets communautaires</h1>
                                     <NavLink to={route.front.projets.link}><Button className={`btn-primary`}>Visitez nos projets</Button></NavLink>
                                 </div>
@@ -95,7 +95,7 @@ function Home(props) {
                                 <div className="justify-content-center text-center d-flex">
                                     <div className="col-lg-7 col-xl-6 com-md-10">
                                         <h1 className="text-white">Bienvenue sur notre plateforme d'autofinancement des projets communautaires</h1>
-                                        <h1 className="text-secondary-2 fw-bold">New Challenge</h1>
+                                        <h1 className="text-primary fw-bold">New Challenge</h1>
                                         <NavLink to={route.front.projets.link}><Button className="btn-primary">Visitez nos projets</Button></NavLink>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@ function Home(props) {
             <section className="container py-5 AnimatedDiv">
                 <div className="row justify-content-start">
                     <div className="col-lg-6 align-self-center">
-                        <h2 className="h2 mb-5 d-block text-primary-2 fw-bold">Notre solution solidaire au service de l'entrepreunariat</h2>
+                        <h2 className="h2 mb-5 d-block text-primary fw-bold">Notre solution solidaire au service de l'entrepreunariat</h2>
                         <p className="mb-5 fs-5 d-block">Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
                             Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
                         <NavLink to={route.front.communautes.link}><Button>Visitez les communautés</Button></NavLink>
@@ -119,11 +119,11 @@ function Home(props) {
                 </div>
             </section>
 
-            <section className="text-white bg-dark py-5 AnimatedDiv">
+            <section className="text-dark bg-supporting-blue py-5 AnimatedDiv">
                 <section className="container py-5">
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
-                            <div className="h1 pb-5 text-center" style={{ "fontWeight": "600"}}>Nous sommes une <span className=" pt-3 text-secondary-2">entreprise sérieuse et intègre</span></div>
+                            <div className="h1 pb-3 text-center" style={{ "fontWeight": "600"}}>Nous sommes une <span className=" pt-3 text-secondary">entreprise sérieuse et intègre</span></div>
                             <p className="text-center fs-5">Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
                                 Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
                             <div className="d-flex justify-content-center"><Button data-bs-toggle="modal" className="btn-primary text-center" data-bs-target="#ChallengeSolDocsModal">Voir nos documents</Button></div>
@@ -162,7 +162,7 @@ function Home(props) {
 
             <section className="AnimatedDiv">
             <div className="container d-flex flex-column align-items-center  py-5">
-                <h1 className="fw-bold headingFunPrim contentCenter">Comment <span className="text-primary-2">ça marche</span> ?</h1>
+                <h1 className="fw-bold headingFunPrim contentCenter">Comment <span className="text-primary">ça marche</span> ?</h1>
                     <div className="row mt-5 pt-3">
                         <div className="col-lg-4 elevate">
                             <div className="d-flex justify-content-center">
@@ -191,9 +191,9 @@ function Home(props) {
 
 
             <section className="py-3 d-block AnimatedDiv">
-                <div className="pt-5 pb-5 bg-primary-2 fw-bold text-white text-center mb-0">
+                <div className="pt-5 pb-5 bg-light fw-bold text-dark text-center mb-0">
                     <div className="d-flex flex-column align-items-center justify-content-center">
-                        <h2 className="text-center h2 my-3 text-white headingFunPrim contentCenter ">Nos Top Projets</h2>
+                        <h2 className="text-center h2 my-3 text-dark headingFunPrim contentCenter ">Nos Top Projets</h2>
                     </div>
                 </div>
 
@@ -221,7 +221,7 @@ function Home(props) {
                 </div>
             </section>
 
-            <section className="funBackgroundGradient AnimatedDiv d-block text-white">
+            <section className="bg-secondary AnimatedDiv d-block text-white">
                 <div className="container py-5">
                 <div className="row justify-content-center">
                             <StatCard 
@@ -291,7 +291,7 @@ function Home(props) {
                                 <label className="form-label fw-bold">Description*</label>
                                 <textarea placeholder="Description" className="form-control p-2" rows="6" ></textarea>
                             </div>
-                            <Button buttonType="fullWidth">Envoyer</Button>
+                            <Button buttonType="fullWidth" className="btn btn-primary">Envoyer</Button>
                         </div>
                     </div>
                 </div>

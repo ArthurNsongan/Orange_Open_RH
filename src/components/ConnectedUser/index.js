@@ -26,18 +26,18 @@ function ConnectedUser() {
                         </NavLink>
                     </div>) :
                     <div className="accountSection">
-                        <button className="dropdown-toggle p-0 btn d-flex align-items-center outline-none hidden-arrow"
+                        <button className="dropdown-toggle border-0 p-0 btn d-flex align-items-center outline-none hidden-arrow"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                             id="connected_user_action"
                         >
-                            <div className="rounded-circle bg-primary-2 text-uppercase d-flex align-items-center justify-content-center text-white h5 mb-0" style={{ width: '40px', height: '40px'}}>
+                            <div className="rounded-circle bg-primary text-uppercase d-flex align-items-center justify-content-center text-white h5 mb-0" style={{ width: '40px', height: '40px'}}>
                                 { getConnectedUser().name[0] }
                             </div>
                         </button>
                         <ul className="dropdown-menu dropdown-menu-center" aria-labelledby="connected_user_action">
                             <li className="dropdown-item bg-white h5 mb-0">Bonjour, <span className="text-capitalize text-primary">{ getConnectedUser().name }</span></li>
-                            <hr className="my-2"/>
+                            <hr className="mt-2"/>
                             <li>
                                 <Link className="dropdown-item" to={`${route.auth.profile.link}`}>Votre profil</Link>
                             </li>

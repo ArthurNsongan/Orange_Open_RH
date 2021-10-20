@@ -183,7 +183,7 @@ function Associations(props) {
                 <DataTable emptyMessage="Aucun résultat" loaded={loaded} datas={filteredAssocs} columns={[
                     {title: "#", dataTitle: "id"},
                     {title: "Nom", dataTitle: "name"},
-                    {title: "Description", dataTitle: "description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    {title: "Description", dataTitle: "description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary fw-bold">Texte enrichi</span> : item.description)},
                     {title: "Membres", dataTitle: "memberNumber", renderData: (item) => ( formatThousandsNumber(item.memberNumber) ) },
                     {title: "Date de création", dataTitle: "create_date", renderData: (item) => ( moment(item.create_date).format("Do MMMM YYYY")) },
                     {title: "Actions", renderData: (item) => (

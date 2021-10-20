@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { faArrowLeft, faBell, faEdit, faEllipsisV, faEye, faPlus, faSearch, faUserLock } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faBell, faEdit, faEllipsisV, faEye, faPlus, faFileExport, faUserLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"
@@ -14,10 +14,12 @@ import LoadingSpinner from '../../../../components/LoadingSpinner';
 import moment from 'moment';
 import { Helmet } from 'react-helmet';
 import { activateMember, getAssociationInactiveMembers, getAssociationMembers, getAssociationProjects } from '../../../../services/API';
+import { exportMembers } from '../../../../services/associationService';
 import { defaultUserRoles, getRoles, getSupervisorAssociationId } from '../../../../services/Auth';
 import { Pagination } from 'antd';
 import DataTable from '../../../../components/DataTable';
 import Button from '../../../../components/Button';
+import { formatThousandsNumber } from '../../../../config/constants';
 
 // import '@popperjs/core';
 // import 'bootstrap'
@@ -167,6 +169,24 @@ function SupervisorAssociationDetail(props) {
         content: ""
     })
 
+    const exportMembersAssociations = () => {
+        exportMembers(association.id, (response) => {
+            if(exportProgress === false) {
+                setExportProgress(true);
+                console.log("exportMembersAssociations", response);
+                const resLink = URL.createObjectURL(response.data);
+                console.log("exportMembersFileURL", resLink);
+                const a = window.document.createElement("a");
+                a.setAttribute("href", resLink);
+                a.download = `${association.name}_membres.xlsx`;
+                a.click();
+                setExportProgress(false);
+                a.remove();
+            }
+        }, (exception) => {
+
+        })
+    }
 
     const notifyMembers = () => {
         setNotifyRequest({...notifyRequest, processing: true});
@@ -178,6 +198,8 @@ function SupervisorAssociationDetail(props) {
     const [projectsPaginationOptions, setProjectsPaginationOptions] = useState(paginationOptions)
 
     const [membersPaginationOptions, setMembersPaginationOptions] = useState(paginationOptions)
+
+    const [exportProgress, setExportProgress] = useState(false);
 
     const onProjectsPaginationChange = (currentPage, perPage) => {
         // getProjects(currentPage, perPage);
@@ -196,6 +218,8 @@ function SupervisorAssociationDetail(props) {
             console.log(exception?.response?.data)
         })
     }
+
+    
 
     const memberActivation = (member_id, index) => {
         activateMember( member_id, communaute_id, (response) => {
@@ -241,21 +265,21 @@ function SupervisorAssociationDetail(props) {
                     </div>
                 </div>
             </div>
-            { true ?
+            { association.projets != null ?
                 (<>
                     <hr className="my-4"/>
                     <div className="d-flex flex-column">
                         <h4 className="fw-bold">Projet en cours</h4>
-                        <h4 className="mt-3 fw-bold mx-3">Construction du siège social</h4>
+                        <h4 className="mt-3 fw-bold mx-3">{ association.projets.title }</h4>
                         <div className="my-3 mx-3">
-                            <ProgressBar percent="30" />
+                            <ProgressBar percent={association.projets.stat.pourcentage.replace("%","")} />
                             <div className="row">
-                                <span className="d-block fw-bold col-4 fs-5 my-2">30%</span>
-                                <span className="d-block fs-5 col-4 my-2"><b>4 000 000 acquis FCFA</b><br/>sur 12 000 000 F</span>
-                                <span className="d-block fs-5 col-4 my-2"><b>250</b> contributeurs</span>
+                                <span className="d-block fw-bold col-4 fs-5 my-2">{association.projets.stat.pourcentage}</span>
+                                <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(association.projets.cost - association.projets.stat.reste)} acquis</b><br/>sur {formatThousandsNumber(association.projets.cost)} F</span>
+                                <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(association.projets.stat.contributions)}</b> contributions</span>
                             </div>
                         </div>
-                        <NavLink className="my-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/1`}>
+                        <NavLink className="my-2" exact to={`${route.admin.communautes.link}/${communaute_id}/projet/${association.projets.id}`}>
                             <button className="btn btn-secondary-2 text-white"><FontAwesomeIcon icon={faEye} className="d-inline-block me-3"></FontAwesomeIcon>Voir le projet</button>
                         </NavLink>
                     </div>
@@ -275,7 +299,7 @@ function SupervisorAssociationDetail(props) {
                 <DataTable className="Admin__Table__Fixed" emptyMessage="Aucun projet trouvé !" loaded={loaded} datas={lastProjects} columns={[
                     {title: "#", renderData: (item, index) => { return <span className="fw-bold px-2">{ index + 1 }</span> }, sortable: false},
                     {title: "Nom", dataTitle: "title"},
-                    // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary fw-bold">Texte enrichi</span> : item.description)},
                     {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(item.status.replaceAll("_"," ") ) ) },
                     {title: "Date de fin des contributions",dataTitle:"deadlines",  renderData: (item) => ( moment(item.deadlines).format("Do MMMM YYYY")) },
                     {title: "Actions", renderData: (item) => (
@@ -318,11 +342,16 @@ function SupervisorAssociationDetail(props) {
             <hr className="my-4"/>
             <div className="d-flex flex-column">
                 <h4 className="fw-bold">Membres</h4>
-                <div className="row mt-4">
-                    <div className="col-lg-4">
+                <div className="row align-items-center mt-4">
+                    <div className="col-lg-6">
                         <div className="d-flex align-items-center mb-3 text-dark">
                             {/* <FontAwesomeIcon icon={faSearch} className="d-inline-block me-2"/> */}
                             <input className="form-control" placeholder="Rechercher" />
+                        </div>
+                    </div>
+                    <div className="col-lg-6">
+                        <div className="d-flex justify-content-end">
+                            <button className="btn btn-primary m-2" onClick={exportMembersAssociations}><FontAwesomeIcon icon={faFileExport} className="d-inline-block me-3"></FontAwesomeIcon> Exporter Tout</button>
                         </div>
                     </div>
                 </div>

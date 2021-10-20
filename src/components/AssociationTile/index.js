@@ -11,7 +11,7 @@ function AssociationTile(props) {
     } = props;
 
     const headingStyle = {
-        "color": "#98c013",
+        "color": "#ff7900",
         "fontWeight": "600",
     }
 
@@ -57,7 +57,7 @@ function AssociationTile(props) {
                     <NavLink to={`${url}/${props.id}-${props.name}`}>
                         <h4 className="pt-3" style={{...headingStyle, "height": "80px"}}>{props.name}</h4>
                     </NavLink>
-                    <span className="mb-2 bg-primary-2 h6 px-3 py-1 d-inline-block text-white">{props.type === undefined ? "Association" : props.type}</span>
+                    <span className="mb-2 bg-light h6 px-3 py-1 d-inline-block">{props.type === undefined ? "Communauté" : props.type}</span>
                     <h6 className="fw-bold">{ formatThousandsNumber(props.members) } membres</h6>
                     {/* <p className="mt-3 text-capitalize">{props.description}</p> */}
                     <NavLink to={`${url}/${props.id}-${props.name}`} className=" mt-3"><Button><span className="px-3">Voir</span></Button></NavLink>

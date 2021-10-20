@@ -42,7 +42,7 @@ section.AnimateDiv img, div.AnimateDiv img, .AnimateDiv button{
     display: block;
     position: absolute;
     bottom: 0px !important;
-    background-color: #98c013;
+    background-color: #ff7900;
     /* left: 0px; */
     /* right: 0px; */
     width: 100%;
@@ -54,7 +54,7 @@ content: "";
 display: block;
 position: absolute;
 bottom: 0px !important;
-background-color: #0e71b4;
+background-color: #f16e00;
 /* left: 0px; */
 /* right: 0px; */
 width: 100%;
@@ -66,7 +66,7 @@ height: 7px;
         display: block;
         position: absolute;
         bottom: -27px !important;
-        background-color: #98c013;
+        background-color: #ff7900;
         /* left: 0px; */
         /* right: 0px; */
         width: 50%;
@@ -81,7 +81,7 @@ height: 7px;
     display: block;
     position: absolute;
     bottom: -27px !important;
-    background-color: #0e71b4;
+    background-color: #f16e00;
     /* left: 0px; */
     /* right: 0px; */
     width: 50%;

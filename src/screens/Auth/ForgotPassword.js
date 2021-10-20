@@ -103,14 +103,14 @@ function ForgotPassword(props) {
 
     return (
         <>
-        <section className="AuthSection bg-secondary-2 w-100">
+        <section className="AuthSection bg-light w-100">
             <Helmet title="Connexion - Challenge Solidarité"/>
             <div className="container">
                 <div className="row min-vh-100 align-items-center justify-content-center">
                     <div className="col-lg-6 bg-white ">
                         <div className="d-flex my-5 flex-column align-items-center justify-content-center">
                             <h5 className="text-center h5">Mot de Passe Oublié</h5>
-                            <span className="h3 text-primary-2 headingFunPrim contentCenter fw-bold">Challenge Solidarité</span>
+                            <span className="h3 text-primary headingFunPrim contentCenter fw-bold">Challenge Solidarité</span>
                         </div>
                         <div id="Login" className="px-2">
                             <Stepper currentStep={currentStep}>
@@ -146,7 +146,7 @@ function ForgotPassword(props) {
                                                 {authErrorMessage === null || authErrorMessage}
                                             </span>) }
                                         <div className="mb-5">
-                                            <Button className="FullWidth btn bg-secondary-2 text-white my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} /> Précédent</Button>
+                                            <Button className="FullWidth btn bg-dark text-white my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} /> Précédent</Button>
                                             <Button type="submit" 
                                                 className="FullWidth btn btn-primary d-flex justify-content-center align-items-center"
                                                 disabled={ requestSent && currentStep === 2}
@@ -165,7 +165,7 @@ function ForgotPassword(props) {
                                             <label for="Password">Confirmation</label>
                                         </div>
                                         <div className="mt-5 mb-3">
-                                            <Button className="FullWidth btn bg-secondary-2 text-white my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} /> Précédent</Button>
+                                            <Button className="FullWidth btn bg-dark text-white my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} /> Précédent</Button>
                                             <Button className="FullWidth btn btn-primary text-white my-1 h6" type="submit"
                                                 disabled={ (requestSent && currentStep === 3) || ( resetAttempt.password !== resetAttempt.password_confirmation || resetAttempt.password.length <= 8)} >
                                                 { (requestSent && currentStep === 3) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) }  Confirmer</Button>

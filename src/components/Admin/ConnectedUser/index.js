@@ -17,12 +17,12 @@ function ConnectedUser() {
             {
                 IsConnected() && 
                 <div className="accountSection d-flex fs-6 m-0 fw-bold">
-                    <button className="dropdown-toggle p-0 btn d-flex align-items-center outline-none hidden-arrow"
+                    <button className="dropdown-toggle p-0 btn d-flex align-items-center border-0 outline-none hidden-arrow"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         id="connected_user_action"
                     >
-                        <div className="rounded-circle bg-primary-2 text-uppercase d-flex align-items-center justify-content-center text-white h5 mb-0" style={{ width: '40px', height: '40px'}}>
+                        <div className="rounded-circle bg-primary text-uppercase d-flex align-items-center justify-content-center text-white h5 mb-0" style={{ width: '40px', height: '40px'}}>
                             { getConnectedUser()?.name[0] }
                         </div>
                     </button>

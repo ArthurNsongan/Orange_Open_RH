@@ -34,7 +34,7 @@ function ProjectDetail(props) {
     console.log(projetId + " - " + projetName)
 
     const headingStyle = {
-        "color": "#98c013",
+        "color": "#ff7900",
         "fontWeight": "600",
     }
 
@@ -88,7 +88,7 @@ function ProjectDetail(props) {
             },
             (exception) => {
                 console.log(exception?.response);
-                toast.error(exception.response.data.error);
+                toast.error(exception?.response?.data?.error);
                 setContributionProcess({...contributionProcess, processing: false})
             }
         )
@@ -150,7 +150,7 @@ function ProjectDetail(props) {
                 "boxShadow": "0px 0px 3px lightgray"
             }}>
                 <div>
-                    <h3 className="text-primary-2 fw-bold">{props.title}</h3>
+                    <h3 className="text-primary fw-bold">{props.title}</h3>
                     <h2 className="fw-bold">{props.number}</h2>
                 </div>
             </div>
@@ -172,7 +172,7 @@ function ProjectDetail(props) {
                             <img className="px-3" height="auto" width="100%" alt="" src={project.image === undefined ? Images.heroImg : `${apiRoutes.StorageURL}/${project.image}`} />
                         </div>
                         <div className="col-lg-6 align-self-center">
-                            <h2 className="text-primary-2 fw-bold">{project.title}</h2>
+                            <h2 className="text-primary fw-bold">{project.title}</h2>
                             <h5 className="my-3 AnimatedComponent">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{project.holder}</NavLink></h5>
                             <p className="fs-6 fw-bold">Créé le 17 Juin 2021</p>
                             <ProgressBar percent={!animate ? "0" : project.stat.pourcentage?.replace("%", "") } className="AnimatedComponent" />
@@ -181,7 +181,7 @@ function ProjectDetail(props) {
                                 <h4 className="fw-bold mb-1">{ formatThousandsNumber(project.cost - project.stat.reste) } F CFA collectés</h4>
                                 <h5 className="text-gray fw-normal AnimatedComponent">sur {formatThousandsNumber(project.cost == null ? 0 : project.cost)} F CFA</h5>
                             </div>
-                            <Button buttonType="fullWidth" data-bs-target="#contributionPaymentModal" className="fs-5" data-bs-toggle="modal">Je contribue</Button>
+                            <Button buttonType="fullWidth" data-bs-target="#contributionPaymentModal" className="fs-5" data-bs-toggle="modal">Je contribue via Orange Money</Button>
                         </div>
                     </div>
                 </section>
@@ -278,8 +278,8 @@ function ProjectDetail(props) {
                                     <>
                                         <div class="row justify-content-center">
                                             <h2 className="text-center fw-bold col-lg-6">Initiation du paiement</h2><br />
-                                            <h6 className="text-center">Numéro <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
-                                            <h6 className="text-center">Montant <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
+                                            <h6 className="text-center">Numéro : <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
+                                            <h6 className="text-center">Montant : <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
                                             <div className="text-center">
                                                 <LoadingSpinner />
                                             </div><br/>
@@ -291,8 +291,8 @@ function ProjectDetail(props) {
                                     <>
                                         <div class="row justify-content-center">
                                             <h2 className="text-center fw-bold col-lg-6">Paiement initié avec succès</h2>
-                                            <h6 className="text-center">Numéro <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
-                                            <h6 className="text-center">Montant <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
+                                            <h6 className="text-center">Numéro : <span className="text-OM fw-bold">{contributionProcess.OmAccountNumber}</span></h6>
+                                            <h6 className="text-center">Montant : <span className="text-OM fw-bold">{contributionProcess.amount} F CFA</span></h6>
                                             <p className="col-lg-6">Confirmer la transaction Orange Money en saisissant votre code secret. Merci.</p>
                                         </div>
                                         <div className="modal-footer">

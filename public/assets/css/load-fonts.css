@@ -1,0 +1,22 @@
+@font-face {
+    font-family: HelvNowOrange;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/assets/fonts/HNforOrangeVarW05-Regular.woff2") format("woff2"), url("/assets/fonts/HNforOrangeVarW05-Regular.woff") format("woff"), url("/assets/fonts/HNforOrangeARVarW05-Regular.woff2") format("woff2"), url("/assets/fonts/HNforOrangeARVarW05-Regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: HelvNowOrange;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/assets/fonts/HNforOrangeVarW05-Regular.woff2") format("woff2"), url("/assets/fonts/HNforOrangeVarW05-Regular.woff") format("woff"), url("/assets/fonts/HNforOrangeARVarW05-Regular.woff2") format("woff2"), url("/assets/fonts/HNforOrangeARVarW05-Regular.woff2") format("woff2");
+  }
+
+  body * {
+    font-family: 'HelvNowOrange', 'Helvetica','Helvetica Neue', 'HelvNeueOrange', sans-serif !important;
+    /* font-size: 48px; */
+    /* letter-spacing: 0.6px !important; */
+  }
+  /* h1, h2 { font-family: 'Inter', sans-serif !important;} */

@@ -1,6 +1,11 @@
 
 * {
-  font-family: 'Archivo', sans-serif !important;
+  /* font-family: 'Archivo', sans-serif !important; */
+  /* line-height: normal; */
+}
+
+h1, .h1 {
+  line-height: normal !important;
 }
 
 body {
@@ -11,6 +16,10 @@ body {
     sans-serif;
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #fff !important;
 }
 
 a {
@@ -27,59 +36,75 @@ code {
   border-radius: 0px !important;
 }
 
+.shadow {
+  box-shadow: 1px 0px 4px 1px lightgrey;
+}
+
+/* .btn-primary {
+  background-color: #f16e00 !important;
+  border-color: #f16e00 !important;
+}
+
+.bg-primary {
+  background-color: #f16e00 !important;
+}
+
 .btn-primary {
-  background-color: #0e71b4 !important;
-  border-color: #0e71b4 !important;
-}
-
-.bg-primary-2 {
-  background-color: #0e71b4 !important;
-}
-
-.btn-primary-2 {
-  /* border-radius: 50px !important; */
+  /* border-radius: 50px !important; 
   background: linear-gradient(145deg, #0f79c1, #0d66a2);
   box-shadow: inset 10px 10px 30px #0b5587, inset -10px -10px 30px #128de1 !important;
-}
+}*/
 
-.btn-secondary-2 {
-  /* border-radius: 50px !important; */
+ /* .btn-secondary-2 {
+ border-radius: 50px !important;
   background: #b4e60f !important;
-  /*box-shadow: inset 10px 10px 30px #87ad0b,
-    inset -10px -10px 30px #e1ff13 !important;*/
-}
+  box-shadow: inset 10px 10px 30px #87ad0b,
+    inset -10px -10px 30px #e1ff13 !important;
+}*/
 
-.text-primary-2 {
-  color: #0e71b4;
+/* .text-primary {
+  color: #f16e00;
 }
 
 .btn-secondary-2 {
-  background-color: #98c013 !important;
+  background-color: #ff7900 !important;
 }
 
-.bg-secondary-2 {
-  background-color: #98c013 !important;
+.bg-dark {
+  background-color: #ff7900 !important;
 }
 
-.text-secondary-2 {
-  color: #98c013 !important
+.text-secondary {
+  color: #ff7900 !important
 }
-
+ */
 .bg-black {
   background-color: #000;
+}
+
+.text-white {
+  background-color: transparent !important;
 }
 
 .ck.ck-editor__editable{
   height: 350px !important;
 }
 
-.FullButton.btn-primary:hover {
+.swiper-button-next, .swiper-button-prev {
+  color: #ff6900 !important;
+  font-family: 'Times New Roman', sans-serif !important;
+}
+
+.swiper-button-prev::after { content:'\276E' !important; }
+.swiper-button-next::after { content:'\276F' !important; }
+
+/* .FullButton.btn-primary:hover {
   background-color: white !important;
   border-color: white !important;
-  color: #0e71b4 !important;
+  color: #f16e00 !important;
   font-weight: 600 !important;
 }
 
 .was-validated .form-control:invalid, .form-control.is-invalid {
   border-color: #dc3545 !important;
-}
+} */

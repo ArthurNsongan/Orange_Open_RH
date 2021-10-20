@@ -58,8 +58,8 @@ function Layouts() {
     return (
         <Switch>
             {/* <Route exact path="/" component={Home} /> */}
-            <AuthAdminRoute exact path="/admin*" component={AdminLayout} />
-            {/* <Route exact path="/admin*" component={AdminLayout} /> */}
+            {/* <AuthAdminRoute exact path="/admin*" component={AdminLayout} /> */}
+            <Route exact path="/admin*" component={AdminLayout} />
             <Route exact path="/auth*" component={AuthLayout} />
             <Route exact path="/*" component={MainLayout} />
         </Switch>

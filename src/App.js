@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import 'boosted/dist/css/boosted.css';
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './screens/Home';
 import { Switch, Route, useLocation } from 'react-router-dom';

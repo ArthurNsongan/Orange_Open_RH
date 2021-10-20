@@ -40,7 +40,7 @@ function MemberProfile(props) {
     }, [props])
 
     return (
-        <section className="relative mt-5 pt-5 bg-gray min-vh-100">
+        <section className="relative mt-5 pt-5 bg-dark min-vh-100">
             <div className="container">
                 <div className="row Edit_Profile">
                     <h2>Bienvenue, <b>{connectedUser.name}</b></h2>

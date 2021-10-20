@@ -9,7 +9,7 @@ function Experts() {
                         <img alt="" className="mb-5 d-block" src="https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png" 
                             style={{ "height": "200px", "width": "200px", "borderRadius": "100%"}} />
                             <div className="d-flex justify-content-center flex-column">
-                                <h4 className="fw-bold text-center text-primary-2">Expert 1</h4>
+                                <h4 className="fw-bold text-center text-primary">Expert 1</h4>
                                 <h5></h5>
                             </div>
                     </div>
@@ -19,7 +19,7 @@ function Experts() {
                         <img alt="" className="mb-5 d-block" src="https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png" 
                             style={{ "height": "200px", "width": "200px", "borderRadius": "100%"}} />
                             <div className="d-flex justify-content-center flex-column">
-                                <h4 className="fw-bold text-center text-primary-2">Expert 2</h4>
+                                <h4 className="fw-bold text-center text-primary">Expert 2</h4>
                                 <h5></h5>
                             </div>
                     </div>
@@ -29,7 +29,7 @@ function Experts() {
                         <img alt="" className="mb-5 d-block" src="https://genslerzudansdentistry.com/wp-content/uploads/2015/11/anonymous-user.png" 
                             style={{ "height": "200px", "width": "200px", "borderRadius": "100%"}} />
                             <div className="d-flex justify-content-center flex-column">
-                                <h4 className="fw-bold text-center text-primary-2">Expert 3</h4>
+                                <h4 className="fw-bold text-center text-primary">Expert 3</h4>
                                 <h5></h5>
                             </div>
                     </div>

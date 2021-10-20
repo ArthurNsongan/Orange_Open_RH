@@ -1,5 +1,5 @@
 .funBackgroundGradient {
-    background-image: linear-gradient(120deg, #0e71b4 0%, #98c013 100%);
+    background-image: linear-gradient(120deg, #f16e00 0%, #ff7900 100%);
 }
 
 .StatCard .svg {
@@ -8,12 +8,12 @@
 }
 
 .StatCard .svg:hover {
-    fill: #98c013 !important;
+    fill: #ff7900 !important;
     background-color: white;
     border-radius: 50%;
 }
 .StatCard .svg:hover svg {
-    fill: #98c013 !important;
+    fill: #ff7900 !important;
     transform: scale(0.9);
 }
 

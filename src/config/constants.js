@@ -15,3 +15,19 @@ export const passwordValidation = (exp) => {
   // return exp.match('^[A-Za-z]{7,14}$');
   return true;
 }
+
+export const memberSexTypes = {
+    M : { short: "M", long: "Masculin"},
+    F : { short: "F", long: "Féminin" },
+}
+
+export const memberMaritalStatusTypes = {
+  single : { value: "single", label: "Célibataire"},
+  married : { value: "married", label: "Marié(e)"},
+  widowhood: { value: "widowhood", label: "Veuf / Veuve "}
+}
+
+export const signUpTypes = {
+  member: "MEMBER",
+  partner: "PARTNER"
+}

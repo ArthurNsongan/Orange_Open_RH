@@ -103,16 +103,16 @@ function Projects(props) {
                         </div>
                     </div>
                 </div>
-                <div className="d-flex border-bottom mb-2">
+                <div className="d-flex mb-2">
                     <div className="col-lg-6">
                     <div className="d-flex">
                         <span role="button" onClick={() => { setfilterStatus("") }}
-                        className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === "" ? "border-bottom border-3 border-primary fw-bold text-primary" : ""}`}>{_.capitalize("Tout")}</span>
+                        className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === "" ? "border-bottom border-3 border-primary fw-bold text-primary" : "border-bottom border-3"}`}>{_.capitalize("Tout")}</span>
                     {
                         statuses.map((item, index) => {
                             return(
                                 <span onClick={() => setfilterStatus(item.value)} role="button"
-                                className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === item.value ? "border-bottom border-3 text-primary fw-bold border-primary" : ""}`}>{_.capitalize(item.label)}</span>
+                                className={`d-inline-block text-center col-6 fs-6 py-3 px-3 ${filterStatus === item.value ? "border-bottom border-3 text-primary fw-bold border-primary" : "border-bottom border-3"}`}>{_.capitalize(item.label)}</span>
                             )
                         })
                     }
@@ -123,7 +123,7 @@ function Projects(props) {
                     {title: "#", dataTitle: "id", sortable: false},
                     {title: "Nom", dataTitle: "title"},
                     {title: "Communauté", renderData: (item) =>( <b>{item.holder}</b>)},
-                    // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary-2 fw-bold">Texte enrichi</span> : item.description)},
+                    // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary fw-bold">Texte enrichi</span> : item.description)},
                     {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(formattedStatus[item.status].replaceAll("_"," ") ) ) },
                     {title: "Date de fin des contributions",dataTitle:"deadlines",  renderData: (item) => ( moment(item.deadlines).format("Do MMMM YYYY")) },
                     {title: "Actions", renderData: (item) => (

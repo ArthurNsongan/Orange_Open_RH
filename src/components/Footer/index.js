@@ -43,7 +43,7 @@ function Footer(props) {
             <div className="container py-5 mt-5">
                 <div className="row justify-content-start">
                     <div className="col-lg-3">
-                        <h5 className="text-white mb-5">Challenge <span style={{"color":"#98c013"}}>Solidarité</span></h5>
+                        <h5 className="text-white mb-5">Challenge <span style={{"color":"#ff7900"}}>Solidarité</span></h5>
                         <div className="d-flex flex-column">
                             <FooterItem icon={faMapMarker} content="Douala, Cameroun" />
                             <FooterItem icon={faPhone} content="+237 6 99 94 45 93" />

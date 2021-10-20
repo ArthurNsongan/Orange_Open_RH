@@ -36,7 +36,13 @@ const apiRoutes = {
     'ActivateMember': `${serverConfig.apiAddress}/api/member/association/activate`,
     "GetProjectStat": `${serverConfig.apiAddress}/api/stat/project`,
     "GetAssociationInactiveMembers": `${serverConfig.apiAddress}/api/association/inactive-member`,
-    "StatContributions" : `${serverConfig.apiAddress}/api/stat/contributions`
+    "StatContributions" : `${serverConfig.apiAddress}/api/stat/contributions`,
+    "ExportAssociationMembers": `${serverConfig.apiAddress}/api/export/members`,
+    "ExportContributionsByProject": `${serverConfig.apiAddress}/api/export/contribution`,
+    "SendNotification": `${serverConfig.apiAddress}/api/sms/send`,
+    "RegisterPartnerURL": `${serverConfig.apiAddress}/api/auth/register-partner`,
+    "LoginPartnerURL": `${serverConfig.apiAddress}/api/auth/login-partner`,
+    "LogoutPartnerURL": `${serverConfig.apiAddress}/api/auth/logout-partner`,
 }
 
 export default apiRoutes;

@@ -1,4 +1,4 @@
-import { faArrowLeft, faBell, faEdit, faEllipsisV, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBell, faEdit, faEllipsisV, faFileExcel, faFileExport, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Pagination } from 'antd';
 import moment from 'moment';
@@ -12,7 +12,7 @@ import ProgressBar from '../../../../components/ProgressBar';
 import apiRoutes from '../../../../config/apiConfig';
 import { formatThousandsNumber } from '../../../../config/constants';
 import { getAllPaymentByProject, getProject, getProjectStat } from '../../../../services/API';
-
+import { exportContributions } from '../../../../services/projectService'
 let route = require('../../../../utils/route.json')
 
 var _ = require('lodash');
@@ -64,6 +64,7 @@ function ProjectDetail(props) {
 
     const [paymentsLoaded, setPaymentsLoaded] = useState(false)
     const [projectStatLoaded, setProjectStatLoaded] = useState(false)
+    const [exportProgress, setExportProgress] = useState(false);
 
     useEffect(() => {
         getProject(project_id, getProjectSuccess, getProjectError);
@@ -85,7 +86,7 @@ function ProjectDetail(props) {
             (exception) => {
                 console.log("projectPayments", exception?.response)
             })
-    }, [props])
+    }, [])
 
     const [paginationOptions, setPaginationOptions] = useState({
         total: 0,
@@ -101,6 +102,25 @@ function ProjectDetail(props) {
         setCurrentPayment(contribution);
         window.$("#contributionDetailsModal").modal("show");
     }
+
+    const exportProjectContributions = () => {
+        exportContributions(project.association_id, project.id, (response) => {
+            if(exportProgress === false) {
+                setExportProgress(true);
+                console.log("exportProjectContributions", response);
+                const resLink = URL.createObjectURL(response.data);
+                console.log("exportContributionsUrl", resLink);
+                const a = window.document.createElement("a");
+                a.setAttribute("href", resLink);
+                a.download = `${project.holder}_${project.title}_contributions.xlsx`;
+                a.click();
+                setExportProgress(false);
+                a.remove();
+            }
+        },(exception) => {
+            console.log(exception);
+        })
+    }  
 
     // const communaute_id = ""
 
@@ -134,7 +154,9 @@ function ProjectDetail(props) {
                                 </div>
                             </div>
                         </div>
-
+                        <div className="d-flex justify-content-end">
+                            <button className="btn btn-primary m-2" onClick={exportProjectContributions}><FontAwesomeIcon icon={faFileExport} className="d-inline-block me-3"></FontAwesomeIcon> Exporter Tout</button>
+                        </div>
                         <div className="d-flex flex-column mx-2 mt-5">
                             <DataTable emptyMessage="Aucune contribution pour le moment !" loaded={paymentsLoaded} datas={projectPayments} columns={[
                                 {title: "#", dataTitle: "id", sortable: false, renderData: (item, index) => ( index + 1 )},

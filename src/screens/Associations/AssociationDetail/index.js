@@ -14,6 +14,7 @@ import ProjectTile from '../../../components/ProjectTile';
 import apiRoutes from '../../../config/apiConfig';
 import Interweave from "interweave";
 import { slugify } from '../../../config/constants';
+import Skeleton from 'react-loading-skeleton';
 
 var route = require("../../../utils/route.json")
 
@@ -21,7 +22,7 @@ function AssociationDetail(props) {
 
     const {associationId, associationName} = useParams();
     const [loading, setLoading] = useState(true);
-    const [association, setAssociation] = useState(null);
+    const [association, setAssociation] = useState({});
 
     console.log(associationName);
 
@@ -30,7 +31,7 @@ function AssociationDetail(props) {
     }
 
     const headingStyle = {
-        "color": "#0e71b4",
+        "color": "#f16e00",
         "fontWeight": "600"
     }
 
@@ -69,21 +70,17 @@ function AssociationDetail(props) {
                 <div className="mt-5 container">
                    
                     <div className="my-5 fs-6">
-                        { loading ? <LoadingSpinner /> :
-                            // <p style={{"lineHeight":"35px"}}>{association.description }</p> 
-                            <>
-                                <h1 className="fw-bold pb-1" style={headingStyle}>{ association.name }</h1>
-                                <h3 className="fw-bold pb-5">{ formatThousandsNumber(association.memberNumber) } membres</h3>
-                            </> }
+                        <h1 className="fw-bold pb-1" style={headingStyle}>{ association.name ? association.name : <Skeleton count={1}/> }</h1>
+                        <h3 className="fw-bold pb-5">{ association.memberNumber ? `${formatThousandsNumber(association.memberNumber) + " membres"}` : <Skeleton count={1} width={250} /> }</h3>
                         <h3 className="mb-5 fw-bold headingFunPrim contentLeft d-block">Présentation</h3>
-                        { loading ? <LoadingSpinner /> :
+                        { loading ? <Skeleton count={4} /> :
                             // <p style={{"lineHeight":"35px"}}>{association.description }</p> 
                             <>
                                 <Interweave content={association.description} />
                             </> }
                     </div>
 
-                    { loading ? <LoadingSpinner /> :
+                    { loading ||
                         <>
                             <div className="row mb-5">
                                 <div className="col-lg-12">

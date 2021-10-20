@@ -103,8 +103,7 @@ function AddProject(props) {
         axios.post(`${apiRoutes.ProjectsURL}`, projectFormData)
         .then( response => {
             console.log(response.data)
-            
-
+        
             toast.success(
                 (<div className="d-flex flex-column">Projet créé avec succès</div>)
             )

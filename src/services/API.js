@@ -196,9 +196,25 @@ export const changeProjectStatus = (status, projectId, associationId,  success =
     })
     after();
 }
+
 export const userRegister = (newUser, success = null, error = null, before = () => {}, after = () => {}) => {
     console.log("registerUser", newUser);
     axios.post(`${apiRoutes.RegisterURL}`, newUser)
+    .then( response => {
+        success(response);
+        console.log(response)
+    }).catch( (exception) => {
+        console.warn(exception); 
+        if(exception.response) { console.log(exception.response) }
+        else if(exception.request) { console.log(exception.request) }
+        else { console.log(exception.message) }
+        error(exception);
+    })
+}
+
+export const partnerRegister = (newPartner, success = null, error = null, before = () => {}, after = () => {}) => {
+    console.log("registerPartner", newPartner);
+    axios.post(`${apiRoutes.RegisterPartnerURL}`, newPartner)
     .then( response => {
         success(response);
         console.log(response)
@@ -699,6 +715,22 @@ export const resetPasswordInit = ( email, success = null, error = null, before =
 export const resetPasswordProcess = (email, password, password_confirmation, passwordToken, success = null, error = null, before = () => {}, after = () => {}) => {
     before();
     axios.post(`${apiRoutes.StatContributions}`, { email, password, password_confirmation, passwordToken })
+    .then( response => {
+        success(response);
+        console.log(response);
+    }).catch( exception => {
+        try { 
+            console.log(exception?.response?.data); 
+        }
+        catch(exc) { console.log(exc); }
+        error(exception);
+    })
+    after();
+}
+
+export const sendNotification = (message, contact, success = null, error = null, before = () => {}, after = () => {}) => {
+    before();
+    axios.post(`${apiRoutes.SendNotification}`, { message, contact })
     .then( response => {
         success(response);
         console.log(response);

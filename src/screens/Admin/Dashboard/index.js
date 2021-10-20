@@ -14,7 +14,7 @@ function Dashboard() {
     const dashboardStatCard = ({ className, cardLabel, cardValue}) => {
         return(
             <div className="dashboardStatCard my-2">
-                    <div className="bg-secondary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-dark text-white d-flex flex-column py-5 px-2 rounded">
                         <div className={ className + " d-flex align-items-center justify-content-center"}>
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-4 fw-medium text-center d-block">{ cardValue }</span>
@@ -57,7 +57,7 @@ function Dashboard() {
             </div>
             {/* <div className="row">
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-3 fw-medium text-center d-block">100</span>
@@ -66,7 +66,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-3 fw-medium text-center d-block">6</span>
@@ -79,7 +79,7 @@ function Dashboard() {
             <h4 className="fw-bold my-3 headingFunPrim contextCenter">Sommes collectées</h4>
             <div className="row pt-3">
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-secondary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-dark text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-4 fw-medium text-center d-block">{ formatThousandsNumber(contributionsStats.today) } F CFA</span>
@@ -88,7 +88,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-4 fw-medium text-center d-block">{ formatThousandsNumber(contributionsStats.week) } F CFA</span>
@@ -119,7 +119,7 @@ function Dashboard() {
             <h4 className="fw-bold my-3 headingFunPrim contextCenter">Communautés</h4>
             <div className="row pt-3">
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-3 fw-medium text-center d-block">6</span>
@@ -128,7 +128,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-3 fw-medium text-center d-block">6</span>
@@ -137,7 +137,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="dashboardStatCard my-2">
-                    <div className="bg-primary-2 text-white d-flex flex-column py-5 px-2 rounded">
+                    <div className="bg-primary text-white d-flex flex-column py-5 px-2 rounded">
                         <div className="d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon icon={faMoneyCheck} className="fa-3x pe-3" />
                             <span className="fs-3 fw-medium text-center d-block">6</span>
