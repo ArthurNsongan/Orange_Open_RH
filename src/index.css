@@ -87,7 +87,8 @@ code {
 }
 
 .text-white {
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
+  color: white !important;
 }
 
 .ck.ck-editor__editable{
