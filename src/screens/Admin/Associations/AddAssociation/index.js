@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { faExclamationTriangle, faPlus, faSearch, faTimes, faWindowClose } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faPlus, faSearch, faTimes, faImage, faWindowClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"

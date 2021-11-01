@@ -5,6 +5,10 @@
 /node_modules/*
 /.pnp
 .pnp.js
+challengesolidarite-front.zip
+challengesolidarite-front_26_07.zip
+ckeditor5-custom-build.zip
+build_v2.zip
 
 # testing
 /coverage
