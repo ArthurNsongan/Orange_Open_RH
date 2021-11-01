@@ -57,6 +57,10 @@
             "link": "/auth/forgot-password",
             "title": "Mot de Passe Oublié"
         },
+        "reset_password": {
+            "link": "/auth/reset-password",
+            "title": "Modifier Mot de Passe"
+        },
         "profile": {
             "link": "/member/profile",
             "title": "Mon Compte Membre"

@@ -119,15 +119,14 @@ function Home(props) {
                 </div>
             </section>
 
-            <section className="text-dark bg-supporting-blue py-5 AnimatedDiv">
-                <section className="container py-5">
+            <section className="text-dark bg-light py-5 AnimatedDiv">
+                <section className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
                             <div className="h1 pb-3 text-center" style={{ "fontWeight": "600"}}>Nous sommes une <span className=" pt-3 text-secondary">entreprise sérieuse et intègre</span></div>
                             <p className="text-center fs-5">Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. 
                                 Challenge Solidarité est une communauté de droit camerounais regroupant d'anciens et nouveaux diplômés de grandes écoles et d'universités. </p>
                             <div className="d-flex justify-content-center"><Button data-bs-toggle="modal" className="btn-primary text-center" data-bs-target="#ChallengeSolDocsModal">Voir nos documents</Button></div>
-
                             <div className="modal" id="ChallengeSolDocsModal">
                                 <div className="modal-dialog modal-lg modal-dialog-centered">
                                     <div className="modal-content">
@@ -136,21 +135,22 @@ function Home(props) {
                                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body px-3">
-                                            <div className="row">
-                                                <div className="d-flex flex-wrap">
-                                                    { legalFiles.map(item => (
-                                                        <a className="me-2 mb-2" target="_blank" rel="noreferrer" href={`${apiRoutes.StorageURL}/${item.path}`}>
-                                                            <Button><FontAwesomeIcon icon={faFile} className="me-2"/>{item.title}</Button>
-                                                        </a>
-                                                    ))}
-                                                    {/* <a className="me-2 mb-2" target="_blank" rel="noreferrer" href="https://www.orange.cm/particuliers/resources/other/2019-02-Formulaire-de-souscription_CSOM.pdf">
-                                                        <Button><FontAwesomeIcon icon={faFile} className="me-2"/>Nos Status.pdf</Button>
-                                                    </a>
-                                                    <a className="me-2 mb-2" target="_blank" rel="noreferrer" href="https://www.orange.cm/particuliers/resources/other/2019-02-Formulaire-de-souscription_CSOM.pdf">
-                                                        <Button><FontAwesomeIcon icon={faFile} className="me-2"/>Patente.pdf</Button>
-                                                    </a> */}
-                                                </div>
-                                            </div>
+                                            {/* <div className="row"> */}
+                                                { legalFiles.map(item => (
+                                                    <div className="row mb-3">
+                                                        <div className="col-lg-3">
+                                                            <div className="d-flex align-items-center justify-content-center bg-supporting-blue text-primary w-100 h-100" style={{width: "100px"}}>
+                                                                <FontAwesomeIcon icon={faFile} className="fa-2x" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-9">
+                                                            <h5 className="fw-bold">{item.title}</h5>
+                                                            <span className="fs-7 pb-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti quam quos animi odit qui a facilis tempora quaerat minima incidunt?</span>
+                                                            <a href={item.path} target="_blank"><button className="btn btn-primary fs-7">Lire la suite</button></a>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            {/* </div> */}
                                         </div>
                                     </div>
                                 </div>

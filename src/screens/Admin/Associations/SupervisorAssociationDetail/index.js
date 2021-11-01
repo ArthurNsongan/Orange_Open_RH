@@ -308,12 +308,12 @@ function SupervisorAssociationDetail(props) {
                                 <FontAwesomeIcon icon={faEllipsisV} />
                             </button>
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
-                                <Link to={`${route.admin.communautes.link}/${communaute_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
+                                <Link to={`${route.supervisor.link}/projet/${item.id}`} className="dropdown-item">Voir</Link>
+                                <Link to={`${route.supervisor.link}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
                                 {/* <Link className="dropdown-item">Supprimer</Link> */}
                             </div>
                         </>
-                    ), sortable: false},
+                    ), sortable: false}
                 ]}/>
                 {/* <div className="row my-4 fs-6 justify-content-between">
                     <div className="col-lg-6">
@@ -359,22 +359,23 @@ function SupervisorAssociationDetail(props) {
                     {title: "#", dataTitle: "id", sortable: false, renderData: (item, index) => ( index + 1 )},
                     {title: "Nom", dataTitle: "name"},
                     {title: "E-mail", dataTitle: "email" },
+                    {title: "Numéro de Téléphone", dataTitle: "OmAccountNumber" },
                     {title: "Date de création", renderData: (item) => ( moment(item.created_at).format("Do MMMM YYYY HH:mm")) },
                     {title: "Statut", renderData: (item) => ( <span className={`badge fw-normal h7 ${item.pivot.is_active === 1 ? "bg-success" : "bg-danger"}`}>{item.pivot.is_active === 1 ? "Activé" : "Inactif"}</span> ), sortable: false},
-                    {title: "Actions", renderData: (item, index) => (
-                        <>
-                            <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <FontAwesomeIcon icon={faEllipsisV} />
-                            </button>
-                            <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                {/* <Link to={`${route.admin.users.link}/${item.id}`} className="dropdown-item">Voir</Link> */}
-                                { item.pivot.is_active === 0 
-                                    && <button href="#" className="dropdown-item" onClick={() => memberActivation(item.id, index )}>Activer</button> }
-                                <Link to={`${route.admin.users.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
-                                {/* <Link className="dropdown-item">Supprimer</Link> */}
-                            </div>
-                        </>
-                    ), sortable: false},
+                    // {title: "Actions", renderData: (item, index) => (
+                    //     <>
+                    //         <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                    //             <FontAwesomeIcon icon={faEllipsisV} />
+                    //         </button>
+                    //         <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
+                    //             {/* <Link to={`${route.admin.users.link}/${item.id}`} className="dropdown-item">Voir</Link> */}
+                    //             { item.pivot.is_active === 0 
+                    //                 && <button href="#" className="dropdown-item" onClick={() => memberActivation(item.id, index )}>Activer</button> }
+                    //             <Link to={`${route.admin.users.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
+                    //             {/* <Link className="dropdown-item">Supprimer</Link> */}
+                    //         </div>
+                    //     </>
+                    // ), sortable: false},
                 ]}/>
                 <div className="row my-4 fs-6 justify-content-between">
                     <div className="col-lg-6">

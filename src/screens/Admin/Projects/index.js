@@ -86,12 +86,12 @@ function Projects(props) {
 
     return (
         <>
-            <div className="d-flex align-items-center justify-content-between bg-white shadow-sm py-3 px-2 mb-3">
+            {/* <div className="d-flex align-items-center justify-content-between bg-white shadow-sm py-3 px-2 mb-3">
                 <h4 className="fw-bold pe-3 my-0">Nouveau projet</h4>
                 <div>
                     <NavLink exact to={`${route.admin.projets.link}/add`}><button className="btn btn-primary"><FontAwesomeIcon icon={faPlus} className="d-inline-block me-3"></FontAwesomeIcon>Ajouter</button></NavLink>
                 </div>
-            </div>
+            </div> */}
 
             <div className="row bg-white shadow-sm px-2 py-4 mb-3 mx-0">
                 <h4 className="fw-bold mb-4">Projets</h4>
@@ -122,7 +122,7 @@ function Projects(props) {
                 <DataTable emptyMessage="Aucun projet trouvé !" loaded={loaded} datas={projectsToShow} columns={[
                     {title: "#", dataTitle: "id", sortable: false},
                     {title: "Nom", dataTitle: "title"},
-                    {title: "Communauté", renderData: (item) =>( <b>{item.holder}</b>)},
+                    {title: "Communauté", renderData: (item) =>( <b>{item.holder.name}</b>)},
                     // {title: "Description", dataTitle:"description", renderData: (item) => (item.description.length > 100 ? <span className="alert-info text-primary fw-bold">Texte enrichi</span> : item.description)},
                     {title: "Etat du projet", dataTitle:"status", renderData: (item) => ( _.capitalize(formattedStatus[item.status].replaceAll("_"," ") ) ) },
                     {title: "Date de fin des contributions",dataTitle:"deadlines",  renderData: (item) => ( moment(item.deadlines).format("Do MMMM YYYY")) },
@@ -132,8 +132,8 @@ function Projects(props) {
                                 <FontAwesomeIcon icon={faEllipsisV} />
                             </button>
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                <Link to={`${route.admin.communautes.link}/${item.association_id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
-                                <Link to={`${route.admin.communautes.link}/${item.association_id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
+                                <Link to={`${route.admin.communautes.link}/${item.holder.id}/projet/${item.id}`} className="dropdown-item">Voir</Link>
+                                <Link to={`${route.admin.communautes.link}/${item.holder.id}/projet/${item.id}/edit`} className="dropdown-item">Editer</Link>
                                 {/* <Link className="dropdown-item">Supprimer</Link> */}
                             </div>
                         </>

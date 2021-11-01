@@ -10,9 +10,9 @@ export const getProject = (projetId, success = null, error = null, before = () =
     .then( response => {
         success(response);
         console.log(response.data)
-    }).catch( ({response}) => { 
-        console.log(response?.data); 
-        error(response);
+    }).catch( (exception) => { 
+        console.log(exception?.response?.data); 
+        error(exception?.response);
     })
     after();
 }
@@ -252,6 +252,7 @@ export const userLogin = (login, password, success = null, error = null, before 
     let data = {
         email: login,
         password: password,
+        choice: 1
     }
     console.log("userLogin", data);
     axios.post(`${apiRoutes.LoginURL}`, data)
@@ -347,10 +348,10 @@ export const verifyTwoFactorCode = (two_factor_code, token, success = null, erro
     .then( response => {
         success(response);
         console.log(response)
-    }).catch( ({response}) => { 
-        try { console.log(response.data); }
+    }).catch( (exception) => { 
+        try { console.log(exception?.response?.data); }
         catch(exc) { console.log(exc); }
-        error(response);
+        error(exception?.response);
     })
     after();
 }
@@ -714,7 +715,7 @@ export const resetPasswordInit = ( email, success = null, error = null, before =
 
 export const resetPasswordProcess = (email, password, password_confirmation, passwordToken, success = null, error = null, before = () => {}, after = () => {}) => {
     before();
-    axios.post(`${apiRoutes.StatContributions}`, { email, password, password_confirmation, passwordToken })
+    axios.post(`${apiRoutes.ResetPasswordProcess}`, { email, password, password_confirmation, passwordToken })
     .then( response => {
         success(response);
         console.log(response);
@@ -741,5 +742,38 @@ export const sendNotification = (message, contact, success = null, error = null,
         catch(exc) { console.log(exc); }
         error(exception);
     })
+    after();
+}
+
+export const sendScheduledNotification = (message, contact, date, time, success = null, error = null, before = () => {}, after = () => {}) => {
+    before();
+    axios.post(`${apiRoutes.SendNotification}`, { message, contact })
+    .then( response => {
+        success(response);
+        console.log(response);
+    }).catch( exception => {
+        try { 
+            console.log(exception?.response?.data); 
+        }
+        catch(exc) { console.log(exc); }
+        error(exception);
+    })
+    after();
+}
+
+export const checkUserDataValidation = (userData, success = null, error = null, before = () => {}, after = () => {}) => {
+    before();
+    try {
+        axios.post(`${apiRoutes.CheckUserDataValidation}`, userData)
+        .then( response => {
+            success(response);
+            console.log(response);
+        }).catch( exception => { 
+            console.log(exception?.response?.data); 
+            error(exception);
+        })
+    } catch (error) {
+        console.error(error)
+    }
     after();
 }

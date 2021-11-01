@@ -277,7 +277,7 @@ function AssociationDetail(props) {
                         <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#projectMembersNotifyingModal"><FontAwesomeIcon icon={faBell} className="d-inline-block me-3"></FontAwesomeIcon>Relancer les membres</button>
                     </div>    
                     <div className="m-2">
-                        <button className="btn btn-secondary-2 text-white" data-bs-toggle="modal" data-bs-target="#inactiveAssociationMembersModal" onClick={getAssocInactiveMembers}><FontAwesomeIcon icon={faUserLock} className="d-inline-block me-3"></FontAwesomeIcon>Membres inactifs</button>
+                        <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#inactiveAssociationMembersModal" onClick={getAssocInactiveMembers}><FontAwesomeIcon icon={faUserLock} className="d-inline-block me-3"></FontAwesomeIcon>Membres inactifs</button>
                     </div>            
                 </div>
             </div>

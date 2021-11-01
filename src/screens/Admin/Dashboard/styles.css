@@ -1,3 +1,10 @@
 .dashboardStatCard {
     width: 300px;
 }
+.text-success, .valid-feedback {
+    color: #32c832;
+}
+
+.text-danger, .invalid-feedback {
+    color: #cd3c14;
+}

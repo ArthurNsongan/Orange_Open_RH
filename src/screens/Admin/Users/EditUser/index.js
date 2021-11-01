@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import Button from '../../../../components/Button'
 import { getUser, getRoles, AllAssociations, UpdateUser, getRoleByUser, AddRole, RemoveRole } from '../../../../services/API';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { formatUserRoles } from '../../../../config/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faCircleNotch, faDotCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { defaultUserRoles } from '../../../../services/Auth';
 
 const _ = require("lodash")
 
 function EditUser(props) {
+
+    const history = useHistory()
 
     const { user_id } = useParams();
 
@@ -28,11 +34,13 @@ function EditUser(props) {
 
     const [sent, setSent] = useState(false)
 
+    const [removeSent, setRemoveSent] = useState(false)
+
     const [roles, setRoles] = useState([])
 
     const [userRole, setUserRole] = useState([])
 
-    const [userNewRole, setUserNewRole] = useState([])
+    const [userRoleRemovalId, setUserRoleRemovalId] = useState(null)
 
     const handleAddNewTextInputChange = (e) => {
         let { name, value } = e.target
@@ -43,12 +51,16 @@ function EditUser(props) {
     }
 
     const handleSubmitEditUserForm = (e) => {
+
         e.preventDefault()
 
         let inputListNames = ["password", "password_confirmation"]
         let firstInvalidItem = null
         let isValid = true
         let form = e.target
+
+        console.warn("Initialization")
+
         if(user.password !== user.password_confirmation && user.password.length > 0) {
             toast.error(<div className="d-flex align-items-center fs-6">Mot(s) de passe incorrects !!!</div>, {
                 position: "top-right",
@@ -61,16 +73,22 @@ function EditUser(props) {
             })
             return false;
         }
+
         Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
+            let rolesTmp = roles
             item.classList.remove("is-invalid")
-            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
+            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden")
+                &&  ( rolesTmp.filter(item => item.id === user.role_id).length === 1 && item.name === "association_id") &&
+                !item.id.includes("react-select") && ( item.tagName === "INPUT" ) )
             {
                 item.classList.add("is-invalid");
                 console.log(item)
                 isValid = false;
             }
             if(firstInvalidItem === null) { firstInvalidItem = item}
+            console.log("verify form")
         })
+
         if(isValid === false || form === null) {
             window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
             toast.error(<div className="d-flex align-items-center fs-6">Erreur rencontrée au niveau des champs surlignés !!!</div>, {
@@ -82,18 +100,33 @@ function EditUser(props) {
                     draggable: true,
                     progress: undefined,
             })
+            console.log("verify form 2")
             return false;
         }
 
-
         UpdateUser(user, (res) => {
             console.log(res.data)
-            userRole.forEach( item => {
-                RemoveRole(user.id, item.id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
-            })
-    
-            AddRole(user.id, user.role_id, user.association_id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
-    
+            console.log("Update User", user, roles)
+            if(user.role_id != null && roles.filter(item => item.id == user.role_id).length === 1) {
+                userRole.forEach( item => {
+                    console.log("Delete old roles")
+                    RemoveRole(user.id, item.id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
+                })
+        
+                AddRole(user.id, user.role_id, user.association_id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )    
+            
+                toast.success(<div className="d-flex align-items-center fs-6">Utilisateur modifié avec succès </div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+
+                history.goBack()
+            }
         },
         (exception) => { if(exception.response) { console.log(exception.response) } })
     }
@@ -104,8 +137,29 @@ function EditUser(props) {
         userTmp["association_id"] = value
     }
 
-    const removeCurrentRole = (item) => {
-        RemoveRole(user.id, item.id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
+    const removeCurrentRole = () => {
+        // RemoveRole(user.id, userRole[userRoleRemovalId].id, (res) => { 
+        //     console.log(res.data)
+            toast.success(<div className="d-flex align-items-center fs-6">Le rôle de de l'utilisateur a été supprimée avec succès. </div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+            })
+            alert(userRoleRemovalId)
+            let userRoleTmp = userRole
+            console.log(userRole)
+            userRoleTmp.splice(userRoleRemovalId, 1)
+            setUserRole(userRoleTmp)
+            setRemoveSent(false)
+        // }, (exception) => { if(exception.response) { console.log(exception.response) } } )
+    }
+
+    const resetPasswordAuto = () => {
+        alert("Un nouveau mot de passe vous a été réattribué ! Récupérez dans votre boîte mail !!")
     }
 
     useEffect(() => {
@@ -178,40 +232,34 @@ function EditUser(props) {
                         </div>
                     </div>
 
-                    <div className="row flex-column my-3">
-                        <div className="col-lg-6 mb-3">
-                            <label className="d-block mb-2">Rôle</label>
+                    <div className="row flex-column mt-3">
+                        <div className="col-lg-6 mb-1">
+                            <label className="d-block mb-2">Rôle de l'utilisateur</label>
+
+                            { userRole.length > 1 ? <span>{"Rôles actuels"}</span> : <span>{"Rôle actuel"}</span> }
+                            <div className="d-flex actual_roles">
+                                { userRole.map( (item, index) => ( 
+                                    <span className="text-uppercase my-2 alert py-1 d-flex align-items-center fw-bold bg-primary"><FontAwesomeIcon icon={faCircle} className="me-1"/>{
+                                        formatUserRoles(item.name)
+                                    }<button type="button" className="btn ps-3" onClick={()=>{ setUserRoleRemovalId(index) }} data-bs-target="#validateRoleRemoval" data-bs-toggle="modal"><FontAwesomeIcon icon={faTimes} className="me-1 fs-4" /></button></span> ) ) }
+                            </div>
                             <select className="form-select" onChange={handleAddNewTextInputChange} id="Role" 
                                 aria-describedby="RoleFeedback" name="role_id" 
                             >
-                                <option value="">-- Sélectionnez le rôle</option>
+                                { user.role_id == null && (<option value="">-- Sélectionnez le rôle</option>) }
                                 { roles.map( (item, index) => {
                                     return(
-                                        <option value={item.id} selected={item.name === user.role_id}>{_.upperCase(item.name)}</option>
+                                        <option value={item.id} selected={item.name === user.role_id}>{formatUserRoles(item.name)}</option>
                                     )
                                 })}
                             </select>
                             <div class="invalid-feedback" id="RoleFeedback"></div>
-                            { userRole.length > 1 ? <span>{"Rôles actuels"}</span> : <span>{"Rôle actuel"}</span> }
-                            <div className="d-flex actual_roles">
-                                { userRole.map( (item) => ( <span className="text-uppercase my-2 alert py-1 fw-bold alert-success">{item.name}</span> ) ) }
-                            </div>
                         </div>
                     </div>
-
-                    <div className="row flex-column my-3">
-                        <div className="col-lg-6 mb-3">
-                            <label className="d-block mb-2">Association</label>
-                            {/* <select className="form-select" onChange={handleAddNewTextInputChange} id="Role" 
-                                aria-describedby="RoleFeedback" name="role_id" 
-                            >
-                                <option value="">-- Séléctionnez le rôle</option>
-                                { roles.map( (item, index) => {
-                                    return(
-                                        <option value={item.id} selected={item.name === user.role_id}>{_.upperCase(item.name)}</option>
-                                    )
-                                })}
-                            </select> */}
+                    { roles.find(item => item.id == user.role_id)?.name !== defaultUserRoles.ADMIN_ROLE &&
+                        <div className="row flex-column mb-3">
+                        <div className="col-lg-6 mb-1">
+                            <label className="d-block mb-1">Association</label>
                             <Select name="association_id" onChange={handleAssocChange} options={
                                     lightAssociations.map((item) =>
                                     ({
@@ -221,33 +269,48 @@ function EditUser(props) {
                                 } placeholder="Sélectionnez l'association correspondante"/>
                             <div class="invalid-feedback" id="RoleFeedback"></div>
                         </div>
-                    </div>
+                    </div> }
 
                     <div className="row flex-column my-3">
-                        <div className="col-lg-6 mb-3">
-                            <label className="d-block mb-2">Nouveau Mot de Passe</label>
-                            <input className="form-control" onChange={handleAddNewTextInputChange} id="Password" 
-                                aria-describedby="PasswordFeedback" type="password" name="password" 
-                                value={user.password} placeholder="Mot de Passe"/>
-                            <div class="invalid-feedback" id="PasswordFeedback"></div>
+                        <p>Vous avez également attribuer un mot de passe automatique à un utilisateur</p>
+                         <div className="col-lg-6 mb-3">
+                            <Button className="btn-primary m-2 d-flex align-items-center" onClick={resetPasswordAuto} disabled={sent}
+                                > {sent && (<LoadingSpinner />)} Réattribuer un mot de passe</Button>
                         </div>
-                        <div className="col-lg-6 mb-3">
+                        {/*<div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Saisissez A Nouveau</label>
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="Password_Confirm" 
                                 aria-describedby="PasswordFeedback" type="password" name="password_confirmation" 
                                 value={user.password_confirmation} placeholder="Confirmation de Mot de Passe" />
                             <div class="invalid-feedback" id="PasswordFeedback"></div>
-                        </div>
-                    </div>
+                        </div>*/}
+                    </div> 
 
-                    <div className="row my-2">
-                        <div className="float-start">
-                            <Button type="button" className="btn-secondary m-2">Fermer</Button>
-                            <Button type="submit" disabled={sent} className="btn-primary m-2 d-flex align-items-center"
-                                > {sent && (<LoadingSpinner />) } Enregistrer</Button>
+                    <div className="d-flex my-2">
+                        <button type="button" className="btn btn-light m-2">Fermer</button>
+                        <Button type="submit" disabled={sent} className="btn-primary m-2 d-flex align-items-center"
+                            > {sent && (<LoadingSpinner />) } Enregistrer</Button>
+                    </div>
+                </form>
+                <div className="modal fade rounded-none" id="validateRoleRemoval" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                    <div className="modal-dialog rounded-none modal-lg modal-dialog-centered">                
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <div class="row justify-content-center">
+                                    <div className="col-lg-12">
+                                            <h2 className="text-center fw-bold">Suppression de rôle attribué à un utilisateur</h2>
+                                            <h5 className="text-center py-2">Voulez-vous continuer ?</h5>
+                                    </div>
+                                </div>
+                                <div className="modal-footer d-flex justify-content-center">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                                    <button type="button" className="btn btn-OM d-flex align-items-center" data-bs-dismiss="modal" disabled={removeSent}
+                                        onClick={removeCurrentRole}> { removeSent && <LoadingSpinner /> }Oui </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>                   
+                </div>                   
             </div>
         </div>
     )

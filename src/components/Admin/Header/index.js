@@ -69,15 +69,15 @@ export function SideBar(props) {
                 <h5 className="fw-bold px-3 mb-5" style={{"color": "inherit"}}>{config.app.name}</h5>
             </NavLink>
             <ul className="Admin__SideBar__List ps-0">
-                <li>
-                    <NavLink to={route.admin.dashboard.link} activeClassName={activeItem}>
-                        <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faTable} /></span>
-                        {route.admin.dashboard.title}
-                    </NavLink>
-                </li>
                 {
                     ( hasRole(defaultUserRoles.ADMIN_ROLE) && IsConnected() && getRoles() !== undefined ) ?
                     <>
+                        <li>
+                            <NavLink to={route.admin.dashboard.link} activeClassName={activeItem}>
+                                <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faTable} /></span>
+                                {route.admin.dashboard.title}
+                            </NavLink>
+                        </li>
                         <li>
                             <NavLink to={route.admin.users.link} activeClassName={activeItem}>
                                 <span className="ps-4 pe-3 NavIcon"><FontAwesomeIcon icon={faUser} /></span>

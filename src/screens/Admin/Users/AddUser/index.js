@@ -6,6 +6,10 @@ import Select from 'react-select';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
+import { defaultUserRoles } from '../../../../services/Auth';
+import { formatUserRoles } from '../../../../config/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const route = require("../../../../utils/route.json")
 
@@ -88,7 +92,7 @@ function AddUser(props) {
                 history.push(route.admin.users.link)
             },
             (exception) => {
-                if(exception.response) {
+                if(exception.response.data.error) {
                     toast.error(
                         <div className="d-flex align-items-center fs-6">
                             Erreur rencontrée au niveau des champs surlignés !!!
@@ -178,36 +182,26 @@ function AddUser(props) {
                         </div>
                     </div>
 
-                    <div className="row flex-column my-3">
-                        <div className="col-lg-6 mb-3">
-                            <label className="d-block mb-2">Rôle</label>
+                    <div className="row flex-column mt-3">
+                        <div className="col-lg-6 mb-1">
+                            <label className="d-block mb-2">Rôle de l'utilisateur</label>
                             <select className="form-select" onChange={handleAddNewTextInputChange} id="Role" 
                                 aria-describedby="RoleFeedback" name="role_id" 
                             >
-                                <option value="">-- Séléctionnez le rôle</option>
+                                { user.role_id == null && (<option value="">-- Sélectionnez le rôle</option>) }
                                 { roles.map( (item, index) => {
                                     return(
-                                        <option value={item.id} selected={item.id === user.role_id}>{item.name}</option>
+                                        <option value={item.id} selected={item.name === user.role_id}>{formatUserRoles(item.name)}</option>
                                     )
                                 })}
                             </select>
                             <div class="invalid-feedback" id="RoleFeedback"></div>
                         </div>
                     </div>
-
-                    <div className="row flex-column my-3">
-                        <div className="col-lg-6 mb-3">
-                            <label className="d-block mb-2">Association</label>
-                            {/* <select className="form-select" onChange={handleAddNewTextInputChange} id="Role" 
-                                aria-describedby="RoleFeedback" name="role_id" 
-                            >
-                                <option value="">-- Séléctionnez le rôle</option>
-                                { roles.map( (item, index) => {
-                                    return(
-                                        <option value={item.id} selected={item.name === user.role_id}>{_.upperCase(item.name)}</option>
-                                    )
-                                })}
-                            </select> */}
+                    { roles.find(item => item.id == user.role_id)?.name !== defaultUserRoles.ADMIN_ROLE &&
+                        <div className="row flex-column mb-3">
+                        <div className="col-lg-6 mb-1">
+                            <label className="d-block mb-1">Association</label>
                             <Select name="association_id" onChange={handleAssocChange} options={
                                     lightAssociations.map((item) =>
                                     ({
@@ -217,7 +211,7 @@ function AddUser(props) {
                                 } placeholder="Sélectionnez l'association correspondante"/>
                             <div class="invalid-feedback" id="RoleFeedback"></div>
                         </div>
-                    </div>
+                    </div> }
 
                     <div className="row flex-column my-3">
                         <div className="col-lg-6 mb-3">

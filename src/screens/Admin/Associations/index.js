@@ -14,6 +14,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import moment from 'moment';
 import DataTable from '../../../components/DataTable';
 import { formatThousandsNumber } from '../../../config/constants';
+import { createAssociation, getAllAssociations, getAssociationTypes } from '../../../services/associationService';
 // import '@popperjs/core';
 // import 'bootstrap'
 
@@ -49,36 +50,30 @@ function Associations(props) {
     })
 
     useEffect(() => {
-        axios.get(`${apiRoutes.AssociationTypesURL}`)
-        .then( response => {
+        
+        getAssociationTypes((response) => {
             setAssociationTypes(response.data)
             console.log(response.data)
             // let select = document.querySelector("select[name='type_id']");
             // console.log(select)
             // select.change();
             window.$("select[name='type_id']").trigger("change");
+        },
+        (exception) => {
+
         })
 
-        axios.get(`${apiRoutes.AssociationsURL}/paginate/${paginationOptions.perPage}?page=${paginationOptions.currentPage}`)
-        .then( response => { 
-            setPaginationOptions(
-                {
-                    total: response.data.meta.total,
-                    perPage: response.data.meta.per_page,
-                    currentPage: response.data.meta.current_page,
-                }
-            )
-            setAssociations(response.data.data)
-            setLoaded(true)
-            console.log(response.data)
-        })
+        getAssociations(paginationOptions.perPage, paginationOptions.currentPage)
 
     }, [props])
 
     const onPaginationChange = (currentPage, perPage) => {
         setLoaded(false);
-        axios.get(`${apiRoutes.AssociationsURL}/paginate/${perPage}?page=${currentPage}`)
-        .then( response => { 
+        getAssociations(perPage, currentPage);
+    }
+
+    const getAssociations = (perPage, currentPage) => {
+        getAllAssociations(perPage, currentPage, (response) => {
             setPaginationOptions(
                 {
                     total: response.data.meta.total,
@@ -88,7 +83,8 @@ function Associations(props) {
             )
             setAssociations(response.data.data)
             setLoaded(true)
-            console.log(response.data)
+        }, (exception) => {
+
         })
     }
 
@@ -114,12 +110,11 @@ function Associations(props) {
         // console.log(assocFormData.getAll("name"))
 
         // let axiosRequest = axios.create();
-        axios.post(apiRoutes.AssociationsURL, assocFormData)
-            .then(response => {
-                console.log(response.data)
-            }).catch( ({ response }) => {
-                console.log(response)
-            })
+        createAssociation(assocFormData, (response) => {
+            
+        }, (exception) => {
+
+        })
         
         // console.log(axiosRequest)
     }

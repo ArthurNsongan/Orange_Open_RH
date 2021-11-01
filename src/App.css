@@ -37,7 +37,7 @@
   }
 }
 
-.Partner img{
+.Partner img {
   height: 120px !important;
   width: auto;
 }
@@ -46,7 +46,6 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
-  
 }
 
 .ant-pagination-item-active {
@@ -94,3 +93,20 @@
   transition: height 1s ease !important;
 }
 
+.stepIndicator .ant-steps-item-active  .ant-steps-item-icon {
+  background: #ff7900 !important;
+  border-color: #ff7900 !important;
+}
+
+.stepIndicator .ant-steps-item-finish  .ant-steps-item-icon {
+  background: #ff7900 !important;
+  border-color: #ff7900 !important;
+}
+
+.stepIndicator .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+  background: #ff7900 !important;
+}
+
+.stepIndicator .ant-steps-item-finish .ant-steps-icon {
+  color: white !important;
+}

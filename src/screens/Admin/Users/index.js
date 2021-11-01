@@ -99,7 +99,7 @@ function Users(props) {
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
                                 {/* <Link to={`${route.admin.users.link}/${item.id}`} className="dropdown-item">Voir</Link> */}
                                 { item.active === 0 
-                                    && <a href="#" className="dropdown-item">Activer</a> }
+                                    && <button type="button" className="dropdown-item">Activer</button> }
                                 <Link to={`${route.admin.users.link}/edit/${item.id}`} className="dropdown-item">Editer</Link>
                                 {/* <Link className="dropdown-item">Supprimer</Link> */}
                             </div>

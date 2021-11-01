@@ -33,14 +33,14 @@ function Header(props) {
 
     const toggleMobile = (e) => {
         let block = window.$("#mobileMenu")
-        let isBlock = block.hasClass("d-none")
+        let isBlock = !block.hasClass("d-none")
         console.log(isBlock)
         block.toggleClass("d-none")
         setIsBlock(isBlock);
     }
 
     const ToggleMobileMenu = () => {
-        return ( isBlock ?
+        return ( !isBlock ?
         <CloseNavIcon /> : <OpenNavIcon /> )
     }
 
@@ -57,7 +57,7 @@ function Header(props) {
 
     useEffect(() => {
         let block = window.$("#mobileMenu")
-        let isBlock = block.hasClass("d-none")
+        let isBlock = !block.hasClass("d-none")
         console.log(isBlock)
         block.addClass("d-none")
         setIsBlock(isBlock);    }, [location]) 

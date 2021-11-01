@@ -169,6 +169,10 @@
     /* color: #0d69a5 !important; */
 }
 
+.Admin__Table thead .dropdown-toggle {
+    background-color: transparent !important;
+}
+
 .Admin__Table th, .Admin__Table td {
     padding: 15px 10px;
     /* text-align: center; */
@@ -190,7 +194,7 @@
 
 .form-control, .form-select, .css-yk16xz-control{
     /* border-radius: 0.1em !important; */
-    border: 1.5px solid #0000006e !important;
+    border: 1.5px solid #0000006e;
 }
 
 .css-tlfecz-indicatorContainer {

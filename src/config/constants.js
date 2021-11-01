@@ -1,3 +1,5 @@
+const validator = require("validator")
+
 export const  slugify = (text) => {
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
@@ -16,6 +18,15 @@ export const passwordValidation = (exp) => {
   return true;
 }
 
+export const checkPhoneNumber = (str) => {
+  return (validator.isInt(str) && str.length === 9);
+}
+
+export const checkEmail = str => validator.isEmail(str);
+
+export const checkPasswordStrong = str => validator.isStrongPassword(str);
+
+
 export const memberSexTypes = {
     M : { short: "M", long: "Masculin"},
     F : { short: "F", long: "Féminin" },
@@ -30,4 +41,13 @@ export const memberMaritalStatusTypes = {
 export const signUpTypes = {
   member: "MEMBER",
   partner: "PARTNER"
+}
+
+export const formatUserRoles = (roleName) => {
+  switch(roleName) {
+    case 'member' : {return "Membre d'Association";}
+    case 'supervisor' : {return "Superviseur d'Association";}
+    case 'admin' : {return "Administrateur";}
+    default: break;
+  }
 }

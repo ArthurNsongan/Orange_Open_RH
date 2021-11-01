@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import { faFile, faPlus, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faFile, faImage, faPlus, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import apiRoutes from "../../../../config/apiConfig"
@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import RichTextEditor from '../../../../components/RichTextEditor';
 import { useHistory, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
+import { checkAuth } from '../../../../services/Auth';
+import { checkEmail, checkPhoneNumber } from '../../../../config/constants';
 // import '@popperjs/core';
 // import 'bootstrap'
 
@@ -24,12 +26,35 @@ function EditAssociation(props) {
 
     let history = useHistory()
 
+    const initialErrors = {
+        name: [],
+        description: [],
+        address: [],
+        logo: [],
+        type_id: [],
+        email: [],
+        bankAccountNumber: [],
+        bank_domiciliation: [],
+        memberNumber: [],
+        phone: [],
+        first_representative: [],
+        first_representative_phone: [],
+        second_representative: [],
+        second_representative_phone: [],
+        potentialMemberNumber: [],
+        create_date: [],
+    }
+
     const { communaute_id } = useParams();
 
-    const [association, setAssociation] = useState({})
+    const [association, setAssociation] = useState({
+        assocDocs: [],
+        errors: { ...initialErrors }
+    })
+
+    const assocDescription = useRef()
 
     const [associationDoc, setAssociationDoc] = useState({})
-
 
     const [associationTypes, setAssociationTypes] = useState([]);
 
@@ -59,7 +84,7 @@ function EditAssociation(props) {
         
         axios.get(`${apiRoutes.AssociationsURL}/${communaute_id}`)
         .then( response => {
-            setAssociation({...response.data, assocDocs: []})
+            setAssociation({...association, ...response.data, type_id: response.data.associationType.id, assocDocs: []})
             console.log(response.data)
         })
 
@@ -77,29 +102,53 @@ function EditAssociation(props) {
 
         let inputListNames = ["doc_name", "doc_file", "logo"]
         let firstInvalidItem = null
+        let assocErrors = association.errors
         let isValid = true
         let form = document.querySelector("#editForm");
-        Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
+        Array.from(form.elements === undefined ? [] : form.elements).forEach(item => {
             item.classList.remove("is-invalid")
-            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
-            {
-                item.classList.add("is-invalid");
-                console.log(item)
+            let itemIsValid = true
+            const isNonValidated = () => {
                 isValid = false;
+                itemIsValid = false;
             }
-            if(firstInvalidItem === null) { firstInvalidItem = item}
+            if (!inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && (item.tagName === "INPUT" || item.tagName === "SELECT")) {
+                assocErrors[item.name] = []
+                if(item.value.length === 0) {
+                    isNonValidated()
+                    assocErrors[item.name].push("Le champ est requis.")
+                } else if(item.name.includes("email") && !checkEmail(item.value) ) {
+                    isNonValidated()
+                    assocErrors[item.name].push("E-mail invalide.")
+                } else if(item.name.includes("phone") && !checkPhoneNumber(item.value) ) {
+                    isNonValidated()
+                    assocErrors[item.name].push("Le numéro de téléphone n'est pas valide.")
+                }
+                if(itemIsValid === false) {
+                    item.classList.add("is-invalid")
+                }
+            }
+            if (firstInvalidItem === null) { firstInvalidItem = item }
         })
-        if(isValid === false || form === null) {
+        assocErrors["description"] = []
+        if (association.description == "" || association.description == null) {
+            assocErrors.description.push("L'éditeur est vide.")
+            // assocDescription.current.classList.add("is-invalid")
+            // console.log("assocDescription", assocDescription)
+        }
+        if (isValid === false || form === null) {
             window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
             toast.warning(<div className="d-flex align-items-center fs-6 text-dark">Vérifiez bien tous les champs !!!</div>, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
             })
+            console.log("Errors : ", assocErrors)
+            setAssociation({ ...association, errors: assocErrors })
             return false;
         }
         // console.log(document.querySelector("#editForm"))
@@ -118,6 +167,7 @@ function EditAssociation(props) {
         }
         console.log(assocFormData.getAll("logo"))
         assocFormData.append("bankAccountNumber", assocTemp.bankAccountNumber)
+        assocFormData.append("type_id", assocTemp.type_id)
         assocFormData.append("bank_domiciliation", assocTemp.bank_domiciliation)
         assocFormData.append("address", assocTemp.address)
         assocFormData.append("memberNumber", parseInt(assocTemp.memberNumber))
@@ -128,10 +178,10 @@ function EditAssociation(props) {
         assocFormData.append("first_representative_phone", parseInt(assocTemp.first_representative_phone))
         assocFormData.append("second_representative_phone", parseInt(assocTemp.second_representative_phone))
         assocFormData.append("create_date", assocTemp.create_date)
-        assocFormData.append("type_id", parseInt(assocTemp.type_id))
         assocFormData.append("email", assocTemp.email)
-        console.log(assocTemp.first_representative_phone)
     
+        checkAuth()
+
         // let axiosRequest = axios.create();
         axios.post(`${apiRoutes.AssociationsURL}/${communaute_id}`, assocFormData)
             .then(response => {
@@ -157,16 +207,28 @@ function EditAssociation(props) {
                 })
                 setTimeout(() => history.push(route.admin.communautes.link), 500)
             }).catch( ({ response }) => {
-                console.log(response)
-                toast.error(<><div className="d-flex align-items-center fs-6 ">Une erreur a été rencontrée sur le serveur !!!</div></>, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
+                console.log(response?.data)
+                var errors = response?.data?.errors !== undefined ? response.data.errors : {}
+                setAssociation({ ...association, errors: {...initialErrors, ...errors} })
+                // typeof(response?.data) === "object" ? Object.values(response?.data.errors || []).map(item => {
+                //     toast.error(<><div className="d-flex align-items-center fs-6 ">{(<>{item[0]}</>)}</div></>, {
+                //         position: "top-right",
+                //         autoClose: 5000,
+                //         hideProgressBar: true,
+                //         closeOnClick: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         progress: undefined,
+                //     })
+                // }) : toast.error(<><div className="d-flex align-items-center fs-6 ">{(<>{response.data}</>)}</div></>, {
+                //     position: "top-right",
+                //     autoClose: 5000,
+                //     hideProgressBar: true,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                // })
             })
         
         // console.log(axiosRequest)
@@ -294,79 +356,161 @@ function EditAssociation(props) {
                         <div className="row">
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Nom</label>
-                                <input className="form-control" onChange={handleAddNewTextInputChange} type="text" name="name" value={association.name} placeholder="Nom de la communauté" />
+                                <input className="form-control" onChange={handleAddNewTextInputChange} id="associationName" aria-describedby="associationNameFeedback" type="text" name="name" value={association.name} placeholder="Nom de la communauté" />
+                                <div class="invalid-feedback" id="associationNameFeedback">
+                                    {association.errors.name.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Adresse</label>
-                                <input className="form-control" type="text" name="address" onChange={handleAddNewTextInputChange} value={association.address} placeholder="Adresse de la communauté" />
+                                <input className="form-control" type="text" id="associationAddress" name="address" onChange={handleAddNewTextInputChange} value={association.address} placeholder="Adresse de la communauté" />
+                                <div class="invalid-feedback" id="associationAddressFeedback">
+                                    {association.errors.address.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Numéro de Compte Bancaire</label>
-                                <input className="form-control" type="number" name="bankAccountNumber" onChange={handleAddNewTextInputChange} value={association.bankAccountNumber} placeholder="Compte Bancaire" />
+                                <input className="form-control" type="number" id="associationBankAccount" name="bankAccountNumber" onChange={handleAddNewTextInputChange} value={association.bankAccountNumber} placeholder="Compte Bancaire" />
+                                <div class="invalid-feedback" id="associationBankAccountFeedback">
+                                    {association.errors.bankAccountNumber.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Domiciliation Bancaire</label>
-                                <input className="form-control" type="text" name="bank_domiciliation" onChange={handleAddNewTextInputChange} value={association.bank_domiciliation} placeholder="Domiciliation Bancaire" />
+                                <input className="form-control" type="text" id="associationDomBank" name="bank_domiciliation" onChange={handleAddNewTextInputChange} value={association.bank_domiciliation} placeholder="Domiciliation Bancaire" />
+                                <div class="invalid-feedback" id="associationDomBankFeedback">
+                                    {association.errors.bank_domiciliation.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Date de Création</label>
-                                <input className="form-control" type="date" format="yyyy-mm-dd" name="create_date" onChange={handleAddNewTextInputChange} value={association.create_date} placeholder="Date de Création" />
+                                <input className="form-control" type="date" id="associationDateCreation" format="yyyy-mm-dd" name="create_date" onChange={handleAddNewTextInputChange} value={association.create_date} placeholder="Date de Création" />
+                                <div class="invalid-feedback" id="associationDateCreationFeedback">
+                                    {association.errors.create_date.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Type</label>
-                                <select className="form-control" name="type_id" onChange={handleAddNewTextInputChange} value={association.type_id}>
-                                    { associationTypes.map((item, index) => {
+                                <select className="form-select" name="type_id" onChange={handleAddNewTextInputChange} value={association.type_id} id="associationType"  >
+                                    {associationTypes.map((item, index) => {
                                         return (
-                                            <option key={index} value={item.id}>{item.name}</option>
+                                            <option key={index} selected={item.id === association.type_id} value={item.id}>{item.name}</option>
                                         );
                                     })}
                                 </select>
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.type_id.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-        
+
                         <div className="row my-5">
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Nombre de membres</label>
-                                <input className="form-control" type="text" name="memberNumber" onChange={handleAddNewTextInputChange} value={association.memberNumber} placeholder="Nombre de membres" />
+                                <input className="form-control" type="text" id="memberNumber" name="memberNumber" onChange={handleAddNewTextInputChange} value={association.memberNumber} placeholder="Nombre de membres" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.memberNumber.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Nombre potentiel de membres</label>
-                                <input className="form-control" type="text" name="potentialMemberNumber" onChange={handleAddNewTextInputChange} value={association.potentialMemberNumber} placeholder="Nombre potentiel de membres" />
+                                <input className="form-control" type="text" id="potMemberNumber" name="potentialMemberNumber" onChange={handleAddNewTextInputChange} value={association.potentialMemberNumber} placeholder="Nombre potentiel de membres" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.potentialMemberNumber.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-        
+
                         <div className="row my-5">
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">E-mail de l'association</label>
-                                <input className="form-control" type="text" name="email" onChange={handleAddNewTextInputChange} value={association.email} placeholder="Email de la communauté" />
+                                <input className="form-control" type="text" id="Email" name="email" onChange={handleAddNewTextInputChange} value={association.email} placeholder="Email de la communauté" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.email.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Numéro de Téléphone</label>
-                                <input className="form-control" type="number" name="phone" onChange={handleAddNewTextInputChange} value={association.phone} placeholder="Numéro de Téléphone" />
+                                <input className="form-control" type="number" id="NumTel" name="phone" onChange={handleAddNewTextInputChange} value={association.phone} placeholder="Numéro de Téléphone" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.phone.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Premier Représentant</label>
-                                <input className="form-control" type="text" name="first_representative" onChange={handleAddNewTextInputChange} value={association.first_representative } placeholder="Premier Représentant" />
+                                <input className="form-control" type="text" id="PremRep" name="first_representative" onChange={handleAddNewTextInputChange} value={association.first_representative} placeholder="Numéro de Téléphone" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.first_representative.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Numéro de Téléphone du Premier Représentant</label>
-                                <input className="form-control" type="text" name="first_representative_phone" onChange={handleAddNewTextInputChange} value={association.first_representative_phone } placeholder="Numéro de Téléphone" />
+                                <input className="form-control" type="number" id="PremRepTel" name="first_representative_phone" onChange={handleAddNewTextInputChange} value={association.first_representative_phone} placeholder="Numéro de Téléphone" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.first_representative_phone.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
-                                <label className="d-block mb-2">Second Représentation</label>
-                                <input className="form-control" type="text" name="second_representative" onChange={handleAddNewTextInputChange} value={association.second_representative } placeholder="Second Représentant" />
+                                <label className="d-block mb-2">Second Représentant</label>
+                                <input className="form-control" type="text" id="SecRep" name="second_representative" onChange={handleAddNewTextInputChange} value={association.second_representative} placeholder="Numéro de Téléphone" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.second_representative.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Numéro de Téléphone du Second Représentant</label>
-                                <input className="form-control" type="text" name="second_representative_phone" onChange={handleAddNewTextInputChange} value={association.second_representative_phone } placeholder="Numéro de Téléphone" />
+                                <input className="form-control" type="number" id="SecRepTel" name="second_representative_phone" onChange={handleAddNewTextInputChange} value={association.second_representative_phone} placeholder="Numéro de Téléphone" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.second_representative_phone.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-        
+
                         <div className="row">
                             <div className="col-lg-6 mb-3">
                                 <label className="d-block mb-2">Logo</label>
-                                <input className="form-control" type="file" name="logo" accept="image/*" onChange={handleAddNewFileInputChange}  placeholder="Logo" />
-                                <img className="img-fluid img-responsive d-block py-3" loading="lazy" src={ typeof(association.logo) !== 'object' ? `${apiRoutes.StorageURL}/${association.logo}` : URL.createObjectURL(association.logo)} alt="Logo de l'association" />
+                                <input className="form-control" type="file" name="logo" id="Logo" onChange={handleAddNewFileInputChange} placeholder="Logo" id="associationName" />
+                                <div class="invalid-feedback" id="associationTypeFeedback">
+                                    {association.errors.logo.map(item => (
+                                        <span className="fw-bold">{item}</span>
+                                    ))}
+                                </div>
+                                {
+                                association.logo !== undefined ? 
+                                   (
+                                        <img loading="lazy" src={ association.logo ? ( typeof(association.logo) === "object" ? URL.createObjectURL(association.logo) : `${apiRoutes.StorageURL}/${association.logo}` ): faImage.iconName }
+                                         alt="Logo Association" className="SampleImage mt-3" />
+                                     ) 
+                                    : ""
+                            }
                             </div>
                             <div className="d-flex align-items-center mb-3">
                                 <label className="d-block m-2">Documents</label>
@@ -374,18 +518,10 @@ function EditAssociation(props) {
                                 {/* <input className="form-control" type="file" multiple name="assocDocs" onChange={handleAddNewMultiFileInputChange}  placeholder="Documents de l'association" /> */}
                             </div>
                             <div className="d-flex flex-column mb-3">
-                                { association.documents != null && association.documents.length !== 0 ? 
-                                    ( association.documents.map((item, index) => (
+                                {association.assocDocs != null ?
+                                    (association.assocDocs.map((item, index) => (
                                         <div className="d-flex my-2 align-items-center">
-                                            <button title="Supprimer le document" className="btn btn-white py-0" type="button" onClick={()=> handleDeleteAssocDocDb(index)}><FontAwesomeIcon icon={faTimes} /></button>
-                                            <a href={`${apiRoutes.StorageURL}/${item.path}`} target="_blank"><h6 className="mb-0">{item.name}</h6></a> 
-                                        </div>
-                                    ))) : null
-                                }
-                                { association.assocDocs != null ? 
-                                    ( association.assocDocs.map((item, index) => (
-                                        <div className="d-flex my-2 align-items-center">
-                                            <button title="Supprimer le document" className="btn btn-white py-0" type="button" onClick={()=> handleDeleteAssocDoc(index)}><FontAwesomeIcon icon={faTimes} /></button>
+                                            <button title="Supprimer le document" className="btn btn-white py-0" type="button" onClick={() => handleDeleteAssocDoc(index)}><FontAwesomeIcon icon={faTimes} /></button>
                                             <h6 className="mb-0">{item.doc_name}</h6>
                                         </div>
                                     ))) : null
@@ -393,8 +529,13 @@ function EditAssociation(props) {
                             </div>
                             <div className="col-lg-12 mb-3">
                                 <label className="d-block mb-2">Description</label>
+                                <div className="text-danger my-2" id="descriptionFeedback">
+                                    {association.errors.description.map(item => (
+                                        <span className="fw-bold"><FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />{item}</span>
+                                    ))}
+                                </div>
                                 {/* <textarea className="form-control" name="description" onChange={handleAddNewTextInputChange} value={association.description} placeholder="Description de la communauté"></textarea> */}
-                                <RichTextEditor data={association.description} onChange={RichTextEditorDescription} name="description" className="form-control" />
+                                <RichTextEditor ref={assocDescription} data={association.description} onChange={RichTextEditorDescription} className="p-0" id="Description" />
                             </div>
                         </div>
                     </div>
@@ -424,7 +565,7 @@ function EditAssociation(props) {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                        <button type="submit" className="btn btn-primary"  data-bs-dismiss="modal" onClick={handleAddAssociationDocument}>Ajouter</button>
+                                    <button type="submit" className="btn btn-primary"  data-bs-dismiss="modal" disabled={associationDoc.doc_file == null || associationDoc.doc_name == null || associationDoc.doc_name == ""} onClick={handleAddAssociationDocument}>Ajouter</button>
                                     </div>
                                 </form>
                             </div>

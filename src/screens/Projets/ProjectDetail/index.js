@@ -12,6 +12,10 @@ import { formatThousandsNumber } from '../../../config/constants'
 import Interweave from 'interweave'
 import { getAccessToken, initPayment } from '../../../services/API';
 import { toast } from 'react-toastify';
+import { getConnectedUser, getRoles, getUserPhoneAccountNumber, hasRole, isAssocMember, IsConnected } from '../../../services/Auth';
+import { partnerJoinProject } from '../../../services/partnerService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 let route = require('../../../utils/route.json')
 const _ = require("lodash")
@@ -20,7 +24,7 @@ function ProjectDetail(props) {
 
     const { projetId, projetName } = useParams();
 
-    const [project, setProject] = useState({ stat: {} })
+    const [project, setProject] = useState({ stat: {}, })
 
     const projet = {
         "association": "L'ordre des médécins",
@@ -38,6 +42,8 @@ function ProjectDetail(props) {
         "fontWeight": "600",
     }
 
+    const userNumber = getUserPhoneAccountNumber()
+
     const location = useLocation();
 
     const [animate, setAnimate] = useState(false)
@@ -45,13 +51,28 @@ function ProjectDetail(props) {
     const [loaded, setLoaded] = useState(false)
 
     const [contributionProcess, setContributionProcess] = useState({
-        OmAccountNumber: "",
-        PIN: null,
+        OmAccountNumber:  userNumber ? userNumber : "",
         processing: false,
         step: 0,
         accessToken: "",
         amount: "1",
     })
+
+    const [projectJoining, setProjectJoining] = useState({
+        requestSent: null,
+        status: null,
+    });
+
+    const joinProject = () => {
+        setProjectJoining({...projectJoining, requestSent: "PENDING"});
+        partnerJoinProject(project.id, (response) => {
+            setProjectJoining({...projectJoining, requestSent: true});
+            // toast.success("Vous avez rejoint ce projet en tant que partenaire.");
+        }, (exception) => {
+            toast.error("Une erreur a été rencontrée !!!");
+            setProjectJoining({...projectJoining, requestSent: null });
+        });
+    }
 
     const handleProcessChange = (e) => {
         let contributionTmp = contributionProcess;
@@ -66,10 +87,14 @@ function ProjectDetail(props) {
         axios.get(`${apiRoutes.ProjectsURL}/${projetId}`)
         .then( response => {
             setProject(response.data)
+            let project = response.data
             // setContributionProcess({...contributionProcess, amount: response.data.contributionPerMember})
-            setTimeout( () => setLoaded(true), 1000)
+            setTimeout( () => setLoaded(true), 1000);
             // setLoaded(true)
-            console.log(response.data)
+            console.log("projectDetail",response.data);
+            if( IsConnected() && getRoles().includes("partner") && project.partners.filter(item => (item.id === getConnectedUser().id )).length === 1 ) {
+                setProjectJoining({...projectJoining, status: 1});
+            }
         }).catch( ({response}) => { console.log(response.data)})
     }
 
@@ -91,7 +116,7 @@ function ProjectDetail(props) {
                 toast.error(exception?.response?.data?.error);
                 setContributionProcess({...contributionProcess, processing: false})
             }
-        )
+        );
     }
 
     const initProjectPayment = (accessToken) => {
@@ -142,8 +167,7 @@ function ProjectDetail(props) {
 
 
     const StatCard = (props) => (
-        <div 
-        className={props.className}>
+        <div className={props.className}>
             <div className="d-flex mx-0 mb-4 justify-content-center align-items-center flex-column" style = {{
                 "width": "100%",
                 "height": "208px",
@@ -173,15 +197,20 @@ function ProjectDetail(props) {
                         </div>
                         <div className="col-lg-6 align-self-center">
                             <h2 className="text-primary fw-bold">{project.title}</h2>
-                            <h5 className="my-3 AnimatedComponent">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{project.holder}</NavLink></h5>
+                            <h5 className="my-3 AnimatedComponent">Par <NavLink to={`${route.front.communautes.link}/${projet.associationId}-${projet.association}`} className="fw-bold text-decoration-none text-dark">{project.holder?.name}</NavLink></h5>
                             <p className="fs-6 fw-bold">Créé le 17 Juin 2021</p>
-                            <ProgressBar percent={!animate ? "0" : project.stat.pourcentage?.replace("%", "") } className="AnimatedComponent" />
-                            <h4 style={headingStyle} className="fw-bold d-block fs-4">{`${!animate ? "" : ( project.stat.pourcentage?.includes("%") ? project.stat.pourcentage : project.stat.pourcentage + "%") }`}</h4>
+                            <ProgressBar percent={!animate ? "0" : project?.stat?.pourcentage?.replace("%", "") } className="AnimatedComponent" />
+                            <h4 style={headingStyle} className="fw-bold d-block fs-4">{`${!animate ? "" : ( project?.stat?.pourcentage?.includes("%") ? project?.stat?.pourcentage : project?.stat?.pourcentage + "%") }`}</h4>
                             <div className="py-2 text-">
-                                <h4 className="fw-bold mb-1">{ formatThousandsNumber(project.cost - project.stat.reste) } F CFA collectés</h4>
+                                <h4 className="fw-bold mb-1">{ formatThousandsNumber(project.cost - project?.stat?.reste) } F CFA collectés</h4>
                                 <h5 className="text-gray fw-normal AnimatedComponent">sur {formatThousandsNumber(project.cost == null ? 0 : project.cost)} F CFA</h5>
                             </div>
-                            <Button buttonType="fullWidth" data-bs-target="#contributionPaymentModal" className="fs-5" data-bs-toggle="modal">Je contribue via Orange Money</Button>
+                            { ( IsConnected() && hasRole("partner") ) && 
+                                <button data-bs-target="#projectJoinPartnerModal" data-bs-toggle="modal" className={`fs-5 FullWidth  mb-2 d-flex align-items-center ${ projectJoining.status !== 1 ? "btn btn-dark" : "border-0 btn bg-supporting-blue" }`} >
+                                    { projectJoining.status === 1 && <FontAwesomeIcon className="me-1" icon={faCheck} />}
+                                    { projectJoining.status !== 1 ? "J'adhère au projet" : "Vous êtes partenaire à ce projet"}
+                                </button>  }
+                            { ((hasRole("partner") && projectJoining.status === 1) || isAssocMember(project?.holder?.id) || hasRole("supervisor") ) && <button data-bs-target="#contributionPaymentModal" className="fs-5 FullWidth btn btn-secondary" data-bs-toggle="modal">Je contribue via Orange Money</button>}
                         </div>
                     </div>
                 </section>
@@ -189,13 +218,13 @@ function ProjectDetail(props) {
                 <section className="container AnimatedDiv">
                     <div className="row">
                         <StatCard className="col-lg-4"
-                            number={`${formatThousandsNumber(project.cost - project.stat.reste)} F CFA`}
+                            number={`${formatThousandsNumber(project.cost - project?.stat?.reste)} F CFA`}
                             title="Entrées" />
                         <StatCard className="col-lg-4"
-                            number={formatThousandsNumber(project.stat.contributions)}
+                            number={formatThousandsNumber(project?.stat?.contributions)}
                             title="Contributions" />
                         <StatCard className="col-lg-4"
-                            number={`${formatThousandsNumber(project.stat.reste)} F CFA`}
+                            number={`${formatThousandsNumber(project?.stat?.reste)} F CFA`}
                             title="Montant manquant" />
                     </div>
                 </section>
@@ -217,11 +246,11 @@ function ProjectDetail(props) {
                 <section className="container mb-4 AnimatedDiv">
                     <div className="d-flex flex-column my-5 py-5">
                         <h2 className="fw-bold mb-5 headingFunPrim">Partenaires du projet</h2>
-                        <div className="row mt-3">
+                        <div className="row align-items-center mt-3">
                             { project.partners != null ? project.partners.map((item, index) => (
                                 <div className="col-lg-3">
                                     { item.logo != null && item.logo !== "" ?
-                                        <img src={`${apiRoutes.StorageURL}/${item.logo}`} alt="LogoPartenaire__Admin"/>
+                                        <img src={`${apiRoutes.StorageURL}/${item.logo}`} className="img-fluid" alt="LogoPartenaire__Admin"/>
                                         : <span className="h2 fw-bold">{item.name}</span>
                                     }
                                 </div>
@@ -257,7 +286,7 @@ function ProjectDetail(props) {
                                         <div class="row justify-content-center">
                                             <div className="d-flex flex-column mb-3 mt-4">
                                                 <label className="d-block mb-2 h6">Numéro Orange Money</label>
-                                                <input className="form-control" onChange={handleProcessChange} type="text" name="OmAccountNumber" value={contributionProcess.OmAccountNumber} placeholder="" />
+                                                <input className="form-control" readonly={userNumber != undefined} type="text" name="OmAccountNumber" value={userNumber || ""} placeholder="" />
                                                 <p></p>
                                             </div>
                                             <div className="d-flex flex-column mb-3">
@@ -268,7 +297,7 @@ function ProjectDetail(props) {
                                         <div className="modal-footer">
                                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                                             <button type="button" className="btn btn-OM d-flex align-items-center" 
-                                                disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
+                                                disabled={contributionProcess.processing === true } 
                                                 onClick={preparePayment}>
                                                     { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button>
                                         </div>
@@ -304,6 +333,99 @@ function ProjectDetail(props) {
                                                     { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button> */}
                                         </div>
                                     </>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div className="modal fade rounded-none" id="contributionPaymentModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                    <div className="modal-dialog rounded-none modal-lg modal-dialog-centered">                
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <div class="row justify-content-center">
+                                    <div className="col-lg-12 d-flex align-items-center justify-content-between">
+                                            <h2 className="text-center fw-bold">Paiement sécurisé via Orange Money</h2>
+                                            <img src={Images.orangeMoney} width="150" height="auto" alt="Logo Orange Money" />
+                                    </div>
+                                </div>
+                                { contributionProcess.step === 0 && 
+                                    <>
+                                        <div class="row justify-content-center">
+                                            <div className="d-flex flex-column mb-3 mt-4">
+                                                <label className="d-block mb-2 h6">Numéro Orange Money</label>
+                                                <input className="form-control" readonly type="text" name="OmAccountNumber" value={userNumber} placeholder="" />
+                                                <p></p>
+                                            </div>
+                                            <div className="d-flex flex-column mb-3">
+                                                <label className="d-block mb-2 h6">Montant</label>
+                                                <input className="form-control" onChange={handleProcessChange} type="number" min="0" name="amount" value={contributionProcess.amount} placeholder="Montant de votre choix" />
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="button" className="btn btn-OM d-flex align-items-center" 
+                                                disabled={contributionProcess.processing === true || contributionProcess.OmAccountNumber.length !== 9 || isNaN(parseInt(contributionProcess.OmAccountNumber)) } 
+                                                onClick={preparePayment}>
+                                                    { (contributionProcess.processing === true ) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Confirmer le paiement</button>
+                                        </div>
+                                    </>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div> */}
+
+                <div className="modal fade rounded-none" id="projectJoinPartnerModal" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                    <div className="modal-dialog rounded-none modal-lg modal-dialog-centered">                
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {
+                                    projectJoining.requestSent === null ?
+                                    (
+                                        <div class="row justify-content-center">
+                                            <div className="col-lg-12 d-flex flex-column align-items-center justify-content-center">
+                                                    <h2 className="text-center mb-0 fw-bold">Accord de partenariat pour le projet :</h2>
+                                                    <h3 className="text-center text-primary fw-bold">{ project.title }</h3>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-lg-12 overflow-auto" style={{ height: "300px"}}>
+                                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum, veniam quam animi necessitatibus, 
+                                                        consequuntur aspernatur ex laboriosam impedit quidem error nemo accusantium laudantium porro aliquid magnam. 
+                                                        Rerum, beatae fuga dicta repudiandae eaque provident in consectetur exercitationem consequatur dolor. 
+                                                        Nobis deleniti, sint eveniet maiores laborum placeat accusantium explicabo repellendus alias nesciunt quaerat iure praesentium aliquam iusto totam, 
+                                                        repellat facilis maxime earum id modi fugit voluptas voluptatem ex. Aperiam consequatur sit soluta nisi vel, 
+                                                        nobis ullam reprehenderit provident deserunt mollitia necessitatibus inventore, itaque totam. 
+                                                        Dolores quia rerum nesciunt amet impedit magnam debitis delectus eos sint, ex esse, dolor sapiente cum, 
+                                                        hic quod? Ipsum ut voluptas, magni quia qui, dolorum nisi harum nostrum natus odit corporis molestias, 
+                                                        provident rerum hic perspiciatis nulla quis iusto dolor possimus! Similique dolore, odio iusto modi quo sit 
+                                                        fugiat sequi nisi maiores, minus natus delectus cupiditate in? Esse, deleniti culpa consequatur nihil perspiciatis 
+                                                        soluta dolorem ab aspernatur doloribus ut repudiandae sequi voluptatibus, illum dolore natus cum deserunt obcaecati amet sapiente 
+                                                        dignissimos fugit tempore! Saepe delectus praesentium temporibus sint! 
+                                                        Odit tempore sint modi consectetur nemo voluptate nesciunt voluptatem quod, 
+                                                        a vel unde odio. Sapiente, officiis. Praesentium ipsum quae delectus molestiae ea facere. </p>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                <button disabled={projectJoining.requestSent === "PENDING"} onClick={ projectJoining.status === 1 || joinProject} className={`d-flex align-items-center btn btn-primary`} >
+                                                    { projectJoining.requestSent === true && <LoadingSpinner className="me-1 fs-6" />}
+                                                    Confirmer
+                                                </button> 
+                                            </div>
+                                        </div>
+                                ):
+                                (
+                                    <div className="row justify-content-center">
+                                        <div className="col-lg-12 d-flex flex-column py-2 align-items-center justify-content-center">
+                                                <FontAwesomeIcon icon={faCheckCircle} className="text-primary fa-3x" />
+                                                <h5 className="text-center mb-0 fw-bold">Votre demande de partenariat dans le projet { project.title } a été enregistrée. Nous reviendrons vers vous dans de brefs délais.</h5>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                        </div>
+                                    </div>
+                                )
                                 }
                             </div>
                         </div>

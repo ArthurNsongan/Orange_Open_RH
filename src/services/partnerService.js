@@ -37,15 +37,37 @@ export const partnerLogin = (login, password, success = null, error = null, befo
     let data = {
         email: login,
         password: password,
+        choice: 0
     }
     console.log("partnerLogin", data);
-    axios.post(`${apiRoutes.LoginPartnerURL}`, data)
+    axios.post(`${apiRoutes.LoginURL}`, data)
     .then( response => {
         success(response);
-        console.log(response)
+        console.log("Partner Login", response)
     }).catch( (exception) => {
         console.warn(exception);
         error(exception);
+    })
+    after();
+}
+
+export const partnerJoinProject = (project_id, success = null, error = null, before = () => {}, after = () => {}) => {
+    before();
+    let data = {
+        project: project_id,
+        project_id: project_id
+    }
+    console.log("partner is joining project with id " + project_id, data);
+    axios.post(`${apiRoutes.PartnerJoinProjectURL}/${project_id}`, data)
+    .then( response => {
+        success(response);
+        console.log("Partner Login", response)
+    }).catch( (exception) => {
+        try {
+            console.log(exception?.response?.data);
+        } catch(exception) {
+            console.log(exception);
+        }
     })
     after();
 }

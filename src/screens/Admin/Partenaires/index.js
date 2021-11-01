@@ -46,6 +46,8 @@ function Partenaires(props) {
 
     const [editPartenaire, setEditPartenaire] = useState(null)
 
+    const [viewPartenaire, setViewPartenaire] = useState(null)
+
     const [formPartenaire, setFormPartenaire] = useState({ name: "", logo: ""})
 
     const [paginationOptions, setPaginationOptions] = useState({
@@ -90,11 +92,14 @@ function Partenaires(props) {
         })
     }
 
-    const UpdatePartenaire = () => {
+    const UpdatePartenaire = (e) => {
+        e.preventDefault();
         let formPartenaireData = new FormData();
         formPartenaireData.append("name", editPartenaire.name)
-        // if( typeof(editPartenaire.logo) === "object")
-        formPartenaireData.append("logo", editPartenaire.logo)
+        //formPartenaireData.append("phone", editPartenaire.phone)
+        if( typeof(editPartenaire.logo) === "object") {
+            formPartenaireData.append("logo", editPartenaire.logo)
+        }
         updatePartner( editPartenaire.id, formPartenaireData,
             (response) => {
                 console.log(response.data)
@@ -140,13 +145,17 @@ function Partenaires(props) {
                                         <label className="d-block mb-2">Image :</label>
                                         <input className="form-control" onChange={(e)=> setFormPartenaire({...formPartenaire, logo: e.target.files[0] }) } type="file" accept="image/*" name="logo" placeholder="Image du Partenaire" />
                                         {
-                                            typeof(formPartenaire.logo) !== "undefined" && (
+                                            (typeof(formPartenaire.logo) === "object" ) && (
                                                 <img src={ typeof(formPartenaire.logo) === "string" ? `${apiRoutes.StorageURL}/${formPartenaire.image}` 
                                                     : URL.createObjectURL(formPartenaire.logo) } alt="Logo du Partenaire"
                                                     className="img-fluid" style={{ width: "60px" }} />
                                             )
                                         }
                                     </div>
+                                    {/* <div className="d-flex flex-column mb-3">
+                                        <label className="d-block mb-2">Numéro de téléphone :</label>
+                                        <input className="form-control" onChange={(e)=>{ setFormPartenaire({...formPartenaire, phone: e.target.value }) } } type="number" name="phone" value={formPartenaire.phone} placeholder="Numéro de Téléphone" />
+                                    </div> */}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -159,34 +168,80 @@ function Partenaires(props) {
             <div className="modal fade" id="editPartenaireForm" tabIndex="-1" aria-labelledby="" aria-hidden="true">
                 <div className="modal-dialog">                
                     { ( editPartenaire !== null ) &&
+                    <form onSubmit={UpdatePartenaire}>
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title fw-bold h3" id="editPartenaireFormLabel">Editer un partenaire</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <div class="row">
+                                    <div className="d-flex flex-column mb-3">
+                                        <label className="d-block mb-2">Nom :</label>
+                                        <input className="form-control" onChange={(e)=>{ setEditPartenaire({...editPartenaire, name: e.target.value }); console.log(editPartenaire); } } type="text" name="name" value={editPartenaire.name} placeholder="Nom du Partenaire" />
+                                    </div>
+                                    <div className="d-flex flex-column mb-3">
+                                        <label className="d-block mb-2">Image :</label>
+                                        <input className="form-control" onChange={(e)=>{ setEditPartenaire({...editPartenaire, logo: e.target.files[0] }); console.log(editPartenaire) }} type="file" name="logo" placeholder="Image du Partenaire" />
+                                        {
+                                            typeof(editPartenaire.logo) !== "undefined" && (
+                                                <img src={ typeof(editPartenaire.logo) === "string" ? `${apiRoutes.StorageURL}/${editPartenaire.logo}` 
+                                                    : URL.createObjectURL(editPartenaire.logo) } alt="Logo du Partenaire - Edit"
+                                                    className="img-fluid" style={{ width: "60px" }} />
+                                            )
+                                        }
+                                    </div>
+                                    {/* <div className="d-flex flex-column mb-3">
+                                        <label className="d-block mb-2">Numéro de téléphone :</label>
+                                        <input className="form-control" onChange={(e)=>{ setEditPartenaire({...editPartenaire, phone: e.target.value }); console.log(editPartenaire); } } type="number" name="phone" value={editPartenaire.phone} placeholder="Numéro de Téléphone" />
+                                    </div> */}
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={editPartenaire.name.length  < 2 && editPartenaire.image == null 
+                                        // && editPartenaire.phone.length < 9
+                                    } 
+                                        >Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    }
+                </div>
+            </div>
+            <div className="modal fade" id="viewPartenaireForm" tabIndex="-1" aria-labelledby="" aria-hidden="true">
+                <div className="modal-dialog">                
+                    { ( viewPartenaire !== null ) &&
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title fw-bold h3" id="editPartenaireFormLabel">Editer un partenaire</h5>
+                            <h5 className="modal-title fw-bold h3" id="editPartenaireFormLabel">Détails Partenaire</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <hr />
                         <div className="modal-body">
                             <div class="row">
-                                <div className="d-flex flex-column mb-3">
-                                    <label className="d-block mb-2">Nom :</label>
-                                    <input className="form-control" onChange={(e)=>{ setEditPartenaire({...editPartenaire, name: e.target.value }); console.log(editPartenaire); } } type="text" name="name" value={editPartenaire.name} placeholder="Nom du Partenaire" />
+                                <div className="d-flex flex-column mb-1">
+                                    <label className="d-block mb-2">Nom : <br/> { viewPartenaire.name }</label>
                                 </div>
-                                <div className="d-flex flex-column mb-3">
+                                <div className="d-flex flex-column mb-1">
                                     <label className="d-block mb-2">Image :</label>
-                                    <input className="form-control" onChange={(e)=>{ setEditPartenaire({...editPartenaire, logo: e.target.files[0] }); console.log(editPartenaire) }} type="file" name="logo" placeholder="Image du Partenaire" />
                                     {
-                                        typeof(editPartenaire.logo) !== "undefined" && (
-                                            <img src={ typeof(editPartenaire.logo) === "string" ? `${apiRoutes.StorageURL}/${editPartenaire.logo}` 
-                                                : URL.createObjectURL(editPartenaire.logo) } alt="Logo du Partenaire - Edit"
-                                                className="img-fluid" style={{ width: "60px" }} />
-                                        )
+                                        <img src={`${apiRoutes.StorageURL}/${viewPartenaire.logo}`} alt="Logo du Partenaire"
+                                                className="" style={{ maxWidth: "200px" }} />
                                     }
                                 </div>
+                                <div className="d-flex flex-column mb-1">
+                                    <label className="d-block mb-2">E-mail :</label>
+                                    <h5>{( viewPartenaire.email != null && viewPartenaire.email !== "" ) ? viewPartenaire.email : "Aucun"}</h5>
+                                </div>
+                                <div className="d-flex flex-column mb-1">
+                                    <label className="d-block mb-2">Numéro de téléphone :</label>
+                                    <h5>{( viewPartenaire.phone != null && viewPartenaire.phone!== "" ) ? viewPartenaire.phone : "Aucun"}</h5>
+                                </div>
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" disabled={editPartenaire.name.length  < 2 && editPartenaire.image == null} 
-                                    onClick={UpdatePartenaire}>Enregistrer</button>
-                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                         </div>
                     </div>
                     }
@@ -214,7 +269,9 @@ function Partenaires(props) {
                                 <FontAwesomeIcon icon={faEllipsisV} />
                             </button>
                             <div className="dropdown-menu left-0" aria-labelledby="threeDotsDropDown">
-                                <a href="#" className="dropdown-item" 
+                                <a href="#view" className="dropdown-item" 
+                                    onClick={(e) => { e.preventDefault(); setViewPartenaire(item); window.$("#viewPartenaireForm").modal("show"); }} >Voir</a>
+                                <a href="#edit" className="dropdown-item" 
                                     onClick={(e) => { e.preventDefault(); setEditPartenaire(item); window.$("#editPartenaireForm").modal("show"); }} >Editer</a>
                             </div>
                         </>

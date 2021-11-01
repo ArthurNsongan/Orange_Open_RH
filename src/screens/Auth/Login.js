@@ -112,33 +112,34 @@ function Login(props) {
             const { access_token, user } = response.data
             let decodedToken = decodeToken(access_token)
             console.log( isExpired(access_token) )
-            if(compareRoles([defaultUserRoles.ADMIN_ROLE, defaultUserRoles.SUPERVISOR_ROLE], user.roles)) {
-                // setUserRole(user.roles)
-                // setLoginAttemp({...loginAttemp, token: access_token, first_factor: true,  two_factor: true, user: user })
+            // if(compareRoles([defaultUserRoles.ADMIN_ROLE, default defaultUserRoles.SUPERVISOR_ROLE], user.roles)) {
+            if(true) {
+                setUserRole(user.roles)
+                setLoginAttemp({...loginAttemp, token: access_token, first_factor: true,  two_factor: true, user: user })
                 setAuthUser({...user, roles: []}, access_token, true, user.roles)
                 setRequestSent(false);
                 console.log(user)
-                jumpToStep(3);
+                jumpToStep(4);
                 setTimeout( () => {history.push(route.front.home.link)}, 5000);
-                // history.push(route.front.home.link);
+                history.push(route.front.home.link);
             } else {
                 setLoginAttemp({...loginAttemp, token: access_token, first_factor: true, user: user })
                 setUserRole(user.roles)
                 nextStep()
             }
-            // getRoleByUser(user.id, (res) => { 
-            //     console.log("getRoleByUser", res.data)
-            //     setUserRole(res.data);
-            //     setRoles(res.data)
-            //     if(hasRole([defaultUserRoles.ADMIN_ROLE, defaultUserRoles.SUPERVISOR_ROLE])) {
-            //         setLoginAttemp({...loginAttemp, two_factor: true});
-            //         jumpToStep(3);
-            //         setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000);
-            //         history.push(route.front.home.link);
-            //     } else {
-            //         nextStep()
-            //     }
-            // }, (exception) => { if(exception.response) { console.log(exception.response) } })
+            getRoleByUser(user.id, (res) => { 
+                console.log("getRoleByUser", res.data)
+                setUserRole(res.data);
+                setRoles(res.data)
+                if(hasRole([defaultUserRoles.ADMIN_ROLE, defaultUserRoles.SUPERVISOR_ROLE])) {
+                    setLoginAttemp({...loginAttemp, two_factor: true});
+                    jumpToStep(3);
+                    setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000);
+                    history.push(route.front.home.link);
+                } else {
+                    nextStep()
+                }
+            }, (exception) => { if(exception.response) { console.log(exception.response) } })
             console.log(decodedToken)
         }, (exception) => { 
             setRequestSent(false);
@@ -149,14 +150,14 @@ function Login(props) {
             </div>) }
             else { console.log(exception.message) } 
         }) : partnerLogin(loginAttemp.login, loginAttemp.password, (response) => {
-            const { access_token, user } = response.data
+            const { access_token, partner } = response.data
             let decodedToken = decodeToken(access_token)
             console.log( isExpired(access_token) )
-            setAuthUser({...user, roles: []}, access_token, true, user.roles)
+            setAuthUser({...partner, roles: []}, access_token, true, [{name: "partner"}])
             setRequestSent(false);
-            console.log(user)
+            console.log(partner)
             setTimeout( () => {history.push(route.front.home.link)}, 5000);
-            jumpToStep(3);
+            jumpToStep(4);
             console.log(decodedToken)
         }, (exception) => {
             setRequestSent(false);
@@ -173,8 +174,12 @@ function Login(props) {
     const secondFactorFormSubmit = (e) => {
         e.preventDefault()
         verifyTwoFactorCode(loginAttemp.code, loginAttemp.token,
-            (response) => { nextStep(); setLoginAttemp({...loginAttemp, two_factor: true});
-            setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000) }, 
+            (response) => { 
+                nextStep(); 
+                setLoginAttemp({...loginAttemp, two_factor: true});
+                jumpToStep(4);
+                setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000) 
+            }, 
             (response) => { 
                 console.log(response); 
                 if(response.status === 400) {
@@ -209,6 +214,8 @@ function Login(props) {
 
     const { codeError, authError, codeErrorMessage, authErrorMessage } = errors
 
+    const loginFormStep = 2;
+
     return (
         <section className="AuthSection bg-light w-100">
             <Helmet title="Connexion - Challenge Solidarité"/>
@@ -217,7 +224,7 @@ function Login(props) {
                     <div className="col-lg-6 bg-white ">
                         <div className="d-flex my-5 flex-column align-items-center justify-content-center">
                             <h5 className="text-center h3 mb-1">Connexion à </h5>
-                            <span className="h2 text-primary headingFunPrim contentCenter fw-bold" role="button">Challenge Solidarité</span>
+                            <NavLink to="/" className="h2 text-primary headingFunPrim contentCenter fw-bold" role="button">Challenge Solidarité</NavLink>
                         </div>
                         <div id="Login" className="px-2">
                             <Stepper currentStep={currentStep}>
@@ -242,7 +249,7 @@ function Login(props) {
                                     <span className="text-dark text-center d-block mb-3">Vous n'avez pas de compte ? <NavLink className="text-primary fw-bold" to={route.auth.signup.link}>Créez votre compte</NavLink></span>
                                 </Step>
                                 <Step step={2}>
-                                    <form id="Step-1" onSubmit={loginSectionFormSubmit}>
+                                    <form id="Step-2" onSubmit={loginSectionFormSubmit}>
                                         <div className="form-floating mb-3">
                                             <label for="Login">E-mail</label>
                                             <input type="email" className="form-control" ref={loginRef} required value={loginAttemp.login} name="login" id="Login" onChange={handleChange} placeholder="Ex: votrenom@gmail.com"></input>
@@ -260,8 +267,8 @@ function Login(props) {
                                         <div className="my-2">
                                             <Button type="submit" 
                                                 className="FullWidth btn btn-primary d-flex justify-content-center align-items-center"
-                                                disabled={ requestSent && currentStep === 1}
-                                            >{ (requestSent && currentStep === 1) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Se connecter</Button>
+                                                disabled={ requestSent && currentStep === loginFormStep}
+                                            >{ (requestSent && currentStep === loginFormStep) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Se connecter</Button>
                                         </div>
                                         <div className="d-flex flex-row align-items-center justify-content-between mb-3">
                                             <button type="button" className="btn btn-light" onClick={prevStep}><FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Retour au choix du rôle</button>

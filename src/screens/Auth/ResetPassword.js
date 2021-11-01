@@ -1,18 +1,18 @@
-import { faArrowLeft, faArrowRight, faCheckCircle, faHome, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faArrowRight, faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import Button from '../../components/Button'
-import { resendTwoFactorCode, resetPasswordInit, resetPasswordProcess, verifyTwoFactorCode } from '../../services/API'
+import { resetPasswordProcess } from '../../services/API'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import Stepper, {Step} from '../../components/Stepper'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 const route = require("../../utils/route.json")
 
-function ForgotPassword(props) {
+function ResetPassword(props) {
 
     const [currentStep, setCurrentStep] = useState(1)
     const [steps, setSteps] = useState(4)
@@ -22,6 +22,8 @@ function ForgotPassword(props) {
         authError: false,
         authErrorMessage: null
     })
+
+    const { token } = useParams();
 
     const setCodeError = (bool, message = null) => { setErrors({...errors, codeError: bool, codeErrorMessage: message })}
     const setAuthError = (bool, message = null) => { setErrors({...errors, authError: bool, authErrorMessage: message })}
@@ -51,8 +53,7 @@ function ForgotPassword(props) {
         password:"",
         password_confirmation: "",
         email: "",
-        code: "",
-        serverCode: ""
+        password_token: ""
     })
 
     const prevStep = () => {
@@ -86,22 +87,6 @@ function ForgotPassword(props) {
         //     (exception) => { console.log(exception.response.data)} ) : console.log("Timer still going")
     }
 
-    const initCode = (e) => {
-        e.preventDefault();
-        resetPasswordInit(resetAttempt.email, (response) => {
-            console.log("initCode", response.data);
-        }, (exception) => {
-            console.log(exception);
-        });
-        nextStep();
-    }
-
-    const codeSubmit = (e) => {
-        e.preventDefault();
-        if(resetAttempt.code === resetAttempt.serverCode)
-        nextStep();
-    }
-
     const resetPassword = (e) => {
         e.preventDefault();
         resetPasswordProcess(resetAttempt.email, resetAttempt.password, resetAttempt.serverCode, resetAttempt.code,
@@ -119,6 +104,8 @@ function ForgotPassword(props) {
 
     const { codeError, authError, codeErrorMessage, authErrorMessage } = errors
 
+    alert(token);
+    
     return (
         <>
         <section className="AuthSection bg-light w-100">
@@ -133,46 +120,6 @@ function ForgotPassword(props) {
                         <div id="Login" className="px-2">
                             <Stepper currentStep={currentStep}>
                                 <Step step={1}>
-                                    <form id="Step-1" onSubmit={initCode}>
-                                        <div className="form-floating mb-3">
-                                            <input type="email" className="form-control" required value={resetAttempt.email} name="email" id="Login" onChange={handleChange} placeholder="Ex: votrenom@gmail.com"></input>
-                                            <label for="Login">E-mail</label>
-                                        </div>
-                                        <div className="my-3">
-                                            <Button className="FullWidth btn btn-primary my-1 h6" type="submit" >Suivant<FontAwesomeIcon icon={faArrowRight} className="ms-2" /> </Button>
-                                        </div>
-                                    </form>
-                                </Step>
-                                {/* <Step step={2}>
-                                    <form id="Step-2" onSubmit={codeSubmit}>
-                                        <p>Votre email : <b>{resetAttempt.email}</b></p>
-                                        <p>Un code vous a été envoyé par mail. Saisissez-le ici :</p>
-                                        <div className="row">
-                                            <div className="col-12">
-                                                <input type="text" className={`form-control pb-2 ${codeError === true && "is-invalid"}`} name="code" onChange={handleChange} required id="SecretCode" maxLength={32} placeholder="Entrez ce code"></input>
-                                                { codeError === false ? "" : <span className="text-warning">{codeErrorMessage === null || codeErrorMessage}</span> }
-                                            </div>
-                                        </div>
-                                        <div className="d-flex w-100 h6 my-4 text-primary flex-column align-items-center fw-bold text-center">
-                                            <span onClick={resendNewCode} role="button">Envoyez un nouveau code</span>
-                                            <br/>
-                                            { timer !== 0 && <span role="button" className="fs-6 d-block">Encore { timer !== 0 && timer} seconde(s)</span>}
-                                        </div>
-                                        { authError === true && ( 
-                                            <span className="d-flex align-items-center alert alert-danger">
-                                                <FontAwesomeIcon icon={faInfoCircle} className="me-2 fa-2x" /> 
-                                                {authErrorMessage === null || authErrorMessage}
-                                            </span>) }
-                                        <div className="mb-5">
-                                            <Button className="FullWidth btn btn-dark my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Précédent</Button>
-                                            <Button type="submit" 
-                                                className="FullWidth btn btn-primary d-flex justify-content-center align-items-center"
-                                                disabled={ requestSent && currentStep === 2}
-                                            >{ (requestSent && currentStep === 2) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) } Valider</Button>
-                                        </div>
-                                    </form>
-                                </Step>
-                                <Step step={3}>
                                     <form id="Step-3" onSubmit={resetPassword} >
                                         <div className="form-floating mb-3">
                                             <input type="password" className="form-control" required value={resetAttempt.password}  name="password" id="Password" onChange={handleChange} placeholder="Votre mot de passe"></input>
@@ -183,20 +130,18 @@ function ForgotPassword(props) {
                                             <label for="Password">Confirmation</label>
                                         </div>
                                         <div className="mt-5 mb-3">
-                                            <button className="FullWidth btn btn-dark my-1 h6" onClick={prevStep} ><FontAwesomeIcon icon={faArrowLeft} /> Précédent</button>
                                             <button className="FullWidth btn btn-primary my-1 h6" type="submit"
                                                 disabled={ (requestSent && currentStep === 3) || ( resetAttempt.password !== resetAttempt.password_confirmation || resetAttempt.password.length <= 8)} >
                                                 { (requestSent && currentStep === 3) && (<LoadingSpinner className="me-2" style={{width: "25px", height: "25px"}} />) }  Confirmer</button>
                                         </div>
                                     </form>
-                                </Step> */}
+                                </Step>
                                 <Step step={2}>
                                     <div className="row">
-                                        <h2 className="text-center">Mail envoyé</h2>
+                                        <h2 className="text-center">Mot de passe modifié avec succès</h2>
                                         <h3 className="text-center text-primary"><FontAwesomeIcon icon={faCheckCircle} className="fa-3x" /></h3>
-                                        <div className="mt-2 fs-4 mb-5 text-center">
-                                            Un mail vous a été envoyé avec le lien de redéfinition du mot de passe.
-                                            <NavLink className="FullWidth btn btn-dark my-1 h6" to={route.front.home.link}><FontAwesomeIcon icon={faHome} className="me-1" />Accueil </NavLink>
+                                        <div className="mt-5 mb-3">
+                                            <NavLink className="FullWidth btn btn-dark my-1 h6" to={route.auth.login.link}> Se connecter</NavLink>
                                         </div>
                                     </div>
                                 </Step>
@@ -210,4 +155,4 @@ function ForgotPassword(props) {
     )
 }
 
-export default ForgotPassword
+export default ResetPassword

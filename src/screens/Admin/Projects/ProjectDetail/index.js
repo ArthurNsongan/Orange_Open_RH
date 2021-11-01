@@ -1,4 +1,4 @@
-import { faArrowLeft, faBell, faEdit, faEllipsisV, faFileExcel, faFileExport, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBell, faEdit, faEllipsisV, faFileExcel, faFileExport, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Pagination } from 'antd';
 import moment from 'moment';
@@ -53,7 +53,7 @@ function ProjectDetail(props) {
 
     const notifyMembers = () => {
         setNotifyRequest({...notifyRequest, processing: true});
-        setTimeout(() => { setNotifyRequest({...notifyRequest, processing: false});         toast.success(`Tous les utilisateurs de l'association ${project.holder} ont été relancées`)
+        setTimeout(() => { setNotifyRequest({...notifyRequest, processing: false});         toast.success(`Tous les utilisateurs de l'association ${project.holder.name} ont été relancées`)
     }, 2000)
     }
 
@@ -104,7 +104,7 @@ function ProjectDetail(props) {
     }
 
     const exportProjectContributions = () => {
-        exportContributions(project.association_id, project.id, (response) => {
+        exportContributions(project.holder.id, project.id, (response) => {
             if(exportProgress === false) {
                 setExportProgress(true);
                 console.log("exportProjectContributions", response);
@@ -112,7 +112,7 @@ function ProjectDetail(props) {
                 console.log("exportContributionsUrl", resLink);
                 const a = window.document.createElement("a");
                 a.setAttribute("href", resLink);
-                a.download = `${project.holder}_${project.title}_contributions.xlsx`;
+                a.download = `${project.holder.name}_${project.title}_contributions.xlsx`;
                 a.click();
                 setExportProgress(false);
                 a.remove();
@@ -124,6 +124,11 @@ function ProjectDetail(props) {
 
     // const communaute_id = ""
 
+    const [searchKey, setSearchKey] = useState("")
+
+    let filteredData = searchKey !== "" ? 
+        projectPayments.filter( item => ( item.subscriberMsisdn.toLowerCase().includes(searchKey.toLowerCase()) || item.txnid.toLowerCase().includes(searchKey.toLowerCase()) ||
+            moment(item.created_at).format("Do MMMM YYYY HH:mm").toLowerCase().includes(searchKey.toLowerCase()) || moment(item.created_at).format("Do-MM-YYYY").toLowerCase().includes(searchKey.toLowerCase()) ) ) : projectPayments
 
     return (
         <div className="d-flex flex-column">
@@ -138,18 +143,18 @@ function ProjectDetail(props) {
                             </div>
                         </div>
                         <div className="d-flex flex-column">
-                            <button className="d-flex align-items-center border-bottom border-color-dark mb-3 btn" onClick={() => { history.goBack(); }}>
+                            <button className="d-flex justify-content-start border-bottom border-color-dark mb-3 btn" onClick={() => { history.goBack(); }}>
                                 <FontAwesomeIcon icon={faArrowLeft} className="fa-2x me-3" />
                                 <div className="py-3 text-start">
                                     <h2 className="mb-0 fw-bold ">{project.title}</h2>
-                                    <span className="fs-6">Par <b>{ project.holder }</b></span>
+                                    <span className="fs-6">Par <b>{ project.holder.name }</b></span>
                                 </div>
                             </button>
                             <div className="mx-3">
                                 <ProgressBar percent={stats.pourcentage.replace("%","")} />
                                 <div className="row">
                                     <span className="d-block fw-bold col-4 fs-5 my-2">{stats.pourcentage}{ !stats.pourcentage.includes("%") && "%" }</span>
-                                    <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(project.cost - stats.reste)} acquis FCFA</b><br/>sur {formatThousandsNumber(project.cost)} F CFA</span>
+                                    <span className="d-block fs-5 col-4 my-2"><b>{formatThousandsNumber(project.cost - stats.reste)} FCFA acquis</b><br/>sur {formatThousandsNumber(project.cost)} F CFA</span>
                                     <span className="d-block fs-5 col-4 my-2"><b>{ stats.contributions }</b> contributions</span>
                                 </div>
                             </div>
@@ -158,12 +163,21 @@ function ProjectDetail(props) {
                             <button className="btn btn-primary m-2" onClick={exportProjectContributions}><FontAwesomeIcon icon={faFileExport} className="d-inline-block me-3"></FontAwesomeIcon> Exporter Tout</button>
                         </div>
                         <div className="d-flex flex-column mx-2 mt-5">
-                            <DataTable emptyMessage="Aucune contribution pour le moment !" loaded={paymentsLoaded} datas={projectPayments} columns={[
+                            <div className="row">
+                                <div className="col-lg-4">
+                                    <div className="d-flex justify-content-start mb-3 text-dark">
+                                        <FontAwesomeIcon icon={faSearch} className="d-inline-block me-2"/>
+                                        <input className="form-control" placeholder="Rechercher" onChange={(e) => setSearchKey(e.target.value) }/>
+                                    </div>
+                                </div>
+                            </div>
+                            <DataTable emptyMessage="Aucune contribution pour le moment !" loaded={paymentsLoaded} datas={filteredData} columns={[
                                 {title: "#", dataTitle: "id", sortable: false, renderData: (item, index) => ( index + 1 )},
                                 {title: "Numéro OM", dataTitle: "subscriberMsisdn"},
                                 {title: "Montant", renderData: (item) => ( `${formatThousandsNumber(parseInt(item.amount))} F CFA` ) },
-                                {title: "Date de création", renderData: (item) => ( moment(item.created_at).format("Do MMMM YYYY HH:mm")) },
-                                {title: "Statut", renderData: (item) => ( <span className={`badge fw-normal h7 ${item.status === "FAILED" ? "bg-danger" : "bg-primary"}`}>{ item.status }</span> ), sortable: false},
+                                {title: "N° Transaction", dataTitle: "tnxid"},
+                                {title: "Date de contribution", renderData: (item) => ( moment(item.created_at).format("Do MMMM YYYY HH:mm")) },
+                                // {title: "Statut", renderData: (item) => ( <span className={`badge fw-normal h7 ${item.status === "FAILED" ? "bg-danger" : "bg-primary"}`}>{ item.status }</span> ), sortable: false},
                                 {title: "Actions", renderData: (item) => (
                                     <>
                                         {/* <button type="button" className="btn bn-white" id="threeDotsDropDown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -211,12 +225,6 @@ function ProjectDetail(props) {
                                                 </div>
                                                 <div className="col-lg-6 py-3">
                                                     Statut de la transaction : <b>{currentPayment.status}</b>
-                                                </div>
-                                                <div className="col-lg-6 py-3">
-                                                    Message : <b>{currentPayment.confirmtxnmessage === "" ? currentPayment.inittxnmessage : currentPayment.confirmtxnmessage}</b>
-                                                </div>
-                                                <div className="col-lg-6 py-3">
-                                                    Statut de confirmation : <b>{currentPayment.confirmtxnstatus}</b>
                                                 </div>
                                             </div>
                                             <div className="modal-footer">

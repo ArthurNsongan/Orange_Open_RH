@@ -3,6 +3,8 @@ import serverConfig from "./serverConfig"
 const apiRoutes = {
     "AssociationsURL": `${serverConfig.apiAddress}/api/association`,
     "AssociationTypesURL": `${serverConfig.apiAddress}/api/association_type`,
+    "GetActiveAssociationsURL": `${serverConfig.apiAddress}/api/active-association/paginate`,
+    "GetInactiveAssociationsURL": `${serverConfig.apiAddress}/api/inactive-association/paginate`,
     "DocumentURL" : `${serverConfig.apiAddress}/api/document`,
     "StorageURL":`${serverConfig.apiAddress}`,
     "ProjectsURL": `${serverConfig.apiAddress}/api/project`,
@@ -43,6 +45,9 @@ const apiRoutes = {
     "RegisterPartnerURL": `${serverConfig.apiAddress}/api/auth/register-partner`,
     "LoginPartnerURL": `${serverConfig.apiAddress}/api/auth/login-partner`,
     "LogoutPartnerURL": `${serverConfig.apiAddress}/api/auth/logout-partner`,
+    "PartnerJoinProjectURL": `${serverConfig.apiAddress}/api/partner/join-project`,
+    "SendScheduledNotification": `${serverConfig.apiAddress}/api/scheduled-sms/send`,
+    "CheckUserDataValidation": `${serverConfig.apiAddress}/api/user/check-data/validation`,
 }
 
 export default apiRoutes;

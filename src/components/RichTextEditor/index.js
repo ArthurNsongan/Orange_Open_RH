@@ -10,7 +10,7 @@ import 'ckeditor5-custom-build/build/translations/fr'
 // import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 // import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 
-function RichTextEditor({ onChange, onReady, onBlur, data, className}) {
+function RichTextEditor({ ref, onChange, id, className, onReady, onBlur, data}) {
 
     // ClassicEditor.create("#CkEditor", {
     //         'language': 'fr',
@@ -21,69 +21,74 @@ function RichTextEditor({ onChange, onReady, onBlur, data, className}) {
 
     return (
         <>
-            <CKEditor
-                config={{
-                    toolbar: {
-					items: [
-						'heading',
-						'|',
-						'bold',
-						'italic',
-						'bulletedList',
-						'numberedList',
-						'|',
-						'outdent',
-						'indent',
-						'|',
-						'imageUpload',
-						'fontColor',
-						'fontBackgroundColor',
-						'link',
-						'fontFamily',
-						'fontSize',
-						'blockQuote',
-						'insertTable',
-						'mediaEmbed',
-						'undo',
-						'redo'
-					]
-				},
-				language: 'fr',
-				image: {
-					toolbar: [
-						'imageTextAlternative',
-						'imageStyle:inline',
-						'imageStyle:block',
-						'imageStyle:side'
-					]
-				},
-				table: {
-					contentToolbar: [
-						'tableColumn',
-						'tableRow',
-						'mergeTableCells'
-					]
-				},
-					licenseKey: '',
-				}}
-                id="CkEditor"
-                editor={Editor}
-                className={className}
-                onReady={ (editor) => {
-                    console.log(editor)
-                }}
-                data={data}
-                onChange={ (event, editor) => {
-                    console.log(editor.getData())
-                    onChange(editor)
-                }}
-                onBlur={ (event, editor) => {
+            <div className={className} id={id} ref={ref}>
+				<CKEditor
+					ref={ref}
+					id={id}
+					className={className}
+					config={{
+						toolbar: {
+						items: [
+							'heading',
+							'|',
+							'bold',
+							'italic',
+							'bulletedList',
+							'numberedList',
+							'|',
+							'outdent',
+							'indent',
+							'|',
+							'imageUpload',
+							'fontColor',
+							'fontBackgroundColor',
+							'link',
+							'fontFamily',
+							'fontSize',
+							'blockQuote',
+							'insertTable',
+							'mediaEmbed',
+							'undo',
+							'redo'
+						]
+					},
+					language: 'fr',
+					image: {
+						toolbar: [
+							'imageTextAlternative',
+							'imageStyle:inline',
+							'imageStyle:block',
+							'imageStyle:side'
+						]
+					},
+					table: {
+						contentToolbar: [
+							'tableColumn',
+							'tableRow',
+							'mergeTableCells'
+						]
+					},
+						licenseKey: '',
+					}}
+					id="CkEditor"
+					editor={Editor}
+					className={className}
+					onReady={ (editor) => {
+						console.log(editor)
+					}}
+					data={data}
+					onChange={ (event, editor) => {
+						console.log(editor.getData())
+						onChange(editor)
+					}}
+					onBlur={ (event, editor) => {
 
-                }}
-                onFocus={ (event, editor) => {
+					}}
+					onFocus={ (event, editor) => {
 
-                }}
-            />
+					}}
+				/>
+			</div>
         </>
     )
 }

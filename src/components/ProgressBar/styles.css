@@ -1,8 +1,8 @@
 .ProgressBar-100 {
     position: relative;
-    background-color: lightgray;
-    height: 10px;
-    border-radius: 45px;
+    background-color: lightgrey;
+    height: 20px;
+    /* border-radius: 45px; */
     width: 100%;
 }
 
@@ -12,9 +12,9 @@
     top: 0px;
     width: auto;
     transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1) !important ;
-    height: 10px;
+    height: 20px;
     background-color: #ff7900;
-    border-radius: 45px;
+    /* border-radius: 45px; */
 }
 
 .ProgressBar {

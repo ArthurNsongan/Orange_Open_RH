@@ -1,5 +1,6 @@
 import axios from "axios"
 import { reactLocalStorage } from "reactjs-localstorage"
+import { decodeToken, isExpired } from 'react-jwt';
 
 const _ = require("lodash")
 
@@ -34,6 +35,13 @@ export const IsConnected = () => {
     console.log("USER_TOKEN", reactLocalStorage.getObject(USER_TOKEN))
     return (reactLocalStorage.getObject(IS_LOGGED_IN) === true || ( !_.isNil(reactLocalStorage.get(USER_OBJECT)) && !_.isNil(reactLocalStorage.get(USER_TOKEN))) ) 
 }
+
+export const checkAuth = () => {
+    if(isExpired(getToken())) {
+        logOutStorage();
+        window.location.reload();
+    }
+}
 export const getRoles = () => { return (reactLocalStorage.getObject(USER_ROLES) ) }
 
 export const hasRole = (roleName) => {
@@ -61,8 +69,19 @@ export const isAdmin = () => {
     return hasRole(defaultUserRoles.ADMIN_ROLE) && IsConnected() && getRoles() !== undefined
 }
 
+export const getUserPhoneAccountNumber = () => {
+    // const user = getConnectedUser()
+    return hasRole("partner") ? getConnectedUser()?.phone : getConnectedUser()?.OmAccountNumber;
+}
+
 export const isMember = () => {
     return hasRole(defaultUserRoles.SUPERVISOR_ROLE) && IsConnected() && getRoles() !== undefined
+}
+
+export const isAssocMember = (association_id) => {
+    var roles = getRoles()
+    roles = _.isEqual(roles, {}) ? [] : roles
+    return roles.filter( item => ( (item.name === defaultUserRoles.MEMBER_ROLE || item.name === defaultUserRoles.SUPERVISOR_ROLE) && item.pivot.association_id === association_id ) ).length === 1 ? true : false ;
 }
 
 export const compareRoles = (roleName, roles) => {
@@ -104,10 +123,12 @@ export const getAuthHeaders = (config) => {
 
 export const everyRequestConfig = () => {
     axios.interceptors.request.use(async (config) => {
+        let actualConf = config
+        actualConf.headers["X-Requested-With"] = "XMLHttpRequest"
         if(!IsConnected()) {
-            return config;
+            return actualConf;
         }
-        let newConfig = getAuthHeaders(config)
+        let newConfig = getAuthHeaders(actualConf)
         console.log("newConfig", newConfig)
         return newConfig
     })

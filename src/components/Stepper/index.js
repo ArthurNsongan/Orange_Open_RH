@@ -13,16 +13,20 @@ function Stepper(props) {
     return (
         <div>
             <StepCheckerContext.Provider value={currentStep}>
-                { props.children }
+                { props.children.map((item, index) => {
+                    return <StepChecker component={item} step={index + 1}/>
+                })}
             </StepCheckerContext.Provider>
         </div>
     )
 }
 
 export function StepChecker(props) {
-
+    const currentStep = useContext(StepCheckerContext)
     return (
-        <div></div>
+        <>
+            { props.step === currentStep ? props.component : "" }
+        </>
     )
 }
 
@@ -31,10 +35,9 @@ export default Stepper
 export function Step(props) {
 
     const { children } = props
-    const currentStep = useContext(StepCheckerContext)
     return (
             <>
-                { props.step === currentStep ? children : "" }
+                {children}
             </>
     )
 }

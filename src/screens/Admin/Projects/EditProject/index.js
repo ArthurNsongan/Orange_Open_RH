@@ -1,4 +1,4 @@
-import { faImage, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -12,7 +12,7 @@ import Partenaires from '../../Partenaires';
 import moment from "moment"
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { changeProjectStatus, getAllCategories, getAllPartners, getProject, removeProjectPartner } from '../../../../services/API';
-import { getSupervisorAssociationId, hasRole, isAdmin, isSupervisor } from '../../../../services/Auth';
+import { checkAuth, getSupervisorAssociationId, hasRole, isAdmin, isSupervisor } from '../../../../services/Auth';
 
 let route = require("../../../../utils/route.json")
 
@@ -34,10 +34,25 @@ function EditProject(props) {
 
     let history = useHistory();
 
+    const initialErrors = {
+        title: [],
+        image: [],
+        project_plan: [],
+        description: [],
+        cost: [],
+        contributionPerMember: [],
+        deadlines: [],
+        start_date: [],
+        category_id: [],
+    }
+
+    const [requestSent, setRequestSent] = useState(false)
+
     const [project, setProject] = useState({
         project_plan: "",
         description: "",
         partners: [],
+        errors: { ...initialErrors },
         association_id: communaute_id
     });
 
@@ -70,21 +85,49 @@ function EditProject(props) {
 
     const handleSubmitEditNewProject = (e) => {
         e.preventDefault()
-
+        setRequestSent(true)
         let inputListNames = ["partenaires_list", "doc_file", "image"]
         let firstInvalidItem = null
         let isValid = true
+        let projectErrors = initialErrors
         let form = document.querySelector("#EditNewProjetForm")
         Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
             item.classList.remove("is-invalid")
-            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
+            if(!inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
             {
-                item.classList.add("is-invalid");
-                console.log(item)
-                isValid = false;
+                let itemIsValid = true
+                const isNonValidated = () => {
+                    isValid = false;
+                    itemIsValid = false;
+                }
+                if (!inputListNames.includes(item.name) && !item.classList.contains("ck-hidden") && (item.tagName === "INPUT" || item.tagName === "SELECT")) {
+                    projectErrors[item.name] = []
+                    if(item.value.length === 0) {
+                        isNonValidated()
+                        projectErrors[item.name].push("Le champ est requis.")
+                    }
+                    // else if(item.name.includes("email") && !checkEmail(item.value) ) {
+                    //     isNonValidated()
+                    //     projectErrors[item.name].push("E-mail invalide.")
+                    // } else if(item.name.includes("phone") && !checkPhoneNumber(item.value) ) {
+                    //     isNonValidated()
+                    //     projectErrors[item.name].push("Le numéro de téléphone n'est pas valide.")
+                    // }
+                    if(itemIsValid === false) {
+                        item.classList.add("is-invalid")
+                    }
+                }
             }
             if(firstInvalidItem === null) { firstInvalidItem = item}
         })
+        if (project.description === "" || project.description == null) {
+            projectErrors["description"] = []
+            projectErrors.description.push("L'éditeur est vide.")
+        }
+        if (project.project_plan === "" || project.project_plan == null) {
+            projectErrors["project_plan"] = []
+            projectErrors.project_plan.push("L'éditeur est vide.")
+        }
         if(isValid === false || form === null) {
             window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
             toast.error(<div className="d-flex align-items-center fs-6">Erreur rencontrée au niveau des champs surlignés !!!</div>, {
@@ -96,7 +139,10 @@ function EditProject(props) {
                     draggable: true,
                     progress: undefined,
             })
-            return false;
+            console.log("Errors : ", projectErrors)
+            setProject({ ...project, errors: projectErrors })
+            setRequestSent(false)
+            return false;        
         }
 
         console.log(project)
@@ -119,6 +165,7 @@ function EditProject(props) {
         projectFormData.append("description", project.description)
         projectFormData.append("category_id", parseInt(project.category_id))
 
+        checkAuth()
 
         axios.post(`${apiRoutes.ProjectsURL}/${project_id}`, projectFormData)
         .then( response => {
@@ -127,35 +174,40 @@ function EditProject(props) {
                 project_id: project_id,
                 partners: project.partners.map( item => (item.id))
             }
-            
+            toast.success(
+                (<div className="d-flex flex-column">{ "Projet modifié avec succès !" }</div>)
+            )
             console.log(projectPartnersTmp)
             axios.post(`${apiRoutes.ProjectAddPartenaireURL}`, projectPartnersTmp).then(res => console.log(res.data) )
             .catch(({response}) => {
-                console.log(response.data)
+                console.log(response?.data)
             })
-
             changeProjectStatus(project.status, project_id, communaute_id, 
-                (res) => { },
-                (exception) => { if(exception.response) {
+                (res) => { console.log("changeProjectStatus", res)},
+                (exception) => { 
+                    console.log(exception?.response)
+                    if(exception?.response) {
                     toast.error(
-                        (<div className="d-flex flex-column">{ exception.response.data.error }</div>)
+                        (<div className="d-flex flex-column">{ exception?.response?.data.error }</div>)
                     )        
-                }})
-            toast.success(
-                (<div className="d-flex flex-column">{ "Projet modifié avec succès !" }</div>)
-            ) 
-            history.push(redirect_route)
+                }}
+            )
+            history.goBack()
         }).catch( ({response}) => {
-            console.log(response.data)
-            toast.error(<><div className="d-flex align-items-center fs-6 ">Une erreur a été rencontrée sur le serveur !!!</div></>, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
+            console.log(response?.data)
+            var errors = response?.data?.errors !== undefined ? response.data.errors : {}
+            setProject({ ...project, errors: {...projectErrors, ...errors} })            // errors == null && Object.values(errors).map(item => {
+            //     toast.error(<><div className="d-flex align-items-center fs-6 ">{(<>{item[0]}</>)}</div></>, {
+            //         position: "top-right",
+            //         autoClose: 5000,
+            //         hideProgressBar: true,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //     })
+            // })
+            setRequestSent(false)
         })
         
     }
@@ -205,15 +257,15 @@ function EditProject(props) {
     let getProjectSuccess = (response) => {
         console.log(response.data)
         setProject({
-            // ...project,
+            ...project,
             ...response.data,
             category_id: response.data.category.id
         })
         setLoaded(true)
     }
 
-    let getProjectError = (response) => {
-        console.log(response.data)
+    let getProjectError = (exception) => {
+        console.log(exception?.response.data)
         setLoaded(true)
     }
 
@@ -246,7 +298,11 @@ function EditProject(props) {
                             <label className="d-block mb-2">Titre</label>
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="projectTitle" 
                                 aria-describedby="projectTitleFeedback" type="text" name="title" value={project.title} placeholder="Titre du projet"  />
-                            <div className="invalid-feedback" id="projectTitleFeedback"></div>
+                            <div class="invalid-feedback" id="projectTitleFeedback">
+                                {project.errors.title.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
@@ -254,7 +310,7 @@ function EditProject(props) {
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Statut (Etat) du Projet</label>
                             <select className="form-select" id="Statut" name="status" onChange={handleAddNewTextInputChange}>
-                                <option>Sélectionner un statut</option>
+                                {/* <option>Sélectionner un statut</option> */}
                                 <option value="EN_ATTENTE" selected={ "EN_ATTENTE" === project.status}>En Attente</option>
                                 <option value="EN_COURS" selected={ "EN_COURS" === project.status}>En cours</option>
                                 <option value="TERMINE" selected={ "TERMINE" === project.status}>Terminé</option>
@@ -267,14 +323,19 @@ function EditProject(props) {
                             <label className="d-block mb-2">Image</label>
                             <input className="form-control" type="file" name="image" accept="image/*" id="Image" onChange={handleAddNewFileInputChange}  
                                 placeholder="Image représentative du projet"/>
-                            {/* { *
-                                // project.image !== undefined ? 
-                                    {/* ( */}
+                            <div class="invalid-feedback" id="ImageFeedback">
+                                {project.errors.image.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
+                            {
+                                project.image !== undefined ? 
+                                   (
                                         <img loading="lazy" src={ project.image ? ( typeof(project.image) === "object" ? URL.createObjectURL(project.image) : `${apiRoutes.StorageURL}/${project.image}` ): faImage.iconName }
                                          alt="Représentative du projet" className="SampleImage mt-3" />
-                                    {/* ) 
-                                    // : ""
-                            {/* } */}
+                                     ) 
+                                    : ""
+                            }
                         </div>
                     </div>
 
@@ -283,28 +344,52 @@ function EditProject(props) {
                             <label className="d-block mb-2">Coût du projet</label>
                             <input type="number" className="form-control" name="cost" id="Cost" onChange={handleAddNewTextInputChange} placeholder="Coût du projet"
                                  value={project.cost}  />
+                            <div class="invalid-feedback" id="CostFeedback">
+                                {project.errors.cost.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
                         </div>
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Contribution par membre</label>
                             <input type="number" className="form-control" name="contributionPerMember" id="ContributionPerMember" onChange={handleAddNewTextInputChange} 
                                 placeholder="Contribution par membre"  value={project.contributionPerMember}/>
+                            <div class="invalid-feedback" id="ContributionPerMemberFeedback">
+                                {project.errors.contributionPerMember.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div> 
                         </div>
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Date de fin des contributions</label>
                             <input type="date" className="form-control" name="deadlines" id="deadLines" onChange={handleAddNewTextInputChange} 
                                 placeholder="Date de fin des contributions"  format="yyyy-mm-dd" value={moment(project.deadlines).format("yyyy-MM-Do")} />
+                            <div class="invalid-feedback" id="deadLinesFeedback">
+                                {project.errors.deadlines.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
                         </div>
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Date de début du projet</label>
                             <input type="date" className="form-control" name="start_date" id="startDate" onChange={handleAddNewTextInputChange} 
                                 placeholder="Date de début du projet"  format="yyyy-mm-dd" value={moment(project.start_date).format("yyyy-MM-Do")} />
+                            <div class="invalid-feedback" id="startDateFeedback">
+                                {project.errors.start_date.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     <div className="row my-5">
                         <div className="col-lg-12 mb-3">
                             <label className="d-block mb-2">Plan du Projet</label>
-                            {/* <textarea className="form-control" name="description" onChange={handleAddNewTextInputChange} value={association.description} placeholder="Description de la communauté"></textarea> */}
+                            <div className="text-danger my-2" id="projectPlanFeedback">
+                                {project.errors.project_plan.map(item => (
+                                    <span className="fw-bold"><FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />{item}</span>
+                                ))}
+                            </div>
                             <RichTextEditor data={project.project_plan} onChange={(e) => RichTextEditorDescription(e, "project_plan")} className="form-control" id="projectPlan" />
                         </div>
                     </div>
@@ -321,6 +406,11 @@ function EditProject(props) {
                                     })
                                 }
                             </select>
+                            <div class="invalid-feedback" id="CategoryFeedback">
+                                {project.errors.category_id.map(item => (
+                                    <span className="fw-bold">{item}</span>
+                                ))}
+                            </div>
                         </div>
                         <div className="col-lg-6">
                             <label className="d-block mb-2">Partenaires</label>
@@ -332,7 +422,7 @@ function EditProject(props) {
                             </select>     
                             <div className="d-flex mt-3">
                                 { project.partners !== undefined ? project.partners.map( (item, index) => (
-                                    <span className="d-inline-block bg-secondary rounded m-2 text-gray">
+                                    <span className="d-inline-block btn btn-secondary rounded m-2">
                                         <button className="border-0 p-2 fw-bold" onClick={() => removeProjectPartnerItem(index)}><FontAwesomeIcon icon={faTimes} className="me-3" role="button" />{item.name}</button>
                                     </span>
                                  ) ) : null}
@@ -344,15 +434,20 @@ function EditProject(props) {
                     <div className="row my-5">
                         <div className="col-lg-12 mb-3">
                             <label className="d-block mb-2">Description du projet</label>
-                            {/* <textarea className="form-control" name="description" onChange={handleAddNewTextInputChange} value={association.description} placeholder="Description de la communauté"></textarea> */}
+                            <div className="text-danger my-2" id="descriptionFeedback">
+                                {project.errors.description.map(item => (
+                                    <span className="fw-bold"><FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />{item}</span>
+                                ))}
+                            </div> 
                             <RichTextEditor data={project.description} onChange={(e) => RichTextEditorDescription(e, "description")} className="form-control" id="Description" />
                         </div>
                     </div>
 
                     <div className="float-start">
-                        <Button type="button" className="btn-secondary m-2">Fermer</Button>
-                        <Button type="submit" className="btn-primary m-2">Enregistrer</Button>
-                    </div>
+                        <button type="button" className="btn btn-secondary m-2">Fermer</button>
+                        <Button type="submit" className="btn btn-primary m-2" disabled={requestSent}>{
+                            requestSent && <LoadingSpinner className="me-1" />
+                        }Enregistrer</Button>                    </div>
                 </form>
             : <LoadingSpinner /> }
             </div>
