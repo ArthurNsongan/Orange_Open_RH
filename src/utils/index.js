@@ -171,7 +171,7 @@ export const languageUpdater = () => {
     let defaultLanguage = Language.FR;
     let currentLanguage = localStorage.getItem("i18nextLng");
     let actualLanguage = ( currentLanguage === "" || currentLanguage == null ) ? defaultLanguage : currentLanguage;
-    alert("actualLanguage : " + actualLanguage);
+    //alert("actualLanguage : " + actualLanguage);
     return actualLanguage;
 }
 

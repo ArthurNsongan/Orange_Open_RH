@@ -4,7 +4,7 @@ import {Language} from "../../lang/Language";
 
 export default function LanguageSwitcher() {
     const [t, i18n] = useTranslation();
-    const [lang, setLang] = useState(localStorage.getItem("i18nextLng"));
+    const [lang, setLang] = useState(localStorage.getItem("i18nextLng") || Language.FR);
 
     // alert(lang);
     

@@ -34,19 +34,39 @@ function App(props) {
     const disconnect = () => {
         localStorage.clear();
         dispatch(fetchLoginReset());
-        history.go("/");
+        //history.go("/");
+        window.location.href = "/";
     };
 
     useEffect(() => {
         let date_con = moment(localStorage.getItem("DATE_CONNECTED"));
         let now = moment(new Date().toISOString());
         let user = localStorage.getItem("USER");
-        if(user !== undefined) {
-            if( now.diff(date_con,"minutes") >= 15 ) {
+        var checkTime;
+        if(user != undefined) {
+            var secondsLeft = now.diff(date_con,"seconds")
+            if( secondsLeft >= 900 ) {
                 disconnect();
             } else {
                 localStorage.setItem("DATE_CONNECTED", new Date().toISOString());
+                checkTime = setInterval(() => {
+                    let date_con = moment(localStorage.getItem("DATE_CONNECTED"));
+                    let now = moment(new Date().toISOString());
+                    let user = localStorage.getItem("USER");
+                    var secondsLeft = now.diff(date_con,"seconds")
+                    console.log("secondsLeft : " + secondsLeft)
+                    if( now.diff(date_con,"seconds") >= 900 ) {
+                        disconnect();
+                    }
+                }, 1000)
             }
+        }
+        else if( now.diff(date_con,"seconds") >= 900 ) {
+            disconnect()
+        }
+
+        return () => {
+            clearInterval(checkTime);
         }
     }, [location])
 
