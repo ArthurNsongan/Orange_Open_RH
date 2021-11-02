@@ -8,6 +8,7 @@ import 'moment/locale/fr';
 import './style.css';
 import {useDispatch} from "react-redux";
 import {fetchLoginReset} from "../../redux/actions/AuthActions";
+import {languageUpdater} from "../../utils";
 
 let route = require('../../utils/route');
 
@@ -21,9 +22,11 @@ export default function ProfileDropdown(props) {
     let history = useHistory();
 
     const disconnect = () => {
+        const actualLanguage = languageUpdater();
         localStorage.clear();
+        let currentLanguage = localStorage.setItem("i18nextLng", actualLanguage);
         dispatch(fetchLoginReset());
-        history.go("/");
+        history.push("/");
     };
 
     return (

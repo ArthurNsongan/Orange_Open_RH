@@ -24,8 +24,9 @@ function SignIn(props) {
     useEffect(() => {
         if (props.result !== null) {
             localStorage.setItem('USER', JSON.stringify(props.result));
-            localStorage.setItem('DATE_CONNECTED', JSON.stringify(new Date().toISOString()))
+            localStorage.setItem('DATE_CONNECTED', JSON.stringify(new Date().toISOString()));
             history.push(route.home.root);
+            //window.location.href = route.home.root;
         }
 
     }, [props]);

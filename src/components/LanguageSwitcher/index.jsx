@@ -6,6 +6,8 @@ export default function LanguageSwitcher() {
     const [t, i18n] = useTranslation();
     const [lang, setLang] = useState(localStorage.getItem("i18nextLng"));
 
+    // alert(lang);
+    
     useEffect(() => {
         changeLanguage(lang);
     }, [lang]);

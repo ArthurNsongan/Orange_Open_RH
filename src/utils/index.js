@@ -1,4 +1,5 @@
 import {Constant} from "../config/Constant";
+import {Language} from '../lang/Language';
 import _ from 'lodash';
 
 export const toCamelCase = (word) => {
@@ -165,4 +166,12 @@ export const getErrorMessage = (error) => {
             return "error.bad"
     }
 };
+
+export const languageUpdater = () => {
+    let defaultLanguage = Language.FR;
+    let currentLanguage = localStorage.getItem("i18nextLng");
+    let actualLanguage = ( currentLanguage === "" || currentLanguage == null ) ? defaultLanguage : currentLanguage;
+    alert("actualLanguage : " + actualLanguage);
+    return actualLanguage;
+}
 

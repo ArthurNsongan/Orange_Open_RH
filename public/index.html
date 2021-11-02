@@ -58,7 +58,7 @@
 
 
 <!-- Option 1: jQuery and Boosted Bundle (includes Popper) -->
-<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="%PUBLIC_URL%/assets/js/google_translate.js"></script>
 <script src="%PUBLIC_URL%/assets/js/jquery-3.5.1.slim.min.js"></script>
 <script src="%PUBLIC_URL%/assets/js/boosted.bundle.min.js"></script>
 <script src="%PUBLIC_URL%/assets/js/confetti/confettiKit.js"></script>
@@ -67,16 +67,15 @@
 <script src="%PUBLIC_URL%/assets/js/custom.js"></script>
 <script type="text/javascript">
     function googleTranslateElementInit() {
-        // try {
+        try {
             new google.translate.TranslateElement({pageLanguage: "fr", includedLanguages: 'en,fr', autoDisplay: false }, 'translationTarget');
-        // } catch(exception) {
-        //     console.log(exception);
-        //     alert("Erreur de traduction de la page !");
+        } catch(exception) {
+            console.log(exception);
+        //     // alert("Erreur de traduction de la page !");
         //     googleTranslateElementInit();
-        // }
+        }
     }
     //$(document).ready(function() {
-        googleTranslateElementInit();
         // $(".goog-te-combo").on("change", function(event) {
         //     alert(event.target.value);
         // });
@@ -89,27 +88,35 @@
             let frame = document.getElementById(":1.container");
             if(lang === "fr") {
                 if(frame !== null) {
-                    // alert("translate frame " + lang )
+                    console.log("translate frame " , lang )
                     let restoreButton = frame.contentWindow.document.getElementById(":1.restore");
                     restoreButton.click();
                     console.log("restoreButton",restoreButton);
                 } else {
-                    // alert("no translate frame " + lang)
+                    console.log("no translate frame " , lang)
                     var jObj = $(".goog-te-combo");
                     var db = jObj.get(0);
                     jObj.val( lang );
                     fireEvent(db, 'change');
                 }
             } else {
-                if(frame != null) {
-                    // alert("translate frame " + lang )
+                let translateBtn = frame.contentWindow.document.getElementById(":1.confirm");
+                if(translateBtn != null) {
+                    console.log("translate frame " , lang )
+                    translateBtn.click();
+                    console.log("translateBtn",translateBtn);
+                    var jObj = $(".goog-te-combo");
+                    var db = jObj.get(0);
+                    jObj.val( lang );
+                    fireEvent(db, 'change');
                 } else {
-                    // alert("no translate frame " + lang)
+                    console.log("no translate frame " , lang)
+                    var jObj = $(".goog-te-combo");
+                    var db = jObj.get(0);
+                    jObj.val( lang );
+                    fireEvent(db, 'change');
                 }
-                var jObj = $(".goog-te-combo");
-                var db = jObj.get(0);
-                jObj.val( lang );
-                fireEvent(db, 'change');
+                
             }   
             // var $frame = window.$('.goog-te-menu-frame:first');
             // console.log("GoogleTranslate",$frame);
@@ -117,6 +124,7 @@
             return false;
         } catch(exception) {
             console.log(exception);
+            // TranslatePage(lang);
         }
     }
     function fireEvent(element,event){

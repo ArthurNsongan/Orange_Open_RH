@@ -4,12 +4,9 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import {Language} from './Language';
 import translationFR from './fr.json';
 import translationEN from './en.json';
+import { languageUpdater } from '../utils';
 
-let defaultLanguage = Language.FR;
-let currentLanguage = localStorage.getItem("i18nextLng");
-let actualLanguage = ( currentLanguage === "" || currentLanguage == null ) ? defaultLanguage : currentLanguage;
-
-// alert("actualLanguage : " + actualLanguage);
+const actualLanguage = languageUpdater();
 
 const resources = {
     en: {

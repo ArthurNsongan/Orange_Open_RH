@@ -35,7 +35,7 @@ code {
   z-index: 1050 !important;
 }
 
-#greetings.skiptranslate {
+#greetings.skiptranslate, .div-notranslate.skiptranslate {
   display: block !important;
 }
 

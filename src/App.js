@@ -42,7 +42,7 @@ function App(props) {
         let now = moment(new Date().toISOString());
         let user = localStorage.getItem("USER");
         if(user !== undefined) {
-            if( now.diff(date_con,"minutes") >= 30 ) {
+            if( now.diff(date_con,"minutes") >= 15 ) {
                 disconnect();
             } else {
                 localStorage.setItem("DATE_CONNECTED", new Date().toISOString());
