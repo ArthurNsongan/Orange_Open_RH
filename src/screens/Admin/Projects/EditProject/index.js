@@ -193,10 +193,30 @@ function EditProject(props) {
                 }}
             )
             history.goBack()
-        }).catch( ({response}) => {
-            console.log(response?.data)
-            var errors = response?.data?.errors !== undefined ? response.data.errors : {}
-            setProject({ ...project, errors: {...projectErrors, ...errors} })            // errors == null && Object.values(errors).map(item => {
+        }).catch( (exception) => {
+            console.log(exception?.response?.data)
+            var errors = exception?.response?.data?.errors
+            if(errors) {
+                setProject({ ...project, errors: {...projectErrors, ...errors} })
+                Object.keys(errors).forEach(item => {
+                    form.querySelector(`[name="${item}"]`).classList.add("is-invalid");
+                })
+                toast.error(
+                    <div className="d-flex align-items-center fs-6">
+                        Erreur rencontrée au niveau des champs surlignés !!!
+                        <br/>
+                        {Object.values(errors).length} erreur(s) rencontrée(s)
+                    </div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,  
+                })
+            }
+            // errors == null && Object.values(errors).map(item => {
             //     toast.error(<><div className="d-flex align-items-center fs-6 ">{(<>{item[0]}</>)}</div></>, {
             //         position: "top-right",
             //         autoClose: 5000,

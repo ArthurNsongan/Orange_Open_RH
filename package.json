@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^29.0.0",
-    "@ckeditor/ckeditor5-custom-build": "^0.0.1",
     "@ckeditor/ckeditor5-font": "^29.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
     "@ckeditor/ckeditor5-upload": "^29.0.0",
@@ -20,6 +19,7 @@
     "axios": "^0.21.1",
     "boosted": "^5.1.1",
     "bootstrap": "^5.0.2",
+    "ckeditor5-custom-build": "0.0.6",
     "interweave": "^12.8.0",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",

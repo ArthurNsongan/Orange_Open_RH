@@ -22,6 +22,14 @@ body {
   color: #fff !important;
 }
 
+.dropdown-item.bg-white:hover {
+  color: inherit !important;
+}
+
+.dropdown-menu hr {
+  margin-bottom: 0 !important;
+}
+
 a {
   color: inherit !important;
   text-decoration: none !important;
@@ -37,7 +45,7 @@ code {
 }
 
 .shadows {
-  box-shadow: 1px 0px 6px 1px gray !important;
+  box-shadow: 1px 0px 8px 1px rgb(231, 231, 231) !important;
 }
 
 .shadow {
@@ -87,7 +95,7 @@ code {
 }
 
 .text-white {
-  /* background-color: transparent !important; */
+  background-color: transparent !important;
   color: white !important;
 }
 

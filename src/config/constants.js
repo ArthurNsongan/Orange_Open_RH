@@ -51,3 +51,12 @@ export const formatUserRoles = (roleName) => {
     default: break;
   }
 }
+
+export const formatAssociationTypes = (roleName) => {
+  switch(roleName.toLowerCase()) {
+    case 'association' : {return "Association";}
+    case 'communaute' : {return "Communauté";}
+    case 'corporation' : {return "Corporation";}
+    default: break;
+  }
+}

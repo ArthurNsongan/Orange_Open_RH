@@ -84,7 +84,7 @@ function Users(props) {
                 </div>
                 <DataTable emptyMessage="Aucun résultat" loaded={loaded} datas={users} columns={[
                     {title: "#", dataTitle: "id", sortable: false, renderData: (item, index) => ( index + 1 )},
-                    {title: "Nom", dataTitle: "name"},
+                    {title: "Nom", renderData: (item) => (`${item.name} ${item.firstname}`)},
                     // {title: "Role", renderData: (item) => ( item.role.map((role, roleIndex) => {
                     //     return( <span className="alert fw-bold alert-success">{role.name})</span> );
                     // }))},

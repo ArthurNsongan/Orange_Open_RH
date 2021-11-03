@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useHistory, useParams } from 'react-router'
 import Button from '../../../../components/Button'
-import { getUser, getRoles, AllAssociations, UpdateUser, getRoleByUser, AddRole, RemoveRole } from '../../../../services/API';
+import { getUser, getRoles, AllAssociations, UpdateUser, getRoleByUser, AddRole, RemoveRole, AddMember } from '../../../../services/API';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import { formatUserRoles } from '../../../../config/constants';
+import { checkEmail, checkPhoneNumber, formatUserRoles } from '../../../../config/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faCircleNotch, faDotCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { defaultUserRoles } from '../../../../services/Auth';
+import { faCircle, faCircleNotch, faDotCircle, faTimes, faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { checkAuth, defaultUserRoles } from '../../../../services/Auth';
+
+let route = require('../../../../utils/route.json')
 
 const _ = require("lodash")
 
@@ -23,14 +25,23 @@ function EditUser(props) {
         name: "",
         firstname: "",
         OmAccountNumber: "",
-        password: "",
-        password_confirmation: "",
         email: "",
     })
 
-    const [lightAssociations, setLightAssociations] = useState([{ id: 1, name: "Association des Femmes Vaillantes"}])
+    const initialErrors = {
+        name: [],
+        firstname: [],
+        email: [],
+        OmAccountNumber: [],
+        address: [],
+        region: [],
+        sex: [],
+        role_id: [],
+    }
 
-    const [loaded, setLoaded] = useState(true)
+    const [userErrors, setUserErrors] = useState(initialErrors)
+
+    const [lightAssociations, setLightAssociations] = useState([{ id: 1, name: "Association des Femmes Vaillantes"}])
 
     const [sent, setSent] = useState(false)
 
@@ -45,50 +56,62 @@ function EditUser(props) {
     const handleAddNewTextInputChange = (e) => {
         let { name, value } = e.target
         let userTmp = { ...user }
+        if(name === "role_id" && roles.find(item => item.id == user.role_id)?.name === defaultUserRoles.ADMIN_ROLE) {
+            userTmp.association_id = null;
+        }
         userTmp[name] = value
         setUser(userTmp)
         console.log(userTmp)
     }
 
     const handleSubmitEditUserForm = (e) => {
-
         e.preventDefault()
 
-        let inputListNames = ["password", "password_confirmation"]
+        checkAuth()
+
+        let inputListNames = ["role_id", "association_id"]
         let firstInvalidItem = null
+        let userErrorsTmp = initialErrors
         let isValid = true
         let form = e.target
-
-        console.warn("Initialization")
-
-        if(user.password !== user.password_confirmation && user.password.length > 0) {
-            toast.error(<div className="d-flex align-items-center fs-6">Mot(s) de passe incorrects !!!</div>, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
-            return false;
-        }
-
         Array.from(form.elements === undefined ? [] : form.elements).forEach( item => {
-            let rolesTmp = roles
             item.classList.remove("is-invalid")
-            if(item.value.length === 0 && !inputListNames.includes(item.name) && !item.classList.contains("ck-hidden")
-                &&  ( rolesTmp.filter(item => item.id === user.role_id).length === 1 && item.name === "association_id") &&
-                !item.id.includes("react-select") && ( item.tagName === "INPUT" ) )
-            {
-                item.classList.add("is-invalid");
+            let itemIsValid = true
+            const isNonValidated = () => {
                 console.log(item)
                 isValid = false;
+                itemIsValid = false;
+            }
+            if(!inputListNames.includes(item.name) && !item.id.includes("react-select") && ( item.tagName === "INPUT" || item.tagName === "SELECT" ) )
+            {
+                userErrorsTmp[item.name] = []
+                if(item.value.length === 0) {
+                    isNonValidated()
+                    userErrorsTmp[item.name].push("Le champ est requis.")
+                } else if(item.name.includes("email") && !checkEmail(item.value) ) {
+                    isNonValidated()
+                    userErrorsTmp[item.name].push("E-mail invalide.")
+                } else if(item.name.includes("OmAccountNumber") && !checkPhoneNumber(item.value) ) {
+                    isNonValidated()
+                    userErrorsTmp[item.name].push("Le numéro de téléphone n'est pas valide.")
+                } 
+                /* else if(item.name === "password") {
+                    if(!checkPasswordStrong(user.password)) {
+                        userErrorsTmp[item.name].push("Mot de passe pas assez fort !")
+                    }
+                } */
+                if(itemIsValid === false) {
+                    item.classList.add("is-invalid")
+                }
             }
             if(firstInvalidItem === null) { firstInvalidItem = item}
-            console.log("verify form")
         })
-
+        if(user.role_id != null && roles.find(item => item.id == user.role_id)?.name !== defaultUserRoles.ADMIN_ROLE && user.association_id == null) {
+            userErrorsTmp["role_id"].push("Définir une association")
+            form.querySelector('[name="role_id"]').classList.add("is-invalid");
+            isValid = false;
+        }
+        console.log("UserAfterCheck", userErrorsTmp)
         if(isValid === false || form === null) {
             window.scrollTo(0, firstInvalidItem.getBoundingClientRect().top + 200)
             toast.error(<div className="d-flex align-items-center fs-6">Erreur rencontrée au niveau des champs surlignés !!!</div>, {
@@ -100,21 +123,38 @@ function EditUser(props) {
                     draggable: true,
                     progress: undefined,
             })
-            console.log("verify form 2")
+            setSent(false)
+            setUserErrors({...userErrorsTmp})
             return false;
         }
 
         UpdateUser(user, (res) => {
+            checkAuth()
             console.log(res.data)
             console.log("Update User", user, roles)
             if(user.role_id != null && roles.filter(item => item.id == user.role_id).length === 1) {
                 userRole.forEach( item => {
                     console.log("Delete old roles")
-                    RemoveRole(user.id, item.id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
+                    checkAuth()
+                    RemoveRole(user.id, item.id, userRole[0].association_id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )
                 })
         
-                AddRole(user.id, user.role_id, user.association_id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )    
-            
+/*                 AddRole(user.id, user.role_id, user.association_id, (res) => console.log(res.data), (exception) => { if(exception.response) { console.log(exception.response) } } )    
+ */            
+                if(roles.find(item => (item.name === defaultUserRoles.MEMBER_ROLE)).id == user.role_id ) {
+                    alert(user.role_id)
+                    AddMember(user.id, user.association_id, '0000', (response) => {
+                        console.log(response.data)  
+                    }, (exception) => {
+                        console.log(exception?.response)
+                    })
+                } else {
+                    AddRole(user.id, user.role_id, user.association_id, (response) => {
+                        console.log(response.data)
+                    }, (exception) => {
+                        console.log(exception?.response)
+                    })
+                }
                 toast.success(<div className="d-flex align-items-center fs-6">Utilisateur modifié avec succès </div>, {
                     position: "top-right",
                     autoClose: 3000,
@@ -125,10 +165,21 @@ function EditUser(props) {
                     progress: undefined,
                 })
 
-                history.goBack()
+            } else {
+                toast.success(<div className="d-flex align-items-center fs-6">{ res.data?.message || "Utilisateur modifié avec succès "}</div>, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             }
+            
+            history.push(route.admin.users.link)
         },
-        (exception) => { if(exception.response) { console.log(exception.response) } })
+        (exception) => { if(exception.response) { console.log(exception.response); setSent(false) } })
     }
 
     const handleAssocChange = (selectItem) => {
@@ -138,8 +189,9 @@ function EditUser(props) {
     }
 
     const removeCurrentRole = () => {
-        // RemoveRole(user.id, userRole[userRoleRemovalId].id, (res) => { 
-        //     console.log(res.data)
+        alert(JSON.stringify(userRole[userRoleRemovalId].pivot.association_id))
+        RemoveRole(user.id, userRole[userRoleRemovalId].id, userRole[userRoleRemovalId].pivot.association_id , (res) => { 
+            console.log(res.data)
             toast.success(<div className="d-flex align-items-center fs-6">Le rôle de de l'utilisateur a été supprimée avec succès. </div>, {
                     position: "top-right",
                     autoClose: 3000,
@@ -151,11 +203,12 @@ function EditUser(props) {
             })
             alert(userRoleRemovalId)
             let userRoleTmp = userRole
-            console.log(userRole)
+            console.log("UserRoleToDelete", JSON.stringify(userRole))
             userRoleTmp.splice(userRoleRemovalId, 1)
+            console.log("UserRoleDeleted",  JSON.stringify(userRoleTmp)) 
             setUserRole(userRoleTmp)
             setRemoveSent(false)
-        // }, (exception) => { if(exception.response) { console.log(exception.response) } } )
+        }, (exception) => { if(exception.response) { console.log(exception.response) } } )
     }
 
     const resetPasswordAuto = () => {
@@ -205,14 +258,22 @@ function EditUser(props) {
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="userName" 
                                 aria-describedby="userNameFeedback" type="text" name="name" 
                                 value={user.name} placeholder="Nom de l'Utilisateur"  />
-                            <div class="invalid-feedback" id="userNameFeedback"></div>
+                            <div class="invalid-feedback" id="userNameFeedback">
+                                {userErrors.name.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span><br/></>
+                                ))}
+                            </div>                        
                         </div>
                         <div className="col-lg-6 mb-3">
                             <label className="d-block mb-2">Prénom</label>
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="userFirstname" 
                                 aria-describedby="userFirstnameFeedback" type="text" name="firstname" 
                                 value={user.firstname} placeholder="Prénom de l'Utilisateur"  />
-                            <div class="invalid-feedback" id="userFirstnameFeedback"></div>
+                            <div class="invalid-feedback" id="userFirstnameFeedback">
+                                {userErrors.firstname.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span></>
+                                ))}
+                            </div>                        
                         </div>
                     </div>
                     <div className="row flex-column my-3">
@@ -221,25 +282,33 @@ function EditUser(props) {
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="Email" 
                                 aria-describedby="EmailFeedback" type="email" name="email" 
                                 value={user.email} placeholder="E-mail de l'utilisateur"  />
-                            <div class="invalid-feedback" id="EmailFeedback"></div>
+                            <div class="invalid-feedback" id="EmailFeedback">
+                                {userErrors.email.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span><br/></>
+                                ))}
+                            </div>
                         </div>
                         <div className="col-lg-8 mb-3">
                             <label className="d-block mb-2">Numéro de Téléphone</label>
                             <input className="form-control" onChange={handleAddNewTextInputChange} id="OMAccountNumber" 
                                 aria-describedby="OMAccountNumberFeedback" type="text" name="OmAccountNumber" 
                                 value={user.OmAccountNumber} placeholder="Numéro de Téléphone"  />
-                            <div class="invalid-feedback" id="userFirstnameFeedback"></div>
+                            <div class="invalid-feedback" id="userFirstnameFeedback">
+                                {userErrors.OmAccountNumber.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span><br/></>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     <div className="row flex-column mt-3">
                         <div className="col-lg-6 mb-1">
                             <label className="d-block mb-2">Rôle de l'utilisateur</label>
-
-                            { userRole.length > 1 ? <span>{"Rôles actuels"}</span> : <span>{"Rôle actuel"}</span> }
+                            {console.log(userRole)}
+                            { userRole.length > 1 ? <span>{"Rôles actuels"}</span> : ( userRole.length == 0 && <span>{"Rôle actuel"}</span>) }
                             <div className="d-flex actual_roles">
-                                { userRole.map( (item, index) => ( 
-                                    <span className="text-uppercase my-2 alert py-1 d-flex align-items-center fw-bold bg-primary"><FontAwesomeIcon icon={faCircle} className="me-1"/>{
+                                { _.isEqual({}, userRole) ? "Aucun Rôle attribué à cet utilisateur !" : userRole.map( (item, index) => ( 
+                                    <span className="text-uppercase my-2 alert py-1 d-flex align-items-center fw-bold bg-supporting-blue"><FontAwesomeIcon icon={faUserSecret} className="me-1"/>{
                                         formatUserRoles(item.name)
                                     }<button type="button" className="btn ps-3" onClick={()=>{ setUserRoleRemovalId(index) }} data-bs-target="#validateRoleRemoval" data-bs-toggle="modal"><FontAwesomeIcon icon={faTimes} className="me-1 fs-4" /></button></span> ) ) }
                             </div>
@@ -249,11 +318,15 @@ function EditUser(props) {
                                 { user.role_id == null && (<option value="">-- Sélectionnez le rôle</option>) }
                                 { roles.map( (item, index) => {
                                     return(
-                                        <option value={item.id} selected={item.name === user.role_id}>{formatUserRoles(item.name)}</option>
+                                        <option value={item.id}>{formatUserRoles(item.name)}</option>
                                     )
                                 })}
                             </select>
-                            <div class="invalid-feedback" id="RoleFeedback"></div>
+                            <div class="invalid-feedback" id="RoleFeedback">
+                                {userErrors.role_id.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span><br/></>
+                                ))}
+                            </div> 
                         </div>
                     </div>
                     { roles.find(item => item.id == user.role_id)?.name !== defaultUserRoles.ADMIN_ROLE &&

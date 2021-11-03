@@ -171,6 +171,25 @@ const MemberSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, handl
     const [currentStep, setCurrentStep] = useState(1)
     const [steps, setSteps] = useState(4)
 
+    let initialErrors = {
+        name: [],
+        firstname: [],
+        email: [],
+        maritalStatus: [],
+        OmAccountNumber: [],
+        association: [],
+        association_id: [],
+        password: [],
+        sex: [],
+        password_confirmation: [],
+        idNumber: [],
+        profession: [],
+        address: [],
+        region: []
+    }
+
+    const [errors, setErrors] = useState(initialErrors)
+
     const prevStep = () => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1)
@@ -179,6 +198,7 @@ const MemberSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, handl
 
     const contactDataFormSubmit = (e) => {
         e.preventDefault()
+        var form = e.target
         setRegisterAttempt(
             {...registerAttempt,
             requestSent: true}
@@ -197,12 +217,28 @@ const MemberSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, handl
             }, (exception) => {
             setRegisterAttempt({...registerAttempt,requestSent: false})
             if (exception.response) {
-                toast.error(
-                    <div className="d-flex align-items-center h6 text-white">
-                        <FontAwesomeIcon icon={faInfoCircle} className="me-1" />Vérifiez les champs {
-                            typeof (exception.response.data.error) === "object" && Object.keys(exception.response.data.error).map(item => (item))
-                        }
-                    </div>); console.log(exception.response)
+                var errors = exception.response?.data?.errors
+                if(errors) {
+                    Array.from(form.elements).forEach( item => item.classList.remove("is-invalid"))
+                    setErrors({...initialErrors, ...errors})
+                    Object.keys(errors).forEach(item => {
+                        form.querySelector(`[name="${item}"]`).classList.add("is-invalid");
+                    })
+                    toast.error(
+                        <div className="d-flex align-items-center fs-6">
+                            Erreur rencontrée au niveau des champs surlignés !!!
+                            <br/>
+                            {Object.values(errors).length} erreur(s) rencontrée(s)
+                        </div>, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                }
             }
             else if (exception.request) {
                 console.log(exception.request); toast.error(
@@ -286,10 +322,20 @@ const MemberSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, handl
                     <div className="form-floating mb-3">
                         <label for="Nom">Nom</label>
                         <input type="text" className="form-control" name="name" id="Nom" onChange={handleChange} value={registerAttempt.name} placeholder="Entrez votre nom..."></input>
+                        <div class="invalid-feedback" id="NameFeedback">
+                            {errors.name.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="form-floating mb-3">
                         <label for="Prenom">Prénom</label>
                         <input type="text" className="form-control" id="Prenom" name="firstname" onChange={handleChange} value={registerAttempt.firstname} placeholder="Entrez votre prénom..."></input>
+                        <div class="invalid-feedback" id="FirstnameFeedback">
+                            {errors.firstname.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="form-floating mb-3">
                         <label for="Prenom">Sexe</label>
@@ -297,18 +343,47 @@ const MemberSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, handl
                             <option value="M" selected={registerAttempt.sex === "M"}>Masculin</option>
                             <option value="F" selected={registerAttempt.sex === "F"}>Féminin</option>
                         </select>
+                        <div class="invalid-feedback" id="SexFeedback">
+                            {errors.sex.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="form-floating mb-3">
-                        <label for="BirthPlace">Lieu de Résidence</label>
+                        <label for="Address">Lieu de Résidence</label>
                         <input type="text" className="form-control" id="Address" name="address" onChange={handleChange} value={registerAttempt.address} placeholder="Entrez votre lieu de résidence" />
+                        <div class="invalid-feedback" id="AddressFeedback">
+                            {errors.address.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="form-floating mb-3">
+                        <label for="Region">Région</label>
+                        <input type="text" className="form-control" id="Region" name="region" onChange={handleChange} value={registerAttempt.region} placeholder="Entrez votre région" />
+                        <div class="invalid-feedback" id="RegionFeedback">
+                            {errors.region.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="form-floating mb-3">
                         <label for="Email">Numéro de Téléphone (avec compte Orange Money)</label>
                         <input type="text" className="form-control" pattern="[0-9]*" value={registerAttempt.OmAccountNumber} onChange={handleChange} id="OMAccountNumber" name="OmAccountNumber"></input>
+                        <div class="invalid-feedback" id="NumberFeedback">
+                            {errors.OmAccountNumber.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="form-floating mb-3">
                         <label for="Email">E-mail</label>
                         <input type="email" className="form-control" value={registerAttempt.email} onChange={handleChange} id="Email" name="email" placeholder="Ex: votrenom@gmail.com"></input>
+                        <div class="invalid-feedback" id="EmailcFeedback">
+                            {errors.email.map(item => (
+                                <><span className="fw-bold d-flex">{item}</span></>
+                            ))}
+                        </div>
                     </div>
                     <div className="d-flex flex-row align-items-center justify-content-between mb-5">
                         <button type="button" className="btn btn-light" onClick={returnToRoleChoice}><FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Retour au choix du rôle</button>
@@ -394,8 +469,20 @@ const PartenaireSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, h
         }
     }
 
+    let initialErrors = {
+        name: [],
+        email: [],
+        phone: [],
+        logo: [],
+        password: [],
+        password_confirmation: [],
+    }
+    
+    const [errors, setErrors] = useState(initialErrors)
+
     const contactDataFormSubmit = (e) => {
         e.preventDefault()
+        var form = e.target
         setRegisterAttempt(
             {...registerAttempt,
             requestSent: true}
@@ -414,13 +501,29 @@ const PartenaireSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, h
             }, (exception) => {
             setRegisterAttempt({...registerAttempt,requestSent: false})
             if (exception.response) {
-                toast.error(
-                    <div className="d-flex align-items-center h6 text-white">
-                        <FontAwesomeIcon icon={faInfoCircle} className="me-1" />Vérifiez les champs {
-                            // typeof (exception.response.data.error) === "object" && Object.keys(exception.response.data.error).map(item => (item))
-                            exception?.response?.data?.errors !== undefined && Object.keys(exception.response.data.errors).map(item => (<>{item[0]}<br/></>))
-                        }
-                    </div>); console.log(exception.response)
+                var errors = exception.response?.data?.errors
+                console.log(exception.response)
+                if(errors) {
+                    Array.from(form.elements).forEach( item => item.classList.remove("is-invalid"))
+                    setErrors({...initialErrors, ...errors})
+                    Object.keys(errors).forEach(item => {
+                        form.querySelector(`[name="${item}"]`)?.classList.add("is-invalid");
+                    })
+                    toast.error(
+                        <div className="d-flex align-items-center fs-6">
+                            Erreur rencontrée au niveau des champs surlignés !!!
+                            <br/>
+                            {Object.values(errors).length} erreur(s) rencontrée(s)
+                        </div>, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
+                }
             }
             else if (exception.request) {
                 console.log(exception.request); toast.error(
@@ -504,24 +607,45 @@ const PartenaireSignUp = ({ registerAttempt, handleChange, returnToRoleChoice, h
                         <div className="form-floating mb-3">
                             <label for="Nom">Nom</label>
                             <input type="text" className="form-control" name="name" id="Nom" onChange={handleChange} value={registerAttempt.name} placeholder="Entrez votre nom..." />
+                            <div class="invalid-feedback" id="NameFeedback">
+                                {errors.name.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span></>
+                                ))}
+                            </div>
                         </div>
                         <div className="form-floating mb-3">
                             <label for="Logo">Logo</label> <br />
                             {(registerAttempt.logo !== "" && registerAttempt.logo != null) && <img alt="Logo" src={URL.createObjectURL(registerAttempt.logo)} height="150px" className="" />}
                             <input type="file" accept="image/*" className="form-control" name="logo" id="Logo" onChange={handleChange} placeholder="Logo du partenaire" />
+                            <div class="invalid-feedback" id="LogoFeedback">
+                                {errors.logo.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span></>
+                                ))}
+                            </div>
                         </div>
                         <div className="form-floating mb-3">
                             <label for="Email">E-mail</label>
                             <input type="email" className="form-control" value={registerAttempt.email} onChange={handleChange} id="Email" name="email" placeholder="Ex: votrenom@gmail.com"></input>
+                            <div class="invalid-feedback" id="EmailFeedback">
+                                {errors.email.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span></>
+                                ))}
+                            </div>
                         </div>
                         <div className="form-floating mb-3">
                             <label for="Phone">Numéro de Téléphone</label>
-                            <input type="text" pattern="[0-9]9" className="form-control" name="phone" id="Phone" onChange={handleChange} value={registerAttempt.phone} />
+                            <input type="text" pattern="[0-9]*9" className="form-control" name="phone" id="Phone" onChange={handleChange} value={registerAttempt.phone} />
+                            <div class="invalid-feedback" id="NameFeedback">
+                                {errors.phone.map(item => (
+                                    <><span className="fw-bold d-flex">{item}</span></>
+                                ))}
+                            </div>
                         </div>
                         <div className="d-flex flex-row justify-content-between mb-5">
                             <button className="btn btn-light my-1" onClick={returnToRoleChoice}><FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Retour au choix du rôle</button>
                             <Button type="submit" className="btn btn-primary my-1"
-                                disabled={registerAttempt.name === "" || (registerAttempt.logo == "" || registerAttempt.logo == null) || !checkPhoneNumber(registerAttempt.phone) || !checkEmail(registerAttempt.email)} onClick={nextStep}>Suivant <FontAwesomeIcon icon={faArrowRight} className="ms-1" /></Button>
+                                disabled={registerAttempt.name === "" || (registerAttempt.logo == "" || registerAttempt.logo == null) || !checkPhoneNumber(registerAttempt.phone) || !checkEmail(registerAttempt.email)}
+                                >Suivant <FontAwesomeIcon icon={faArrowRight} className="ms-1" /></Button>
                         </div>
                     </form>
                 </Step>

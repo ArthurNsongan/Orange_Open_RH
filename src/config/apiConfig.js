@@ -48,6 +48,8 @@ const apiRoutes = {
     "PartnerJoinProjectURL": `${serverConfig.apiAddress}/api/partner/join-project`,
     "SendScheduledNotification": `${serverConfig.apiAddress}/api/scheduled-sms/send`,
     "CheckUserDataValidation": `${serverConfig.apiAddress}/api/user/check-data/validation`,
+    "ChangePasswordCheck": `${serverConfig.apiAddress}/api/user/change-password/check`,
+    "ChangePassword": `${serverConfig.apiAddress}/api/user/change/password`,
 }
 
 export default apiRoutes;

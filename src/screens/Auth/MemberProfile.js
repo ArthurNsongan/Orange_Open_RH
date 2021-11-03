@@ -40,24 +40,26 @@ function MemberProfile(props) {
     }, [props])
 
     return (
-        <section className="relative mt-5 pt-5 bg-dark min-vh-100">
+        <section className="relative pt-5 mt-2 bg-white min-vh-100">
+            <div className="container-fluid pt-4 pb-2 mb-3 bg-dark">
+                <h2 className="text-primary fw-bold ls-1 text-center">Profil Utilisateur</h2>
+            </div>
             <div className="container">
                 <div className="row Edit_Profile">
-                    <h2>Bienvenue, <b>{connectedUser.name}</b></h2>
+                    <h2>Bienvenue, <b className="text-primary">{connectedUser.name}</b></h2>
+                    <p className="fs-4">Sur cette page, vous avez accès aux informations sur la plateforme Challenge Solidarité</p>
                 </div>
             </div>
             <div className="container py-4">
-                <div className="Association py-4 px-3 mb-2 bg-white shadow-sm">
-                    <h3>Votre Association</h3>
+                <div className="Association py-4 px-3 mb-2 bg-white shadows">
+                    <h3 className="fw-bold">Vos Associations</h3>
                     <div className="">
                         <img src="" alt=""/>
-                        <h4>Ordre des Ingénieurs + {association_id}</h4>
                     </div>
                 </div>
-                <div className="Contributions py-4 px-3 bg-white shadow-sm my-2">
-                    <h3>Vos Contributions</h3>
+                <div className="Contributions py-4 px-3 bg-white shadows my-2">
+                    <h3 className="fw-bold">Vos Contributions</h3>
                     <div className="">
-                        <h4>Ordre des Ingénieurs</h4>
                     </div>
                 </div>
             </div>

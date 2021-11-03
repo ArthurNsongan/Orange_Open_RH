@@ -19,7 +19,7 @@ function AuthLayout() {
                 <Route exact path={route.auth.login.link} component={Login}  />
                 <Route exact path={route.auth.signup.link} component={SignUp}  />
                 <Route exact path={route.auth.forgot_password.link} component={ForgotPassword}  />
-                <Route exact path={`${route.auth.reset_password.link}/:token`} component={ResetPassword}  />
+                <Route exact path={`${route.auth.reset_password.link}`} component={ResetPassword}  />
                 <Route path="/auth*">
                     <Redirect to={route.front.home.link} />
                 </Route>

@@ -113,33 +113,41 @@ function Login(props) {
             let decodedToken = decodeToken(access_token)
             console.log( isExpired(access_token) )
             // if(compareRoles([defaultUserRoles.ADMIN_ROLE, default defaultUserRoles.SUPERVISOR_ROLE], user.roles)) {
-            if(true) {
+            //if(true) {
                 setUserRole(user.roles)
                 setLoginAttemp({...loginAttemp, token: access_token, first_factor: true,  two_factor: true, user: user })
                 setAuthUser({...user, roles: []}, access_token, true, user.roles)
                 setRequestSent(false);
                 console.log(user)
-                jumpToStep(4);
-                setTimeout( () => {history.push(route.front.home.link)}, 5000);
+            getRoleByUser(user.id, (res) => { 
+            console.log("getRoleByUser", res.data)
+            setUserRole(res.data);
+            setRoles(res.data)
+            if(user.password_reset == 1) {
+                history.push(`${route.auth.reset_password.link}`, {
+                    email: user.email,
+                    temp_password: loginAttemp.password
+                }) } else {
+                    setTimeout( () => {history.push(route.front.home.link)}, 2000);
+                }
+            /* if(hasRole([defaultUserRoles.ADMIN_ROLE, defaultUserRoles.SUPERVISOR_ROLE])) {
+                setLoginAttemp({...loginAttemp, two_factor: true});
+                jumpToStep(3);
+                setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000);
                 history.push(route.front.home.link);
             } else {
+                nextStep()
+            } */
+            }, (exception) => { if(exception.response) { console.log(exception.response) } })
+                jumpToStep(4);
+                //setTimeout( () => {history.push(route.front.home.link)}, 5000);
+                // else { history.push(route.front.home.link); }
+            /* } else {
                 setLoginAttemp({...loginAttemp, token: access_token, first_factor: true, user: user })
                 setUserRole(user.roles)
                 nextStep()
-            }
-            getRoleByUser(user.id, (res) => { 
-                console.log("getRoleByUser", res.data)
-                setUserRole(res.data);
-                setRoles(res.data)
-                if(hasRole([defaultUserRoles.ADMIN_ROLE, defaultUserRoles.SUPERVISOR_ROLE])) {
-                    setLoginAttemp({...loginAttemp, two_factor: true});
-                    jumpToStep(3);
-                    setTimeout( () => { twoFactorAuthValidate(); history.push(route.front.home.link)}, 1000);
-                    history.push(route.front.home.link);
-                } else {
-                    nextStep()
-                }
-            }, (exception) => { if(exception.response) { console.log(exception.response) } })
+            } */
+            
             console.log(decodedToken)
         }, (exception) => { 
             setRequestSent(false);

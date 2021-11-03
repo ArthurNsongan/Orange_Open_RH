@@ -32,7 +32,7 @@ export const getToken = () => { return (reactLocalStorage.getObject(USER_TOKEN) 
 export const getConnectedUser = () => { return (reactLocalStorage.getObject(USER_OBJECT) ) }
 export const IsConnected = () => { 
     // console.log("USER_OBJECT", reactLocalStorage.getObject(USER_OBJECT))
-    console.log("USER_TOKEN", reactLocalStorage.getObject(USER_TOKEN))
+    //console.log("USER_TOKEN", reactLocalStorage.getObject(USER_TOKEN))
     return (reactLocalStorage.getObject(IS_LOGGED_IN) === true || ( !_.isNil(reactLocalStorage.get(USER_OBJECT)) && !_.isNil(reactLocalStorage.get(USER_TOKEN))) ) 
 }
 
@@ -62,7 +62,7 @@ export const isSupervisor = () => {
 }
 
 export const getSupervisorAssociationId = () => {
-    return getRoles().find(item => item.name === defaultUserRoles.SUPERVISOR_ROLE ).association_id;
+    return getRoles().find(item => item.name === defaultUserRoles.SUPERVISOR_ROLE ).pivot.association_id;
 }
 
 export const isAdmin = () => {
@@ -129,7 +129,7 @@ export const everyRequestConfig = () => {
             return actualConf;
         }
         let newConfig = getAuthHeaders(actualConf)
-        console.log("newConfig", newConfig)
+        //console.log("newConfig", newConfig)
         return newConfig
     })
 }
