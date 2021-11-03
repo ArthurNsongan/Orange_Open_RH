@@ -17,6 +17,7 @@ import Partenaires from '../../components/Partenaires';
 import ProjectTile from '../../components/ProjectTile';
 import './styles.css';
 import Images from '../../utils/images.js'
+import server from "../../config/serverConfig"
 
 let route = require('../../utils/route.json')
 let legalFiles = require('../../utils/legalFiles.json')
@@ -146,7 +147,7 @@ function Home(props) {
                                                         <div className="col-lg-9">
                                                             <h5 className="fw-bold">{item.title}</h5>
                                                             <span className="fs-7 pb-2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti quam quos animi odit qui a facilis tempora quaerat minima incidunt?</span>
-                                                            <a href={item.path} target="_blank"><button className="btn btn-primary fs-7">Lire la suite</button></a>
+                                                            <a href={`${server.apiAddress + "/" + item.path}`} target="_blank"><button className="btn btn-primary fs-7">Lire la suite</button></a>
                                                         </div>
                                                     </div>
                                                 ))}

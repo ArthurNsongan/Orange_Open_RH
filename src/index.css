@@ -94,9 +94,8 @@ code {
   background-color: #000;
 }
 
-.text-white {
-  background-color: transparent !important;
-  color: white !important;
+h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white {
+  background: inherit !important;
 }
 
 .ck.ck-editor__editable{
