@@ -55,7 +55,7 @@ function App(props) {
                     let user = localStorage.getItem("USER");
                     var secondsLeft = now.diff(date_con,"seconds")
                     console.log("secondsLeft : " + secondsLeft)
-                    if( now.diff(date_con,"seconds") >= 300 ) {
+                    if( now.diff(date_con,"seconds") >= 600 ) {
                         disconnect();
                     }
                 }, 1000)
