@@ -45,7 +45,7 @@ function App(props) {
         var checkTime;
         if(user != undefined) {
             var secondsLeft = now.diff(date_con,"seconds")
-            if( secondsLeft >= 900 ) {
+            if( secondsLeft >= 600 ) {
                 disconnect();
             } else {
                 localStorage.setItem("DATE_CONNECTED", new Date().toISOString());
@@ -61,7 +61,7 @@ function App(props) {
                 }, 1000)
             }
         }
-        else if( now.diff(date_con,"seconds") >= 900 ) {
+        else {
             disconnect()
         }
 
