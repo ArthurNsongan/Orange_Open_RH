@@ -39,6 +39,22 @@ function App(props) {
     };
 
     useEffect(() => {
+        let connect_try = localStorage.getItem("USER_CONNECT_TRY");
+        if(connect_try != undefined) {
+            let number = parseInt(connect_try)
+            let last_try_date = localStorage.getItem("USER_CONNECTED_TRY_DATE")
+            if(last_try_date != undefined) {
+                let now = moment(new Date().toISOString());
+                let date = moment(last_try_date)
+                var daysLeft = now.diff(date,"days")
+                if( daysLeft > 1) {
+                    localStorage.removeItem("USER_CONNECT_TRY");
+                    localStorage.removeItem("USER_CONNECTED_TRY_DATE");
+                }
+            }
+        } else {
+            localStorage.setItem("USER_CONNECT_TRY", '0');
+        }
         let date_con = moment(localStorage.getItem("DATE_CONNECTED"));
         let now = moment(new Date().toISOString());
         let user = localStorage.getItem("USER");
@@ -61,7 +77,7 @@ function App(props) {
                 }, 1000)
             }
         }
-        else {
+        else if( now.diff(date_con,"seconds") >= 600 ) {
             disconnect()
         }
 

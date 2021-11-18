@@ -44,3 +44,9 @@ div.skiptranslate, iframe.skiptranslate {
   margin: 0px !important;
   padding: 0px !important;
 }
+
+.tox-notification.tox-notification--in.tox-notification--warning {
+  display: none;
+  visibility: hidden;
+  overflow: hidden;
+}
