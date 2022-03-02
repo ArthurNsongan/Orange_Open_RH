@@ -24,6 +24,7 @@ import {Helmet} from "react-helmet";
 import $ from "jquery";
 import SecondaryNavigation from "../../components/SecondaryNavigation";
 import {getAllBlogAction, getAllBlogReset} from "../../redux/api/BlogApi";
+import RecentPostAside from '../../components/RecentPostAside';
 
 let route = require('../../utils/route');
 
@@ -148,7 +149,7 @@ function Blog(props) {
                     </div>
                     <aside className="col-12 col-lg-3">
                         {/* <PostWidget categories={FakeData.post_widget_data}/> */}
-                        <PopularPostAside />
+                        <RecentPostAside />
                         <AboutOpenRHWidget/>
                         <ArchiveWidget/>
                     </aside>

@@ -7,6 +7,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 let route = require("../../utils/route");
 
+const emp = require('../../employees.json')
+
+
 export default function Admin(props) {
     console.log("Admin page");
     const {t} = useTranslation();
@@ -179,11 +182,19 @@ export default function Admin(props) {
                                     custom components and custom utility classes.</p>
                                 <p className="mb-0">Before working with this theme, you should become familiar with the
                                     Bootstrap framework, especially the utility classes.</p>
+
+                                    <form className="form">
+                            <label>Employée Homme</label>
+                            <input type="text" value={emp.personnel_homme} />
+                        </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            
 
 
         </>

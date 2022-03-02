@@ -27,7 +27,9 @@
     "sante_service_social_prevoyance": "Santé - Service Social Prévoyance",
     "en_pratique": "En pratique",
     "procedures": "Procedures RH",
-    "consult_biblio": "Consulter la Bibliothèque"
+    "consult_biblio": "Consulter la Bibliothèque",
+    "popular": "Populaire",
+    "recent_posts": "Publications récentes"
   },
   "signin": {
     "title": "Connexion",
@@ -271,12 +273,20 @@
     "publication_management": "Gestion des publications",
     "blog_management": "Gestion des blogs",
     "demands_management": "Gestion des demandes",
-    "domaine": "Thématique"
+    "domaine": "Thématique",
+    "homepage":"Page d'accueil"
   },
   "user": {
     "demands": "Demandes",
     "new_demands": "Nouvelle demande",
     "find_demand": "Rechercher une demande",
     "test":"Mon test"
+  },
+  "hrApps": {
+    "taleo": "Taleo est ...",
+    "myInfos": "MyInfo est ...",
+    "e_learning": "Orange Learning est ...",
+    "livretAcueil": "Le Livret d'Accueil est ...",
+    "fusion": "Fusion est ..."
   }
 }

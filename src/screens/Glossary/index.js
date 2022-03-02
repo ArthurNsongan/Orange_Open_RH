@@ -28,6 +28,7 @@ import $ from "jquery";
 import * as Utils from "../../utils";
 import Loader from "../../components/Loader";
 import PopularPostAside from '../../components/PopularPostAside';
+import RecentPostAside from '../../components/RecentPostAside';
 
 let route = require('../../utils/route');
 
@@ -204,7 +205,7 @@ function Glossary(props) {
                         </div>
                         <aside className="col-12 col-lg-3">
                             {/* <PostWidget categories={FakeData.post_widget_data}/> */}
-                            <PopularPostAside />
+                            <RecentPostAside />
                             <AboutOpenRHWidget/>
                             <ArchiveWidget/>
                         </aside>

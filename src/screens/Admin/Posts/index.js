@@ -24,6 +24,7 @@ import ReactPlayer from "react-player";
 
 let route = require('../../../utils/route');
 
+
 function AdminPost(props) {
     const {t} = useTranslation();
     const [isLoading, setIsLoading] = useState(true);
@@ -63,7 +64,7 @@ function AdminPost(props) {
             selector: 'rhContentDateCeated',
             width: '200px',
             sortable: true,
-            format: d => moment(d.rhContentDateCeated).format("lll")
+            format: d => moment(d.rhContentDatePublish).format("lll")
         },
         {
             name: t('common.author'),

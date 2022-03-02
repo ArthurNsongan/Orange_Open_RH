@@ -15,6 +15,7 @@ import AdminPost from "../../screens/Admin/Posts";
 import AdminBlog from "../../screens/Admin/Blog";
 import AdminGlossary from "../../screens/Admin/Glossary";
 import AdminFAQ from "../../screens/Admin/FAQ";
+import AdminHomePage from '../../screens/Admin/Homepage';
 import AdminTestimonial from "../../screens/Admin/Testimonial";
 
 let route = require('../../utils/route');
@@ -49,6 +50,8 @@ export default function AdminLayout(props) {
                             <Route path={route.faq.admin_faq} component={AdminFAQ} exact={true}
                                    strict={true}/>
                             <Route path={route.testimonial.admin_testimonial} component={AdminTestimonial} exact={true}
+                                   strict={true}/>
+                            <Route path={route.homepage.admin_homepage} component={AdminHomePage} exact={true}
                                    strict={true}/>
                         </Switch>
                     </div>

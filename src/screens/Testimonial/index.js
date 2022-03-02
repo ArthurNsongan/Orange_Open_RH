@@ -29,6 +29,7 @@ import FaqList from "../../components/FaqList";
 import TestimonialList from "../../components/TestimonialList";
 import {postTestimonialAction, postTestimonialReset} from "../../redux/api/TestimonialApi";
 import $ from "jquery";
+import RecentPostAside from '../../components/RecentPostAside';
 
 let route = require('../../utils/route');
 
@@ -252,7 +253,7 @@ function Testimonial(props) {
                         </div>
                         <aside className="col-12 col-lg-3">
                             {/* <PostWidget categories={FakeData.post_widget_data}/> */}
-                            <PopularPostAside />
+                            <RecentPostAside />
                             <AboutOpenRHWidget/>
                             {/*<ArchiveWidget/>*/}
                         </aside>

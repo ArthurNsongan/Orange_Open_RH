@@ -107,6 +107,10 @@
     "admin_faq": "/admin/faq",
     "faq_domain": "/faq/:domaine?"
   },
+  "homepage": {
+    "root": "/homepage",
+    "admin_homepage": "/admin/homepage"
+  },
   "auth": {
     "root": "/auth",
     "sign_in": "/auth/sign-in"
@@ -193,6 +197,11 @@
       "title": "admin.glossaire",
       "link": "/admin/glossary",
       "icon": "spell-check"
+    },
+    {
+      "title": "admin.homepage",
+      "link": "/admin/homepage",
+      "icon": "homepage"
     }
   ]
 }

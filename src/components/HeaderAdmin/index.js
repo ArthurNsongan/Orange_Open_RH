@@ -17,7 +17,8 @@ import {
     faNewspaper,
     faQuestionCircle, faSpellCheck,
     faTachometerAlt,
-    faThLarge
+    faThLarge,
+    faHome
 } from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
 
@@ -65,6 +66,8 @@ function HeaderAdmin(props) {
                 return faSpellCheck;
             case 'th-large':
                 return faThLarge;
+            case 'homepage':
+                return faHome;
             default:
                 return faTachometerAlt;
         }

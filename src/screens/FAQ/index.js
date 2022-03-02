@@ -26,6 +26,7 @@ import {toast} from "react-toastify";
 import FaqList from "../../components/FaqList";
 import * as Utils from "../../utils";
 import $ from "jquery";
+import RecentPostAside from '../../components/RecentPostAside';
 
 let route = require('../../utils/route');
 
@@ -261,7 +262,7 @@ function Faq(props) {
 
                         </div>
                         <aside className="col-12 col-lg-3">
-                            <PopularPostAside />
+                            <RecentPostAside />
                             <AboutOpenRHWidget/>
                             <ArchiveWidget/>
                         </aside>

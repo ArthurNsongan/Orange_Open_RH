@@ -27,7 +27,9 @@
     "sante_service_social_prevoyance": "Health - Service Social Prévoyance",
     "en_pratique": "In Practice",
     "procedures": "HR Procedures",
-    "consult_biblio": "Open Library"
+    "consult_biblio": "Open Library",
+    "popular": "Popular",
+    "recent_posts": "Recent posts"
   },
   "signin": {
     "title": "Sign In",
@@ -272,12 +274,20 @@
     "publication_management": "Publication Management",
     "blog_management": "Blog Management",
     "demands_management": "Demands Management",
-    "domaine": "Domain"
+    "domaine": "Domain",
+    "homepage":"Homepage"
   },
   "user": {
     "demands": "Demands",
     "new_demands": "New demand",
     "find_demand": "Find a test",
     "test":"test"
+  },
+  "hrApps": {
+    "taleo": "Taleois ...",
+    "myInfos": "MyInfo is ...",
+    "e_learning": "Orange Learning is ...",
+    "livretAcueil": "Le Livret d'Accueil is ...",
+    "fusion": "Fusion is ..."
   }
 }

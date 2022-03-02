@@ -27,6 +27,10 @@ let route = require('./utils/route');
 
 function App(props) {
 
+    window.$(document).ready(function() {
+        window.$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
     let location = useLocation();
     const dispatch = useDispatch();
     let history = useHistory();
@@ -70,7 +74,7 @@ function App(props) {
                     let now = moment(new Date().toISOString());
                     let user = localStorage.getItem("USER");
                     var secondsLeft = now.diff(date_con,"seconds")
-                    console.log("secondsLeft : " + secondsLeft)
+                    // console.log("secondsLeft : " + secondsLeft)
                     if( now.diff(date_con,"seconds") >= 600 ) {
                         disconnect();
                     }

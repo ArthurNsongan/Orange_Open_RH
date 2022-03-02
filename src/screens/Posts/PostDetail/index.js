@@ -29,6 +29,7 @@ import SecondaryNavigation from "../../../components/SecondaryNavigation";
 import SocialShare from "../../../components/SocialShare";
 import {Constant} from "../../../config/Constant";
 import PopularPostAside from '../../../components/PopularPostAside';
+import RecentPostAside from '../../../components/RecentPostAside';
 
 let route = require('../../../utils/route');
 
@@ -221,7 +222,8 @@ function PostDetail(props) {
                             :
                             <></>
                         } */}
-                        <PopularPostAside />
+                        {/* <PopularPostAside /> */}
+                        <RecentPostAside />
                         {/* <PostWidget categories={FakeData.post_widget_data}/> */}
                         <AboutOpenRHWidget/>
                         <ArchiveWidget/>

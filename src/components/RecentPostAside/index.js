@@ -6,10 +6,10 @@ import {withRouter, NavLink} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import _ from 'lodash';
-import "moment/locale/fr";
 import { getAllPostsRHAction } from '../../redux/api/PostsApi';
+import moment from 'moment';
 
-function PopularPostAside(props) {
+function RecentPostAside(props) {
 
     let route = require('../../utils/route');
 
@@ -35,7 +35,7 @@ function PopularPostAside(props) {
                 <li className="nav-item" key={`categories-${1}`}>
                     <a className={`nav-link active`}
                         href={`#tab0`}
-                        data-toggle="tab">{t('navigation.popular')}</a>
+                        data-toggle="tab">{t('navigation.recent_posts')}</a>
                 </li>
             </ul>
             <div className="tab-content">
@@ -45,7 +45,8 @@ function PopularPostAside(props) {
                             { console.log(props.resultRH)}
                         {
                             props.resultRH
-                            .sort( (a,b) => ( a.viewNumber < b.viewNumber ? 1 : -1 ) )
+                            .filter(item => item.rhContentState )
+                            .sort( (a,b) => ( moment(a.rhContentDatePublish).isBefore(b.rhContentDatePublish) ? 1 : -1 ) )
                             .slice(0, 5)
                             .map( (item, index) => (
                                 <li class="nav-item">
@@ -63,13 +64,13 @@ function PopularPostAside(props) {
     )
 }
 
-PopularPostAside.propTypes = {
+RecentPostAside.propTypes = {
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     onClick: PropTypes.func,
     posts: PropTypes.array
 };
 
-PopularPostAside.defaultProps = {
+RecentPostAside.defaultProps = {
     style: {},
     onClick: () => {
 
@@ -90,4 +91,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     getAllPostsRHAction,
 }, dispatch);
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PopularPostAside));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RecentPostAside));
